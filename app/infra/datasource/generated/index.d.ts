@@ -42,6 +42,7 @@ export type Page = {
  */
 export type Model = {
   id: string
+  pageId: string
   name: string
   createdAt: Date
   updatedAt: Date
@@ -831,6 +832,56 @@ export namespace Prisma {
      * 
     **/
     select?: ProjectCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type PageCountOutputType
+   */
+
+
+  export type PageCountOutputType = {
+    Model: number
+  }
+
+  export type PageCountOutputTypeSelect = {
+    Model?: boolean
+  }
+
+  export type PageCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | PageCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? PageCountOutputType
+    : S extends undefined
+    ? never
+    : S extends PageCountOutputTypeArgs
+    ?'include' extends U
+    ? PageCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof PageCountOutputType ?PageCountOutputType [P]
+  : 
+     never
+  } 
+    : PageCountOutputType
+  : PageCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * PageCountOutputType without action
+   */
+  export type PageCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the PageCountOutputType
+     * 
+    **/
+    select?: PageCountOutputTypeSelect | null
   }
 
 
@@ -1889,10 +1940,14 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectArgs
+    Model?: boolean | ModelFindManyArgs
+    _count?: boolean | PageCountOutputTypeArgs
   }
 
   export type PageInclude = {
     project?: boolean | ProjectArgs
+    Model?: boolean | ModelFindManyArgs
+    _count?: boolean | PageCountOutputTypeArgs
   }
 
   export type PageGetPayload<
@@ -1907,14 +1962,22 @@ export namespace Prisma {
     ? Page  & {
     [P in TrueKeys<S['include']>]: 
           P extends 'project'
-        ? ProjectGetPayload<S['include'][P]> : never
+        ? ProjectGetPayload<S['include'][P]> :
+        P extends 'Model'
+        ? Array < ModelGetPayload<S['include'][P]>>  :
+        P extends '_count'
+        ? PageCountOutputTypeGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof Page ?Page [P]
   : 
           P extends 'project'
-        ? ProjectGetPayload<S['select'][P]> : never
+        ? ProjectGetPayload<S['select'][P]> :
+        P extends 'Model'
+        ? Array < ModelGetPayload<S['select'][P]>>  :
+        P extends '_count'
+        ? PageCountOutputTypeGetPayload<S['select'][P]> : never
   } 
     : Page
   : Page
@@ -2239,6 +2302,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
     project<T extends ProjectArgs = {}>(args?: Subset<T, ProjectArgs>): CheckSelect<T, Prisma__ProjectClient<Project | null >, Prisma__ProjectClient<ProjectGetPayload<T> | null >>;
+
+    Model<T extends ModelFindManyArgs = {}>(args?: Subset<T, ModelFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Model>>, PrismaPromise<Array<ModelGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -2568,6 +2633,7 @@ export namespace Prisma {
 
   export type ModelMinAggregateOutputType = {
     id: string | null
+    pageId: string | null
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2575,6 +2641,7 @@ export namespace Prisma {
 
   export type ModelMaxAggregateOutputType = {
     id: string | null
+    pageId: string | null
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2582,6 +2649,7 @@ export namespace Prisma {
 
   export type ModelCountAggregateOutputType = {
     id: number
+    pageId: number
     name: number
     createdAt: number
     updatedAt: number
@@ -2591,6 +2659,7 @@ export namespace Prisma {
 
   export type ModelMinAggregateInputType = {
     id?: true
+    pageId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
@@ -2598,6 +2667,7 @@ export namespace Prisma {
 
   export type ModelMaxAggregateInputType = {
     id?: true
+    pageId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
@@ -2605,6 +2675,7 @@ export namespace Prisma {
 
   export type ModelCountAggregateInputType = {
     id?: true
+    pageId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
@@ -2691,6 +2762,7 @@ export namespace Prisma {
 
   export type ModelGroupByOutputType = {
     id: string
+    pageId: string
     name: string
     createdAt: Date
     updatedAt: Date
@@ -2715,9 +2787,15 @@ export namespace Prisma {
 
   export type ModelSelect = {
     id?: boolean
+    pageId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    page?: boolean | PageArgs
+  }
+
+  export type ModelInclude = {
+    page?: boolean | PageArgs
   }
 
   export type ModelGetPayload<
@@ -2729,12 +2807,17 @@ export namespace Prisma {
     ? never
     : S extends ModelArgs | ModelFindManyArgs
     ?'include' extends U
-    ? Model 
+    ? Model  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'page'
+        ? PageGetPayload<S['include'][P]> : never
+  } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof Model ?Model [P]
   : 
-     never
+          P extends 'page'
+        ? PageGetPayload<S['select'][P]> : never
   } 
     : Model
   : Model
@@ -3058,6 +3141,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
+    page<T extends PageArgs = {}>(args?: Subset<T, PageArgs>): CheckSelect<T, Prisma__PageClient<Page | null >, Prisma__PageClient<PageGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -3094,6 +3178,11 @@ export namespace Prisma {
     **/
     select?: ModelSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelInclude | null
+    /**
      * Throw an Error if a Model can't be found
      * 
     **/
@@ -3115,6 +3204,11 @@ export namespace Prisma {
      * 
     **/
     select?: ModelSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelInclude | null
     /**
      * Throw an Error if a Model can't be found
      * 
@@ -3173,6 +3267,11 @@ export namespace Prisma {
     **/
     select?: ModelSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelInclude | null
+    /**
      * Filter, which Models to fetch.
      * 
     **/
@@ -3219,6 +3318,11 @@ export namespace Prisma {
     **/
     select?: ModelSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelInclude | null
+    /**
      * The data needed to create a Model.
      * 
     **/
@@ -3235,6 +3339,11 @@ export namespace Prisma {
      * 
     **/
     select?: ModelSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelInclude | null
     /**
      * The data needed to update a Model.
      * 
@@ -3275,6 +3384,11 @@ export namespace Prisma {
     **/
     select?: ModelSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelInclude | null
+    /**
      * The filter to search for the Model to update in case it exists.
      * 
     **/
@@ -3301,6 +3415,11 @@ export namespace Prisma {
      * 
     **/
     select?: ModelSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelInclude | null
     /**
      * Filter which Model to delete.
      * 
@@ -3330,6 +3449,11 @@ export namespace Prisma {
      * 
     **/
     select?: ModelSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelInclude | null
   }
 
 
@@ -3365,6 +3489,7 @@ export namespace Prisma {
 
   export const ModelScalarFieldEnum: {
     id: 'id',
+    pageId: 'pageId',
     name: 'name',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -3440,6 +3565,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
     project?: XOR<ProjectRelationFilter, ProjectWhereInput>
+    Model?: ModelListRelationFilter
   }
 
   export type PageOrderByWithRelationInput = {
@@ -3450,6 +3576,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     project?: ProjectOrderByWithRelationInput
+    Model?: ModelOrderByRelationAggregateInput
   }
 
   export type PageWhereUniqueInput = {
@@ -3489,16 +3616,20 @@ export namespace Prisma {
     OR?: Enumerable<ModelWhereInput>
     NOT?: Enumerable<ModelWhereInput>
     id?: StringFilter | string
+    pageId?: StringFilter | string
     name?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
+    page?: XOR<PageRelationFilter, PageWhereInput>
   }
 
   export type ModelOrderByWithRelationInput = {
     id?: SortOrder
+    pageId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    page?: PageOrderByWithRelationInput
   }
 
   export type ModelWhereUniqueInput = {
@@ -3507,6 +3638,7 @@ export namespace Prisma {
 
   export type ModelOrderByWithAggregationInput = {
     id?: SortOrder
+    pageId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3520,6 +3652,7 @@ export namespace Prisma {
     OR?: Enumerable<ModelScalarWhereWithAggregatesInput>
     NOT?: Enumerable<ModelScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
+    pageId?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
@@ -3578,6 +3711,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     project: ProjectCreateNestedOneWithoutPageInput
+    Model?: ModelCreateNestedManyWithoutPageInput
   }
 
   export type PageUncheckedCreateInput = {
@@ -3587,6 +3721,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    Model?: ModelUncheckedCreateNestedManyWithoutPageInput
   }
 
   export type PageUpdateInput = {
@@ -3596,6 +3731,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     project?: ProjectUpdateOneRequiredWithoutPageInput
+    Model?: ModelUpdateManyWithoutPageInput
   }
 
   export type PageUncheckedUpdateInput = {
@@ -3605,6 +3741,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Model?: ModelUncheckedUpdateManyWithoutPageInput
   }
 
   export type PageUpdateManyMutationInput = {
@@ -3629,10 +3766,12 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    page: PageCreateNestedOneWithoutModelInput
   }
 
   export type ModelUncheckedCreateInput = {
     id?: string
+    pageId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -3643,10 +3782,12 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    page?: PageUpdateOneRequiredWithoutModelInput
   }
 
   export type ModelUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    pageId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3661,6 +3802,7 @@ export namespace Prisma {
 
   export type ModelUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    pageId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3769,6 +3911,16 @@ export namespace Prisma {
     isNot?: ProjectWhereInput
   }
 
+  export type ModelListRelationFilter = {
+    every?: ModelWhereInput
+    some?: ModelWhereInput
+    none?: ModelWhereInput
+  }
+
+  export type ModelOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type PageProjectIdLevelCompoundUniqueInput = {
     projectId: string
     level: number
@@ -3830,8 +3982,14 @@ export namespace Prisma {
     _max?: NestedIntFilter
   }
 
+  export type PageRelationFilter = {
+    is?: PageWhereInput
+    isNot?: PageWhereInput
+  }
+
   export type ModelCountOrderByAggregateInput = {
     id?: SortOrder
+    pageId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3839,6 +3997,7 @@ export namespace Prisma {
 
   export type ModelMaxOrderByAggregateInput = {
     id?: SortOrder
+    pageId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3846,6 +4005,7 @@ export namespace Prisma {
 
   export type ModelMinOrderByAggregateInput = {
     id?: SortOrder
+    pageId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3903,6 +4063,18 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput
   }
 
+  export type ModelCreateNestedManyWithoutPageInput = {
+    create?: XOR<Enumerable<ModelCreateWithoutPageInput>, Enumerable<ModelUncheckedCreateWithoutPageInput>>
+    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutPageInput>
+    connect?: Enumerable<ModelWhereUniqueInput>
+  }
+
+  export type ModelUncheckedCreateNestedManyWithoutPageInput = {
+    create?: XOR<Enumerable<ModelCreateWithoutPageInput>, Enumerable<ModelUncheckedCreateWithoutPageInput>>
+    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutPageInput>
+    connect?: Enumerable<ModelWhereUniqueInput>
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -3917,6 +4089,46 @@ export namespace Prisma {
     upsert?: ProjectUpsertWithoutPageInput
     connect?: ProjectWhereUniqueInput
     update?: XOR<ProjectUpdateWithoutPageInput, ProjectUncheckedUpdateWithoutPageInput>
+  }
+
+  export type ModelUpdateManyWithoutPageInput = {
+    create?: XOR<Enumerable<ModelCreateWithoutPageInput>, Enumerable<ModelUncheckedCreateWithoutPageInput>>
+    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutPageInput>
+    upsert?: Enumerable<ModelUpsertWithWhereUniqueWithoutPageInput>
+    set?: Enumerable<ModelWhereUniqueInput>
+    disconnect?: Enumerable<ModelWhereUniqueInput>
+    delete?: Enumerable<ModelWhereUniqueInput>
+    connect?: Enumerable<ModelWhereUniqueInput>
+    update?: Enumerable<ModelUpdateWithWhereUniqueWithoutPageInput>
+    updateMany?: Enumerable<ModelUpdateManyWithWhereWithoutPageInput>
+    deleteMany?: Enumerable<ModelScalarWhereInput>
+  }
+
+  export type ModelUncheckedUpdateManyWithoutPageInput = {
+    create?: XOR<Enumerable<ModelCreateWithoutPageInput>, Enumerable<ModelUncheckedCreateWithoutPageInput>>
+    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutPageInput>
+    upsert?: Enumerable<ModelUpsertWithWhereUniqueWithoutPageInput>
+    set?: Enumerable<ModelWhereUniqueInput>
+    disconnect?: Enumerable<ModelWhereUniqueInput>
+    delete?: Enumerable<ModelWhereUniqueInput>
+    connect?: Enumerable<ModelWhereUniqueInput>
+    update?: Enumerable<ModelUpdateWithWhereUniqueWithoutPageInput>
+    updateMany?: Enumerable<ModelUpdateManyWithWhereWithoutPageInput>
+    deleteMany?: Enumerable<ModelScalarWhereInput>
+  }
+
+  export type PageCreateNestedOneWithoutModelInput = {
+    create?: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
+    connectOrCreate?: PageCreateOrConnectWithoutModelInput
+    connect?: PageWhereUniqueInput
+  }
+
+  export type PageUpdateOneRequiredWithoutModelInput = {
+    create?: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
+    connectOrCreate?: PageCreateOrConnectWithoutModelInput
+    upsert?: PageUpsertWithoutModelInput
+    connect?: PageWhereUniqueInput
+    update?: XOR<PageUpdateWithoutModelInput, PageUncheckedUpdateWithoutModelInput>
   }
 
   export type NestedStringFilter = {
@@ -4019,6 +4231,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    Model?: ModelCreateNestedManyWithoutPageInput
   }
 
   export type PageUncheckedCreateWithoutProjectInput = {
@@ -4027,6 +4240,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    Model?: ModelUncheckedCreateNestedManyWithoutPageInput
   }
 
   export type PageCreateOrConnectWithoutProjectInput = {
@@ -4081,6 +4295,25 @@ export namespace Prisma {
     create: XOR<ProjectCreateWithoutPageInput, ProjectUncheckedCreateWithoutPageInput>
   }
 
+  export type ModelCreateWithoutPageInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ModelUncheckedCreateWithoutPageInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ModelCreateOrConnectWithoutPageInput = {
+    where: ModelWhereUniqueInput
+    create: XOR<ModelCreateWithoutPageInput, ModelUncheckedCreateWithoutPageInput>
+  }
+
   export type ProjectUpsertWithoutPageInput = {
     update: XOR<ProjectUpdateWithoutPageInput, ProjectUncheckedUpdateWithoutPageInput>
     create: XOR<ProjectCreateWithoutPageInput, ProjectUncheckedCreateWithoutPageInput>
@@ -4100,12 +4333,86 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ModelUpsertWithWhereUniqueWithoutPageInput = {
+    where: ModelWhereUniqueInput
+    update: XOR<ModelUpdateWithoutPageInput, ModelUncheckedUpdateWithoutPageInput>
+    create: XOR<ModelCreateWithoutPageInput, ModelUncheckedCreateWithoutPageInput>
+  }
+
+  export type ModelUpdateWithWhereUniqueWithoutPageInput = {
+    where: ModelWhereUniqueInput
+    data: XOR<ModelUpdateWithoutPageInput, ModelUncheckedUpdateWithoutPageInput>
+  }
+
+  export type ModelUpdateManyWithWhereWithoutPageInput = {
+    where: ModelScalarWhereInput
+    data: XOR<ModelUpdateManyMutationInput, ModelUncheckedUpdateManyWithoutModelInput>
+  }
+
+  export type ModelScalarWhereInput = {
+    AND?: Enumerable<ModelScalarWhereInput>
+    OR?: Enumerable<ModelScalarWhereInput>
+    NOT?: Enumerable<ModelScalarWhereInput>
+    id?: StringFilter | string
+    pageId?: StringFilter | string
+    name?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+  }
+
+  export type PageCreateWithoutModelInput = {
+    id?: string
+    level: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutPageInput
+  }
+
+  export type PageUncheckedCreateWithoutModelInput = {
+    id?: string
+    projectId: string
+    level: number
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PageCreateOrConnectWithoutModelInput = {
+    where: PageWhereUniqueInput
+    create: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
+  }
+
+  export type PageUpsertWithoutModelInput = {
+    update: XOR<PageUpdateWithoutModelInput, PageUncheckedUpdateWithoutModelInput>
+    create: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
+  }
+
+  export type PageUpdateWithoutModelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutPageInput
+  }
+
+  export type PageUncheckedUpdateWithoutModelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    level?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PageUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     level?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Model?: ModelUpdateManyWithoutPageInput
   }
 
   export type PageUncheckedUpdateWithoutProjectInput = {
@@ -4114,11 +4421,33 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Model?: ModelUncheckedUpdateManyWithoutPageInput
   }
 
   export type PageUncheckedUpdateManyWithoutPageInput = {
     id?: StringFieldUpdateOperationsInput | string
     level?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelUpdateWithoutPageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelUncheckedUpdateWithoutPageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelUncheckedUpdateManyWithoutModelInput = {
+    id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

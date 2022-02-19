@@ -19,9 +19,8 @@ export const loader: LoaderFunction = async () => {
 
 export default function Index() {
   const data = useLoaderData<LoaderData>()
-
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
+    <>
       <p>
         <Link to="/projects/new">Create a new project</Link>
       </p>
@@ -33,6 +32,6 @@ export default function Index() {
           </li>
         ))}
       </ul>
-    </div>
+    </>
   )
 }

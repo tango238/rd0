@@ -94,6 +94,7 @@ exports.Prisma.PageScalarFieldEnum = makeEnum({
 
 exports.Prisma.ModelScalarFieldEnum = makeEnum({
   id: 'id',
+  pageId: 'pageId',
   name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

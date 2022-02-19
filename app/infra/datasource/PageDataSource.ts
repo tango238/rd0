@@ -18,11 +18,16 @@ export class PageDataSource implements PageRepository {
     })
   }
 
-  async findAll(projectId: string): Promise<Page[]> {
+  findAll(projectId: string): Promise<Page[]> {
     return db.page.findMany({
       where: { projectId: projectId },
       orderBy: [{ level: 'asc' }]
     })
   }
 
+  findById(pageId: string): Promise<(Page | null)> {
+    return db.page.findUnique({
+      where: { id: pageId }
+    })
+  }
 }

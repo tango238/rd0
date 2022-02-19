@@ -1,6 +1,5 @@
-import { Link, useLoaderData } from 'remix'
 import type { LoaderFunction } from 'remix'
-import { db } from '~/utils/db.server'
+import { Link, useLoaderData } from 'remix'
 import { Page } from '~/infra/datasource/generated'
 import { container } from 'tsyringe'
 import { PageController } from '~/application/controller/PageController'
@@ -17,11 +16,12 @@ export const loader: LoaderFunction = async ({ params}) => {
   const projectId = params.id
   invariant(typeof projectId === 'string')
   const data: LoaderData = {
-    pages: await controller.getPages(projectId),
+    pages: await controller.all(projectId),
     projectId: projectId
   }
   return data
 }
+
 export default function ProjectWindow() {
   const data = useLoaderData<LoaderData>()
   return (

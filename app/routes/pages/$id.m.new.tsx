@@ -1,36 +1,37 @@
-import { Button, FormControl, Input, InputLabel } from '@mui/material'
 import { ActionFunction, Form, LoaderFunction, redirect, useLoaderData } from 'remix'
-import invariant from 'tiny-invariant'
+import { Button, FormControl, Input, InputLabel } from '@mui/material'
 import { container } from 'tsyringe'
-import { PageController } from '~/application/controller/PageController'
+import { ModelController } from '~/application/controller/ModelController'
+import invariant from 'tiny-invariant'
 
-const controller = container.resolve(PageController)
+const controller = container.resolve(ModelController)
+
+
+export const action: ActionFunction = async ({ request }) => {
+  const form = await request.formData()
+  const name = form.get("name")
+  const pageId = form.get("pageId")
+
+  invariant(typeof name === "string")
+  invariant(typeof pageId === "string")
+
+  await controller.create(pageId, name)
+  return redirect(`/pages/${pageId}`)
+}
 
 export const loader:LoaderFunction = async ({ params }) => {
   return params.id
 }
 
-export const action: ActionFunction = async ({ request }) => {
-  const form = await request.formData()
-  const name = form.get("name")
-  const projectId = form.get("projectId")
-
-  invariant(typeof name === "string")
-  invariant(typeof projectId === "string")
-
-  await controller.create(projectId, name)
-  return redirect(`/projects/${projectId}`)
-}
-
-export default function NewPage() {
-  const projectId = useLoaderData()
+export default function NewModelView() {
+  const pageId = useLoaderData()
   return (
     <>
       <Form method="post">
         <FormControl variant="outlined">
           <InputLabel htmlFor="component-simple">Name</InputLabel>
           <Input name="name"  />
-          <input type="hidden" name="projectId" value={projectId} />
+          <input type="hidden" name="pageId" value={pageId} />
         </FormControl>
 
         <Button type="submit" sx={{display:'block', top: '24px'}} variant="contained">Create</Button>
