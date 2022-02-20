@@ -2,6 +2,7 @@ import { Link, LoaderFunction, useLoaderData } from 'remix'
 import invariant from 'tiny-invariant'
 import { container } from 'tsyringe'
 import { PageController, PageGetView } from '~/application/controller/PageController'
+import { page_model_detail, page_model_new } from '~/routes/URLs'
 
 
 const controller = container.resolve(PageController)
@@ -18,13 +19,13 @@ export default function PageWindow() {
   return (
     <>
       <p>
-        <Link to={`/pages/${data.pageId}/m/new`}>Add</Link>
+        <Link to={page_model_new(data.pageId)}>Add</Link>
       </p>
       <p>{`Model for ${data.page?.name}`}</p>
       <ul>
-        {data.models.map(m => (
-          <li key={m.id}>
-            <Link to={`/pages/${data.pageId}/m/${m.id}`}>{m.name}</Link>
+        {data.models.map(model => (
+          <li key={model.id}>
+            <Link to={page_model_detail(data.pageId, model.id)}>{model.name}</Link>
           </li>
         ))}
       </ul>

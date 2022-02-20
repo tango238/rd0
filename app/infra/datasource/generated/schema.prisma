@@ -9,11 +9,12 @@ datasource db {
 }
 
 model Project {
-  id        String   @id @default(uuid())
+  id        String      @id @default(uuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   Page      Page[]
+  ModelType ModelType[]
 }
 
 model Page {
@@ -25,17 +26,47 @@ model Page {
   updatedAt DateTime @updatedAt
 
   project Project @relation(fields: [projectId], references: [id])
-  Model Model[]
+  Model   Model[]
   @@unique([projectId, level])
   @@unique([projectId, name])
 }
 
-model Model {
+model ModelType {
   id        String   @id @default(uuid())
-  pageId    String
+  projectId String
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Model     Model[]
+  project   Project  @relation(fields: [projectId], references: [id])
+}
 
-  page Page @relation(fields: [pageId], references: [id])
+model Model {
+  id          String   @id @default(uuid())
+  pageId      String
+  modelTypeId String
+  name        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  page      Page      @relation(fields: [pageId], references: [id])
+  modelType ModelType @relation(fields: [modelTypeId], references: [id])
+}
+
+model Connection {
+  from      String
+  to        String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([from, to])
+}
+
+model Dependency {
+  parent    String
+  child     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([parent, child])
 }

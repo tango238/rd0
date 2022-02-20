@@ -1,4 +1,4 @@
-# RD ver 0
+# RD version 0 (Prototype)
 
 ## Development
 

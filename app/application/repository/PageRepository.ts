@@ -6,6 +6,6 @@ export interface PageRepository {
 
   findAll: (projectId: string) => Promise<Page[]>
 
-  findById: (pageId: string) => Promise<(Page | null)>
+  getById: (pageId: string) => Promise<(Page)>
 
 }

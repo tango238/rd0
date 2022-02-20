@@ -1,9 +1,10 @@
 import 'reflect-metadata'
 import { container } from 'tsyringe'
 import { ProjectController } from '~/application/controller/ProjectController'
-import { ActionFunction, redirect } from 'remix'
+import { ActionFunction, Form, redirect } from 'remix'
 import Button from '@mui/material/Button'
 import invariant from 'tiny-invariant'
+import { Box, Container, FormControl, TextField } from '@mui/material'
 
 const controller = container.resolve(ProjectController)
 
@@ -19,17 +20,17 @@ export const action: ActionFunction = async ({ request }) => {
 
 export default function NewProject() {
   return (
-    <>
-      <h1>new</h1>
-      <form method="post">
-        <div>
-          <label>Project Name:</label>
-          <input type="text" name="name"/>
-        </div>
-        <Button type="submit" variant="contained">
-          Submit
-        </Button>
-      </form>
-    </>
+    <Container maxWidth="sm">
+      <Box sx={{ my: 4 }}>
+        <h3>Create Project</h3>
+        <Form method="post">
+          <TextField name="name" label="Project Name" fullWidth sx={{ mt: 4 }}/>
+
+          <Button type="submit" variant="contained" sx={{ mt: 8 }}>
+            Submit
+          </Button>
+        </Form>
+      </Box>
+    </Container>
   )
 }

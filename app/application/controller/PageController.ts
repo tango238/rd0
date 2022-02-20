@@ -35,7 +35,7 @@ export class PageController {
   }
 
   async get(pageId: string): Promise<PageGetView> {
-    const page = await this.pageRepo.findById(pageId)
+    const page = await this.pageRepo.getById(pageId)
     const models = await this.modelRepo.findByPageId(pageId)
 
     return {

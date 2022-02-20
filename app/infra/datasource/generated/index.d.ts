@@ -37,13 +37,48 @@ export type Page = {
 }
 
 /**
+ * Model ModelType
+ * 
+ */
+export type ModelType = {
+  id: string
+  projectId: string
+  name: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+/**
  * Model Model
  * 
  */
 export type Model = {
   id: string
   pageId: string
+  modelTypeId: string
   name: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+/**
+ * Model Connection
+ * 
+ */
+export type Connection = {
+  from: string
+  to: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+/**
+ * Model Dependency
+ * 
+ */
+export type Dependency = {
+  parent: string
+  child: string
   createdAt: Date
   updatedAt: Date
 }
@@ -210,6 +245,16 @@ export class PrismaClient<
   get page(): Prisma.PageDelegate<GlobalReject>;
 
   /**
+   * `prisma.modelType`: Exposes CRUD operations for the **ModelType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ModelTypes
+    * const modelTypes = await prisma.modelType.findMany()
+    * ```
+    */
+  get modelType(): Prisma.ModelTypeDelegate<GlobalReject>;
+
+  /**
    * `prisma.model`: Exposes CRUD operations for the **Model** model.
     * Example usage:
     * ```ts
@@ -218,6 +263,26 @@ export class PrismaClient<
     * ```
     */
   get model(): Prisma.ModelDelegate<GlobalReject>;
+
+  /**
+   * `prisma.connection`: Exposes CRUD operations for the **Connection** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Connections
+    * const connections = await prisma.connection.findMany()
+    * ```
+    */
+  get connection(): Prisma.ConnectionDelegate<GlobalReject>;
+
+  /**
+   * `prisma.dependency`: Exposes CRUD operations for the **Dependency** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Dependencies
+    * const dependencies = await prisma.dependency.findMany()
+    * ```
+    */
+  get dependency(): Prisma.DependencyDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -630,7 +695,10 @@ export namespace Prisma {
   export const ModelName: {
     Project: 'Project',
     Page: 'Page',
-    Model: 'Model'
+    ModelType: 'ModelType',
+    Model: 'Model',
+    Connection: 'Connection',
+    Dependency: 'Dependency'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -793,10 +861,12 @@ export namespace Prisma {
 
   export type ProjectCountOutputType = {
     Page: number
+    ModelType: number
   }
 
   export type ProjectCountOutputTypeSelect = {
     Page?: boolean
+    ModelType?: boolean
   }
 
   export type ProjectCountOutputTypeGetPayload<
@@ -882,6 +952,56 @@ export namespace Prisma {
      * 
     **/
     select?: PageCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type ModelTypeCountOutputType
+   */
+
+
+  export type ModelTypeCountOutputType = {
+    Model: number
+  }
+
+  export type ModelTypeCountOutputTypeSelect = {
+    Model?: boolean
+  }
+
+  export type ModelTypeCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | ModelTypeCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? ModelTypeCountOutputType
+    : S extends undefined
+    ? never
+    : S extends ModelTypeCountOutputTypeArgs
+    ?'include' extends U
+    ? ModelTypeCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof ModelTypeCountOutputType ?ModelTypeCountOutputType [P]
+  : 
+     never
+  } 
+    : ModelTypeCountOutputType
+  : ModelTypeCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ModelTypeCountOutputType without action
+   */
+  export type ModelTypeCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the ModelTypeCountOutputType
+     * 
+    **/
+    select?: ModelTypeCountOutputTypeSelect | null
   }
 
 
@@ -1054,11 +1174,13 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     Page?: boolean | PageFindManyArgs
+    ModelType?: boolean | ModelTypeFindManyArgs
     _count?: boolean | ProjectCountOutputTypeArgs
   }
 
   export type ProjectInclude = {
     Page?: boolean | PageFindManyArgs
+    ModelType?: boolean | ModelTypeFindManyArgs
     _count?: boolean | ProjectCountOutputTypeArgs
   }
 
@@ -1075,6 +1197,8 @@ export namespace Prisma {
     [P in TrueKeys<S['include']>]: 
           P extends 'Page'
         ? Array < PageGetPayload<S['include'][P]>>  :
+        P extends 'ModelType'
+        ? Array < ModelTypeGetPayload<S['include'][P]>>  :
         P extends '_count'
         ? ProjectCountOutputTypeGetPayload<S['include'][P]> : never
   } 
@@ -1084,6 +1208,8 @@ export namespace Prisma {
   : 
           P extends 'Page'
         ? Array < PageGetPayload<S['select'][P]>>  :
+        P extends 'ModelType'
+        ? Array < ModelTypeGetPayload<S['select'][P]>>  :
         P extends '_count'
         ? ProjectCountOutputTypeGetPayload<S['select'][P]> : never
   } 
@@ -1410,6 +1536,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
     Page<T extends PageFindManyArgs = {}>(args?: Subset<T, PageFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Page>>, PrismaPromise<Array<PageGetPayload<T>>>>;
+
+    ModelType<T extends ModelTypeFindManyArgs = {}>(args?: Subset<T, ModelTypeFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ModelType>>, PrismaPromise<Array<ModelTypeGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -2621,6 +2749,858 @@ export namespace Prisma {
 
 
   /**
+   * Model ModelType
+   */
+
+
+  export type AggregateModelType = {
+    _count: ModelTypeCountAggregateOutputType | null
+    _min: ModelTypeMinAggregateOutputType | null
+    _max: ModelTypeMaxAggregateOutputType | null
+  }
+
+  export type ModelTypeMinAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ModelTypeMaxAggregateOutputType = {
+    id: string | null
+    projectId: string | null
+    name: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ModelTypeCountAggregateOutputType = {
+    id: number
+    projectId: number
+    name: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ModelTypeMinAggregateInputType = {
+    id?: true
+    projectId?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ModelTypeMaxAggregateInputType = {
+    id?: true
+    projectId?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ModelTypeCountAggregateInputType = {
+    id?: true
+    projectId?: true
+    name?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ModelTypeAggregateArgs = {
+    /**
+     * Filter which ModelType to aggregate.
+     * 
+    **/
+    where?: ModelTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModelTypes to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ModelTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: ModelTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModelTypes from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModelTypes.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ModelTypes
+    **/
+    _count?: true | ModelTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ModelTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ModelTypeMaxAggregateInputType
+  }
+
+  export type GetModelTypeAggregateType<T extends ModelTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateModelType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateModelType[P]>
+      : GetScalarType<T[P], AggregateModelType[P]>
+  }
+
+
+
+
+  export type ModelTypeGroupByArgs = {
+    where?: ModelTypeWhereInput
+    orderBy?: Enumerable<ModelTypeOrderByWithAggregationInput>
+    by: Array<ModelTypeScalarFieldEnum>
+    having?: ModelTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ModelTypeCountAggregateInputType | true
+    _min?: ModelTypeMinAggregateInputType
+    _max?: ModelTypeMaxAggregateInputType
+  }
+
+
+  export type ModelTypeGroupByOutputType = {
+    id: string
+    projectId: string
+    name: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ModelTypeCountAggregateOutputType | null
+    _min: ModelTypeMinAggregateOutputType | null
+    _max: ModelTypeMaxAggregateOutputType | null
+  }
+
+  type GetModelTypeGroupByPayload<T extends ModelTypeGroupByArgs> = Promise<
+    Array<
+      PickArray<ModelTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ModelTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ModelTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], ModelTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ModelTypeSelect = {
+    id?: boolean
+    projectId?: boolean
+    name?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    Model?: boolean | ModelFindManyArgs
+    project?: boolean | ProjectArgs
+    _count?: boolean | ModelTypeCountOutputTypeArgs
+  }
+
+  export type ModelTypeInclude = {
+    Model?: boolean | ModelFindManyArgs
+    project?: boolean | ProjectArgs
+    _count?: boolean | ModelTypeCountOutputTypeArgs
+  }
+
+  export type ModelTypeGetPayload<
+    S extends boolean | null | undefined | ModelTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? ModelType
+    : S extends undefined
+    ? never
+    : S extends ModelTypeArgs | ModelTypeFindManyArgs
+    ?'include' extends U
+    ? ModelType  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'Model'
+        ? Array < ModelGetPayload<S['include'][P]>>  :
+        P extends 'project'
+        ? ProjectGetPayload<S['include'][P]> :
+        P extends '_count'
+        ? ModelTypeCountOutputTypeGetPayload<S['include'][P]> : never
+  } 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof ModelType ?ModelType [P]
+  : 
+          P extends 'Model'
+        ? Array < ModelGetPayload<S['select'][P]>>  :
+        P extends 'project'
+        ? ProjectGetPayload<S['select'][P]> :
+        P extends '_count'
+        ? ModelTypeCountOutputTypeGetPayload<S['select'][P]> : never
+  } 
+    : ModelType
+  : ModelType
+
+
+  type ModelTypeCountArgs = Merge<
+    Omit<ModelTypeFindManyArgs, 'select' | 'include'> & {
+      select?: ModelTypeCountAggregateInputType | true
+    }
+  >
+
+  export interface ModelTypeDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one ModelType that matches the filter.
+     * @param {ModelTypeFindUniqueArgs} args - Arguments to find a ModelType
+     * @example
+     * // Get one ModelType
+     * const modelType = await prisma.modelType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ModelTypeFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ModelTypeFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ModelType'> extends True ? CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>> : CheckSelect<T, Prisma__ModelTypeClient<ModelType | null >, Prisma__ModelTypeClient<ModelTypeGetPayload<T> | null >>
+
+    /**
+     * Find the first ModelType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelTypeFindFirstArgs} args - Arguments to find a ModelType
+     * @example
+     * // Get one ModelType
+     * const modelType = await prisma.modelType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ModelTypeFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ModelTypeFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ModelType'> extends True ? CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>> : CheckSelect<T, Prisma__ModelTypeClient<ModelType | null >, Prisma__ModelTypeClient<ModelTypeGetPayload<T> | null >>
+
+    /**
+     * Find zero or more ModelTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelTypeFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ModelTypes
+     * const modelTypes = await prisma.modelType.findMany()
+     * 
+     * // Get first 10 ModelTypes
+     * const modelTypes = await prisma.modelType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const modelTypeWithIdOnly = await prisma.modelType.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends ModelTypeFindManyArgs>(
+      args?: SelectSubset<T, ModelTypeFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<ModelType>>, PrismaPromise<Array<ModelTypeGetPayload<T>>>>
+
+    /**
+     * Create a ModelType.
+     * @param {ModelTypeCreateArgs} args - Arguments to create a ModelType.
+     * @example
+     * // Create one ModelType
+     * const ModelType = await prisma.modelType.create({
+     *   data: {
+     *     // ... data to create a ModelType
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ModelTypeCreateArgs>(
+      args: SelectSubset<T, ModelTypeCreateArgs>
+    ): CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>>
+
+    /**
+     * Delete a ModelType.
+     * @param {ModelTypeDeleteArgs} args - Arguments to delete one ModelType.
+     * @example
+     * // Delete one ModelType
+     * const ModelType = await prisma.modelType.delete({
+     *   where: {
+     *     // ... filter to delete one ModelType
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ModelTypeDeleteArgs>(
+      args: SelectSubset<T, ModelTypeDeleteArgs>
+    ): CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>>
+
+    /**
+     * Update one ModelType.
+     * @param {ModelTypeUpdateArgs} args - Arguments to update one ModelType.
+     * @example
+     * // Update one ModelType
+     * const modelType = await prisma.modelType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ModelTypeUpdateArgs>(
+      args: SelectSubset<T, ModelTypeUpdateArgs>
+    ): CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>>
+
+    /**
+     * Delete zero or more ModelTypes.
+     * @param {ModelTypeDeleteManyArgs} args - Arguments to filter ModelTypes to delete.
+     * @example
+     * // Delete a few ModelTypes
+     * const { count } = await prisma.modelType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ModelTypeDeleteManyArgs>(
+      args?: SelectSubset<T, ModelTypeDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ModelTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ModelTypes
+     * const modelType = await prisma.modelType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ModelTypeUpdateManyArgs>(
+      args: SelectSubset<T, ModelTypeUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ModelType.
+     * @param {ModelTypeUpsertArgs} args - Arguments to update or create a ModelType.
+     * @example
+     * // Update or create a ModelType
+     * const modelType = await prisma.modelType.upsert({
+     *   create: {
+     *     // ... data to create a ModelType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ModelType we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ModelTypeUpsertArgs>(
+      args: SelectSubset<T, ModelTypeUpsertArgs>
+    ): CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>>
+
+    /**
+     * Count the number of ModelTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelTypeCountArgs} args - Arguments to filter ModelTypes to count.
+     * @example
+     * // Count the number of ModelTypes
+     * const count = await prisma.modelType.count({
+     *   where: {
+     *     // ... the filter for the ModelTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends ModelTypeCountArgs>(
+      args?: Subset<T, ModelTypeCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ModelTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ModelType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ModelTypeAggregateArgs>(args: Subset<T, ModelTypeAggregateArgs>): PrismaPromise<GetModelTypeAggregateType<T>>
+
+    /**
+     * Group by ModelType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModelTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ModelTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ModelTypeGroupByArgs['orderBy'] }
+        : { orderBy?: ModelTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ModelTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetModelTypeGroupByPayload<T> : Promise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ModelType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ModelTypeClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    Model<T extends ModelFindManyArgs = {}>(args?: Subset<T, ModelFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Model>>, PrismaPromise<Array<ModelGetPayload<T>>>>;
+
+    project<T extends ProjectArgs = {}>(args?: Subset<T, ProjectArgs>): CheckSelect<T, Prisma__ProjectClient<Project | null >, Prisma__ProjectClient<ProjectGetPayload<T> | null >>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * ModelType findUnique
+   */
+  export type ModelTypeFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the ModelType
+     * 
+    **/
+    select?: ModelTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelTypeInclude | null
+    /**
+     * Throw an Error if a ModelType can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which ModelType to fetch.
+     * 
+    **/
+    where: ModelTypeWhereUniqueInput
+  }
+
+
+  /**
+   * ModelType findFirst
+   */
+  export type ModelTypeFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the ModelType
+     * 
+    **/
+    select?: ModelTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelTypeInclude | null
+    /**
+     * Throw an Error if a ModelType can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which ModelType to fetch.
+     * 
+    **/
+    where?: ModelTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModelTypes to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ModelTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ModelTypes.
+     * 
+    **/
+    cursor?: ModelTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModelTypes from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModelTypes.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModelTypes.
+     * 
+    **/
+    distinct?: Enumerable<ModelTypeScalarFieldEnum>
+  }
+
+
+  /**
+   * ModelType findMany
+   */
+  export type ModelTypeFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the ModelType
+     * 
+    **/
+    select?: ModelTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelTypeInclude | null
+    /**
+     * Filter, which ModelTypes to fetch.
+     * 
+    **/
+    where?: ModelTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModelTypes to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ModelTypeOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ModelTypes.
+     * 
+    **/
+    cursor?: ModelTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModelTypes from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModelTypes.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<ModelTypeScalarFieldEnum>
+  }
+
+
+  /**
+   * ModelType create
+   */
+  export type ModelTypeCreateArgs = {
+    /**
+     * Select specific fields to fetch from the ModelType
+     * 
+    **/
+    select?: ModelTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelTypeInclude | null
+    /**
+     * The data needed to create a ModelType.
+     * 
+    **/
+    data: XOR<ModelTypeCreateInput, ModelTypeUncheckedCreateInput>
+  }
+
+
+  /**
+   * ModelType update
+   */
+  export type ModelTypeUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the ModelType
+     * 
+    **/
+    select?: ModelTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelTypeInclude | null
+    /**
+     * The data needed to update a ModelType.
+     * 
+    **/
+    data: XOR<ModelTypeUpdateInput, ModelTypeUncheckedUpdateInput>
+    /**
+     * Choose, which ModelType to update.
+     * 
+    **/
+    where: ModelTypeWhereUniqueInput
+  }
+
+
+  /**
+   * ModelType updateMany
+   */
+  export type ModelTypeUpdateManyArgs = {
+    /**
+     * The data used to update ModelTypes.
+     * 
+    **/
+    data: XOR<ModelTypeUpdateManyMutationInput, ModelTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which ModelTypes to update
+     * 
+    **/
+    where?: ModelTypeWhereInput
+  }
+
+
+  /**
+   * ModelType upsert
+   */
+  export type ModelTypeUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the ModelType
+     * 
+    **/
+    select?: ModelTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelTypeInclude | null
+    /**
+     * The filter to search for the ModelType to update in case it exists.
+     * 
+    **/
+    where: ModelTypeWhereUniqueInput
+    /**
+     * In case the ModelType found by the `where` argument doesn't exist, create a new ModelType with this data.
+     * 
+    **/
+    create: XOR<ModelTypeCreateInput, ModelTypeUncheckedCreateInput>
+    /**
+     * In case the ModelType was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<ModelTypeUpdateInput, ModelTypeUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ModelType delete
+   */
+  export type ModelTypeDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the ModelType
+     * 
+    **/
+    select?: ModelTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelTypeInclude | null
+    /**
+     * Filter which ModelType to delete.
+     * 
+    **/
+    where: ModelTypeWhereUniqueInput
+  }
+
+
+  /**
+   * ModelType deleteMany
+   */
+  export type ModelTypeDeleteManyArgs = {
+    /**
+     * Filter which ModelTypes to delete
+     * 
+    **/
+    where?: ModelTypeWhereInput
+  }
+
+
+  /**
+   * ModelType without action
+   */
+  export type ModelTypeArgs = {
+    /**
+     * Select specific fields to fetch from the ModelType
+     * 
+    **/
+    select?: ModelTypeSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ModelTypeInclude | null
+  }
+
+
+
+  /**
    * Model Model
    */
 
@@ -2634,6 +3614,7 @@ export namespace Prisma {
   export type ModelMinAggregateOutputType = {
     id: string | null
     pageId: string | null
+    modelTypeId: string | null
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2642,6 +3623,7 @@ export namespace Prisma {
   export type ModelMaxAggregateOutputType = {
     id: string | null
     pageId: string | null
+    modelTypeId: string | null
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -2650,6 +3632,7 @@ export namespace Prisma {
   export type ModelCountAggregateOutputType = {
     id: number
     pageId: number
+    modelTypeId: number
     name: number
     createdAt: number
     updatedAt: number
@@ -2660,6 +3643,7 @@ export namespace Prisma {
   export type ModelMinAggregateInputType = {
     id?: true
     pageId?: true
+    modelTypeId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
@@ -2668,6 +3652,7 @@ export namespace Prisma {
   export type ModelMaxAggregateInputType = {
     id?: true
     pageId?: true
+    modelTypeId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
@@ -2676,6 +3661,7 @@ export namespace Prisma {
   export type ModelCountAggregateInputType = {
     id?: true
     pageId?: true
+    modelTypeId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
@@ -2763,6 +3749,7 @@ export namespace Prisma {
   export type ModelGroupByOutputType = {
     id: string
     pageId: string
+    modelTypeId: string
     name: string
     createdAt: Date
     updatedAt: Date
@@ -2788,14 +3775,17 @@ export namespace Prisma {
   export type ModelSelect = {
     id?: boolean
     pageId?: boolean
+    modelTypeId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     page?: boolean | PageArgs
+    modelType?: boolean | ModelTypeArgs
   }
 
   export type ModelInclude = {
     page?: boolean | PageArgs
+    modelType?: boolean | ModelTypeArgs
   }
 
   export type ModelGetPayload<
@@ -2810,14 +3800,18 @@ export namespace Prisma {
     ? Model  & {
     [P in TrueKeys<S['include']>]: 
           P extends 'page'
-        ? PageGetPayload<S['include'][P]> : never
+        ? PageGetPayload<S['include'][P]> :
+        P extends 'modelType'
+        ? ModelTypeGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof Model ?Model [P]
   : 
           P extends 'page'
-        ? PageGetPayload<S['select'][P]> : never
+        ? PageGetPayload<S['select'][P]> :
+        P extends 'modelType'
+        ? ModelTypeGetPayload<S['select'][P]> : never
   } 
     : Model
   : Model
@@ -3143,6 +4137,8 @@ export namespace Prisma {
 
     page<T extends PageArgs = {}>(args?: Subset<T, PageArgs>): CheckSelect<T, Prisma__PageClient<Page | null >, Prisma__PageClient<PageGetPayload<T> | null >>;
 
+    modelType<T extends ModelTypeArgs = {}>(args?: Subset<T, ModelTypeArgs>): CheckSelect<T, Prisma__ModelTypeClient<ModelType | null >, Prisma__ModelTypeClient<ModelTypeGetPayload<T> | null >>;
+
     private get _document();
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3459,6 +4455,1564 @@ export namespace Prisma {
 
 
   /**
+   * Model Connection
+   */
+
+
+  export type AggregateConnection = {
+    _count: ConnectionCountAggregateOutputType | null
+    _min: ConnectionMinAggregateOutputType | null
+    _max: ConnectionMaxAggregateOutputType | null
+  }
+
+  export type ConnectionMinAggregateOutputType = {
+    from: string | null
+    to: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConnectionMaxAggregateOutputType = {
+    from: string | null
+    to: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConnectionCountAggregateOutputType = {
+    from: number
+    to: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ConnectionMinAggregateInputType = {
+    from?: true
+    to?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConnectionMaxAggregateInputType = {
+    from?: true
+    to?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConnectionCountAggregateInputType = {
+    from?: true
+    to?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ConnectionAggregateArgs = {
+    /**
+     * Filter which Connection to aggregate.
+     * 
+    **/
+    where?: ConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Connections to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ConnectionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: ConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Connections from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Connections.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Connections
+    **/
+    _count?: true | ConnectionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConnectionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConnectionMaxAggregateInputType
+  }
+
+  export type GetConnectionAggregateType<T extends ConnectionAggregateArgs> = {
+        [P in keyof T & keyof AggregateConnection]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConnection[P]>
+      : GetScalarType<T[P], AggregateConnection[P]>
+  }
+
+
+
+
+  export type ConnectionGroupByArgs = {
+    where?: ConnectionWhereInput
+    orderBy?: Enumerable<ConnectionOrderByWithAggregationInput>
+    by: Array<ConnectionScalarFieldEnum>
+    having?: ConnectionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConnectionCountAggregateInputType | true
+    _min?: ConnectionMinAggregateInputType
+    _max?: ConnectionMaxAggregateInputType
+  }
+
+
+  export type ConnectionGroupByOutputType = {
+    from: string
+    to: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ConnectionCountAggregateOutputType | null
+    _min: ConnectionMinAggregateOutputType | null
+    _max: ConnectionMaxAggregateOutputType | null
+  }
+
+  type GetConnectionGroupByPayload<T extends ConnectionGroupByArgs> = Promise<
+    Array<
+      PickArray<ConnectionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConnectionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConnectionGroupByOutputType[P]>
+            : GetScalarType<T[P], ConnectionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConnectionSelect = {
+    from?: boolean
+    to?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ConnectionGetPayload<
+    S extends boolean | null | undefined | ConnectionArgs,
+    U = keyof S
+      > = S extends true
+        ? Connection
+    : S extends undefined
+    ? never
+    : S extends ConnectionArgs | ConnectionFindManyArgs
+    ?'include' extends U
+    ? Connection 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof Connection ?Connection [P]
+  : 
+     never
+  } 
+    : Connection
+  : Connection
+
+
+  type ConnectionCountArgs = Merge<
+    Omit<ConnectionFindManyArgs, 'select' | 'include'> & {
+      select?: ConnectionCountAggregateInputType | true
+    }
+  >
+
+  export interface ConnectionDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one Connection that matches the filter.
+     * @param {ConnectionFindUniqueArgs} args - Arguments to find a Connection
+     * @example
+     * // Get one Connection
+     * const connection = await prisma.connection.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ConnectionFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ConnectionFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Connection'> extends True ? CheckSelect<T, Prisma__ConnectionClient<Connection>, Prisma__ConnectionClient<ConnectionGetPayload<T>>> : CheckSelect<T, Prisma__ConnectionClient<Connection | null >, Prisma__ConnectionClient<ConnectionGetPayload<T> | null >>
+
+    /**
+     * Find the first Connection that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionFindFirstArgs} args - Arguments to find a Connection
+     * @example
+     * // Get one Connection
+     * const connection = await prisma.connection.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ConnectionFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ConnectionFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Connection'> extends True ? CheckSelect<T, Prisma__ConnectionClient<Connection>, Prisma__ConnectionClient<ConnectionGetPayload<T>>> : CheckSelect<T, Prisma__ConnectionClient<Connection | null >, Prisma__ConnectionClient<ConnectionGetPayload<T> | null >>
+
+    /**
+     * Find zero or more Connections that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Connections
+     * const connections = await prisma.connection.findMany()
+     * 
+     * // Get first 10 Connections
+     * const connections = await prisma.connection.findMany({ take: 10 })
+     * 
+     * // Only select the `from`
+     * const connectionWithFromOnly = await prisma.connection.findMany({ select: { from: true } })
+     * 
+    **/
+    findMany<T extends ConnectionFindManyArgs>(
+      args?: SelectSubset<T, ConnectionFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Connection>>, PrismaPromise<Array<ConnectionGetPayload<T>>>>
+
+    /**
+     * Create a Connection.
+     * @param {ConnectionCreateArgs} args - Arguments to create a Connection.
+     * @example
+     * // Create one Connection
+     * const Connection = await prisma.connection.create({
+     *   data: {
+     *     // ... data to create a Connection
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ConnectionCreateArgs>(
+      args: SelectSubset<T, ConnectionCreateArgs>
+    ): CheckSelect<T, Prisma__ConnectionClient<Connection>, Prisma__ConnectionClient<ConnectionGetPayload<T>>>
+
+    /**
+     * Delete a Connection.
+     * @param {ConnectionDeleteArgs} args - Arguments to delete one Connection.
+     * @example
+     * // Delete one Connection
+     * const Connection = await prisma.connection.delete({
+     *   where: {
+     *     // ... filter to delete one Connection
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ConnectionDeleteArgs>(
+      args: SelectSubset<T, ConnectionDeleteArgs>
+    ): CheckSelect<T, Prisma__ConnectionClient<Connection>, Prisma__ConnectionClient<ConnectionGetPayload<T>>>
+
+    /**
+     * Update one Connection.
+     * @param {ConnectionUpdateArgs} args - Arguments to update one Connection.
+     * @example
+     * // Update one Connection
+     * const connection = await prisma.connection.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ConnectionUpdateArgs>(
+      args: SelectSubset<T, ConnectionUpdateArgs>
+    ): CheckSelect<T, Prisma__ConnectionClient<Connection>, Prisma__ConnectionClient<ConnectionGetPayload<T>>>
+
+    /**
+     * Delete zero or more Connections.
+     * @param {ConnectionDeleteManyArgs} args - Arguments to filter Connections to delete.
+     * @example
+     * // Delete a few Connections
+     * const { count } = await prisma.connection.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ConnectionDeleteManyArgs>(
+      args?: SelectSubset<T, ConnectionDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Connections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Connections
+     * const connection = await prisma.connection.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ConnectionUpdateManyArgs>(
+      args: SelectSubset<T, ConnectionUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Connection.
+     * @param {ConnectionUpsertArgs} args - Arguments to update or create a Connection.
+     * @example
+     * // Update or create a Connection
+     * const connection = await prisma.connection.upsert({
+     *   create: {
+     *     // ... data to create a Connection
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Connection we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ConnectionUpsertArgs>(
+      args: SelectSubset<T, ConnectionUpsertArgs>
+    ): CheckSelect<T, Prisma__ConnectionClient<Connection>, Prisma__ConnectionClient<ConnectionGetPayload<T>>>
+
+    /**
+     * Count the number of Connections.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionCountArgs} args - Arguments to filter Connections to count.
+     * @example
+     * // Count the number of Connections
+     * const count = await prisma.connection.count({
+     *   where: {
+     *     // ... the filter for the Connections we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConnectionCountArgs>(
+      args?: Subset<T, ConnectionCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConnectionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Connection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConnectionAggregateArgs>(args: Subset<T, ConnectionAggregateArgs>): PrismaPromise<GetConnectionAggregateType<T>>
+
+    /**
+     * Group by Connection.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConnectionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConnectionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConnectionGroupByArgs['orderBy'] }
+        : { orderBy?: ConnectionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConnectionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConnectionGroupByPayload<T> : Promise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Connection.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ConnectionClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * Connection findUnique
+   */
+  export type ConnectionFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the Connection
+     * 
+    **/
+    select?: ConnectionSelect | null
+    /**
+     * Throw an Error if a Connection can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Connection to fetch.
+     * 
+    **/
+    where: ConnectionWhereUniqueInput
+  }
+
+
+  /**
+   * Connection findFirst
+   */
+  export type ConnectionFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the Connection
+     * 
+    **/
+    select?: ConnectionSelect | null
+    /**
+     * Throw an Error if a Connection can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Connection to fetch.
+     * 
+    **/
+    where?: ConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Connections to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ConnectionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Connections.
+     * 
+    **/
+    cursor?: ConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Connections from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Connections.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Connections.
+     * 
+    **/
+    distinct?: Enumerable<ConnectionScalarFieldEnum>
+  }
+
+
+  /**
+   * Connection findMany
+   */
+  export type ConnectionFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Connection
+     * 
+    **/
+    select?: ConnectionSelect | null
+    /**
+     * Filter, which Connections to fetch.
+     * 
+    **/
+    where?: ConnectionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Connections to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ConnectionOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Connections.
+     * 
+    **/
+    cursor?: ConnectionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Connections from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Connections.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<ConnectionScalarFieldEnum>
+  }
+
+
+  /**
+   * Connection create
+   */
+  export type ConnectionCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Connection
+     * 
+    **/
+    select?: ConnectionSelect | null
+    /**
+     * The data needed to create a Connection.
+     * 
+    **/
+    data: XOR<ConnectionCreateInput, ConnectionUncheckedCreateInput>
+  }
+
+
+  /**
+   * Connection update
+   */
+  export type ConnectionUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Connection
+     * 
+    **/
+    select?: ConnectionSelect | null
+    /**
+     * The data needed to update a Connection.
+     * 
+    **/
+    data: XOR<ConnectionUpdateInput, ConnectionUncheckedUpdateInput>
+    /**
+     * Choose, which Connection to update.
+     * 
+    **/
+    where: ConnectionWhereUniqueInput
+  }
+
+
+  /**
+   * Connection updateMany
+   */
+  export type ConnectionUpdateManyArgs = {
+    /**
+     * The data used to update Connections.
+     * 
+    **/
+    data: XOR<ConnectionUpdateManyMutationInput, ConnectionUncheckedUpdateManyInput>
+    /**
+     * Filter which Connections to update
+     * 
+    **/
+    where?: ConnectionWhereInput
+  }
+
+
+  /**
+   * Connection upsert
+   */
+  export type ConnectionUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Connection
+     * 
+    **/
+    select?: ConnectionSelect | null
+    /**
+     * The filter to search for the Connection to update in case it exists.
+     * 
+    **/
+    where: ConnectionWhereUniqueInput
+    /**
+     * In case the Connection found by the `where` argument doesn't exist, create a new Connection with this data.
+     * 
+    **/
+    create: XOR<ConnectionCreateInput, ConnectionUncheckedCreateInput>
+    /**
+     * In case the Connection was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<ConnectionUpdateInput, ConnectionUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Connection delete
+   */
+  export type ConnectionDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Connection
+     * 
+    **/
+    select?: ConnectionSelect | null
+    /**
+     * Filter which Connection to delete.
+     * 
+    **/
+    where: ConnectionWhereUniqueInput
+  }
+
+
+  /**
+   * Connection deleteMany
+   */
+  export type ConnectionDeleteManyArgs = {
+    /**
+     * Filter which Connections to delete
+     * 
+    **/
+    where?: ConnectionWhereInput
+  }
+
+
+  /**
+   * Connection without action
+   */
+  export type ConnectionArgs = {
+    /**
+     * Select specific fields to fetch from the Connection
+     * 
+    **/
+    select?: ConnectionSelect | null
+  }
+
+
+
+  /**
+   * Model Dependency
+   */
+
+
+  export type AggregateDependency = {
+    _count: DependencyCountAggregateOutputType | null
+    _min: DependencyMinAggregateOutputType | null
+    _max: DependencyMaxAggregateOutputType | null
+  }
+
+  export type DependencyMinAggregateOutputType = {
+    parent: string | null
+    child: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DependencyMaxAggregateOutputType = {
+    parent: string | null
+    child: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DependencyCountAggregateOutputType = {
+    parent: number
+    child: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DependencyMinAggregateInputType = {
+    parent?: true
+    child?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DependencyMaxAggregateInputType = {
+    parent?: true
+    child?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DependencyCountAggregateInputType = {
+    parent?: true
+    child?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DependencyAggregateArgs = {
+    /**
+     * Filter which Dependency to aggregate.
+     * 
+    **/
+    where?: DependencyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dependencies to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<DependencyOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: DependencyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dependencies from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dependencies.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Dependencies
+    **/
+    _count?: true | DependencyCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DependencyMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DependencyMaxAggregateInputType
+  }
+
+  export type GetDependencyAggregateType<T extends DependencyAggregateArgs> = {
+        [P in keyof T & keyof AggregateDependency]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDependency[P]>
+      : GetScalarType<T[P], AggregateDependency[P]>
+  }
+
+
+
+
+  export type DependencyGroupByArgs = {
+    where?: DependencyWhereInput
+    orderBy?: Enumerable<DependencyOrderByWithAggregationInput>
+    by: Array<DependencyScalarFieldEnum>
+    having?: DependencyScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DependencyCountAggregateInputType | true
+    _min?: DependencyMinAggregateInputType
+    _max?: DependencyMaxAggregateInputType
+  }
+
+
+  export type DependencyGroupByOutputType = {
+    parent: string
+    child: string
+    createdAt: Date
+    updatedAt: Date
+    _count: DependencyCountAggregateOutputType | null
+    _min: DependencyMinAggregateOutputType | null
+    _max: DependencyMaxAggregateOutputType | null
+  }
+
+  type GetDependencyGroupByPayload<T extends DependencyGroupByArgs> = Promise<
+    Array<
+      PickArray<DependencyGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DependencyGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DependencyGroupByOutputType[P]>
+            : GetScalarType<T[P], DependencyGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DependencySelect = {
+    parent?: boolean
+    child?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DependencyGetPayload<
+    S extends boolean | null | undefined | DependencyArgs,
+    U = keyof S
+      > = S extends true
+        ? Dependency
+    : S extends undefined
+    ? never
+    : S extends DependencyArgs | DependencyFindManyArgs
+    ?'include' extends U
+    ? Dependency 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof Dependency ?Dependency [P]
+  : 
+     never
+  } 
+    : Dependency
+  : Dependency
+
+
+  type DependencyCountArgs = Merge<
+    Omit<DependencyFindManyArgs, 'select' | 'include'> & {
+      select?: DependencyCountAggregateInputType | true
+    }
+  >
+
+  export interface DependencyDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one Dependency that matches the filter.
+     * @param {DependencyFindUniqueArgs} args - Arguments to find a Dependency
+     * @example
+     * // Get one Dependency
+     * const dependency = await prisma.dependency.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends DependencyFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, DependencyFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Dependency'> extends True ? CheckSelect<T, Prisma__DependencyClient<Dependency>, Prisma__DependencyClient<DependencyGetPayload<T>>> : CheckSelect<T, Prisma__DependencyClient<Dependency | null >, Prisma__DependencyClient<DependencyGetPayload<T> | null >>
+
+    /**
+     * Find the first Dependency that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DependencyFindFirstArgs} args - Arguments to find a Dependency
+     * @example
+     * // Get one Dependency
+     * const dependency = await prisma.dependency.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends DependencyFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, DependencyFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Dependency'> extends True ? CheckSelect<T, Prisma__DependencyClient<Dependency>, Prisma__DependencyClient<DependencyGetPayload<T>>> : CheckSelect<T, Prisma__DependencyClient<Dependency | null >, Prisma__DependencyClient<DependencyGetPayload<T> | null >>
+
+    /**
+     * Find zero or more Dependencies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DependencyFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Dependencies
+     * const dependencies = await prisma.dependency.findMany()
+     * 
+     * // Get first 10 Dependencies
+     * const dependencies = await prisma.dependency.findMany({ take: 10 })
+     * 
+     * // Only select the `parent`
+     * const dependencyWithParentOnly = await prisma.dependency.findMany({ select: { parent: true } })
+     * 
+    **/
+    findMany<T extends DependencyFindManyArgs>(
+      args?: SelectSubset<T, DependencyFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Dependency>>, PrismaPromise<Array<DependencyGetPayload<T>>>>
+
+    /**
+     * Create a Dependency.
+     * @param {DependencyCreateArgs} args - Arguments to create a Dependency.
+     * @example
+     * // Create one Dependency
+     * const Dependency = await prisma.dependency.create({
+     *   data: {
+     *     // ... data to create a Dependency
+     *   }
+     * })
+     * 
+    **/
+    create<T extends DependencyCreateArgs>(
+      args: SelectSubset<T, DependencyCreateArgs>
+    ): CheckSelect<T, Prisma__DependencyClient<Dependency>, Prisma__DependencyClient<DependencyGetPayload<T>>>
+
+    /**
+     * Delete a Dependency.
+     * @param {DependencyDeleteArgs} args - Arguments to delete one Dependency.
+     * @example
+     * // Delete one Dependency
+     * const Dependency = await prisma.dependency.delete({
+     *   where: {
+     *     // ... filter to delete one Dependency
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends DependencyDeleteArgs>(
+      args: SelectSubset<T, DependencyDeleteArgs>
+    ): CheckSelect<T, Prisma__DependencyClient<Dependency>, Prisma__DependencyClient<DependencyGetPayload<T>>>
+
+    /**
+     * Update one Dependency.
+     * @param {DependencyUpdateArgs} args - Arguments to update one Dependency.
+     * @example
+     * // Update one Dependency
+     * const dependency = await prisma.dependency.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends DependencyUpdateArgs>(
+      args: SelectSubset<T, DependencyUpdateArgs>
+    ): CheckSelect<T, Prisma__DependencyClient<Dependency>, Prisma__DependencyClient<DependencyGetPayload<T>>>
+
+    /**
+     * Delete zero or more Dependencies.
+     * @param {DependencyDeleteManyArgs} args - Arguments to filter Dependencies to delete.
+     * @example
+     * // Delete a few Dependencies
+     * const { count } = await prisma.dependency.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends DependencyDeleteManyArgs>(
+      args?: SelectSubset<T, DependencyDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Dependencies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DependencyUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Dependencies
+     * const dependency = await prisma.dependency.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends DependencyUpdateManyArgs>(
+      args: SelectSubset<T, DependencyUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Dependency.
+     * @param {DependencyUpsertArgs} args - Arguments to update or create a Dependency.
+     * @example
+     * // Update or create a Dependency
+     * const dependency = await prisma.dependency.upsert({
+     *   create: {
+     *     // ... data to create a Dependency
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Dependency we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends DependencyUpsertArgs>(
+      args: SelectSubset<T, DependencyUpsertArgs>
+    ): CheckSelect<T, Prisma__DependencyClient<Dependency>, Prisma__DependencyClient<DependencyGetPayload<T>>>
+
+    /**
+     * Count the number of Dependencies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DependencyCountArgs} args - Arguments to filter Dependencies to count.
+     * @example
+     * // Count the number of Dependencies
+     * const count = await prisma.dependency.count({
+     *   where: {
+     *     // ... the filter for the Dependencies we want to count
+     *   }
+     * })
+    **/
+    count<T extends DependencyCountArgs>(
+      args?: Subset<T, DependencyCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DependencyCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Dependency.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DependencyAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DependencyAggregateArgs>(args: Subset<T, DependencyAggregateArgs>): PrismaPromise<GetDependencyAggregateType<T>>
+
+    /**
+     * Group by Dependency.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DependencyGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DependencyGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DependencyGroupByArgs['orderBy'] }
+        : { orderBy?: DependencyGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DependencyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDependencyGroupByPayload<T> : Promise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Dependency.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__DependencyClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * Dependency findUnique
+   */
+  export type DependencyFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the Dependency
+     * 
+    **/
+    select?: DependencySelect | null
+    /**
+     * Throw an Error if a Dependency can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Dependency to fetch.
+     * 
+    **/
+    where: DependencyWhereUniqueInput
+  }
+
+
+  /**
+   * Dependency findFirst
+   */
+  export type DependencyFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the Dependency
+     * 
+    **/
+    select?: DependencySelect | null
+    /**
+     * Throw an Error if a Dependency can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Dependency to fetch.
+     * 
+    **/
+    where?: DependencyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dependencies to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<DependencyOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Dependencies.
+     * 
+    **/
+    cursor?: DependencyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dependencies from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dependencies.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Dependencies.
+     * 
+    **/
+    distinct?: Enumerable<DependencyScalarFieldEnum>
+  }
+
+
+  /**
+   * Dependency findMany
+   */
+  export type DependencyFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Dependency
+     * 
+    **/
+    select?: DependencySelect | null
+    /**
+     * Filter, which Dependencies to fetch.
+     * 
+    **/
+    where?: DependencyWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Dependencies to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<DependencyOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Dependencies.
+     * 
+    **/
+    cursor?: DependencyWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Dependencies from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Dependencies.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<DependencyScalarFieldEnum>
+  }
+
+
+  /**
+   * Dependency create
+   */
+  export type DependencyCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Dependency
+     * 
+    **/
+    select?: DependencySelect | null
+    /**
+     * The data needed to create a Dependency.
+     * 
+    **/
+    data: XOR<DependencyCreateInput, DependencyUncheckedCreateInput>
+  }
+
+
+  /**
+   * Dependency update
+   */
+  export type DependencyUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Dependency
+     * 
+    **/
+    select?: DependencySelect | null
+    /**
+     * The data needed to update a Dependency.
+     * 
+    **/
+    data: XOR<DependencyUpdateInput, DependencyUncheckedUpdateInput>
+    /**
+     * Choose, which Dependency to update.
+     * 
+    **/
+    where: DependencyWhereUniqueInput
+  }
+
+
+  /**
+   * Dependency updateMany
+   */
+  export type DependencyUpdateManyArgs = {
+    /**
+     * The data used to update Dependencies.
+     * 
+    **/
+    data: XOR<DependencyUpdateManyMutationInput, DependencyUncheckedUpdateManyInput>
+    /**
+     * Filter which Dependencies to update
+     * 
+    **/
+    where?: DependencyWhereInput
+  }
+
+
+  /**
+   * Dependency upsert
+   */
+  export type DependencyUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Dependency
+     * 
+    **/
+    select?: DependencySelect | null
+    /**
+     * The filter to search for the Dependency to update in case it exists.
+     * 
+    **/
+    where: DependencyWhereUniqueInput
+    /**
+     * In case the Dependency found by the `where` argument doesn't exist, create a new Dependency with this data.
+     * 
+    **/
+    create: XOR<DependencyCreateInput, DependencyUncheckedCreateInput>
+    /**
+     * In case the Dependency was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<DependencyUpdateInput, DependencyUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Dependency delete
+   */
+  export type DependencyDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Dependency
+     * 
+    **/
+    select?: DependencySelect | null
+    /**
+     * Filter which Dependency to delete.
+     * 
+    **/
+    where: DependencyWhereUniqueInput
+  }
+
+
+  /**
+   * Dependency deleteMany
+   */
+  export type DependencyDeleteManyArgs = {
+    /**
+     * Filter which Dependencies to delete
+     * 
+    **/
+    where?: DependencyWhereInput
+  }
+
+
+  /**
+   * Dependency without action
+   */
+  export type DependencyArgs = {
+    /**
+     * Select specific fields to fetch from the Dependency
+     * 
+    **/
+    select?: DependencySelect | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -3487,15 +6041,47 @@ export namespace Prisma {
   export type PageScalarFieldEnum = (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum]
 
 
+  export const ModelTypeScalarFieldEnum: {
+    id: 'id',
+    projectId: 'projectId',
+    name: 'name',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ModelTypeScalarFieldEnum = (typeof ModelTypeScalarFieldEnum)[keyof typeof ModelTypeScalarFieldEnum]
+
+
   export const ModelScalarFieldEnum: {
     id: 'id',
     pageId: 'pageId',
+    modelTypeId: 'modelTypeId',
     name: 'name',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type ModelScalarFieldEnum = (typeof ModelScalarFieldEnum)[keyof typeof ModelScalarFieldEnum]
+
+
+  export const ConnectionScalarFieldEnum: {
+    from: 'from',
+    to: 'to',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ConnectionScalarFieldEnum = (typeof ConnectionScalarFieldEnum)[keyof typeof ConnectionScalarFieldEnum]
+
+
+  export const DependencyScalarFieldEnum: {
+    parent: 'parent',
+    child: 'child',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DependencyScalarFieldEnum = (typeof DependencyScalarFieldEnum)[keyof typeof DependencyScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3520,6 +6106,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
     Page?: PageListRelationFilter
+    ModelType?: ModelTypeListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -3528,6 +6115,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     Page?: PageOrderByRelationAggregateInput
+    ModelType?: ModelTypeOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = {
@@ -3611,25 +6199,78 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
+  export type ModelTypeWhereInput = {
+    AND?: Enumerable<ModelTypeWhereInput>
+    OR?: Enumerable<ModelTypeWhereInput>
+    NOT?: Enumerable<ModelTypeWhereInput>
+    id?: StringFilter | string
+    projectId?: StringFilter | string
+    name?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+    Model?: ModelListRelationFilter
+    project?: XOR<ProjectRelationFilter, ProjectWhereInput>
+  }
+
+  export type ModelTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    Model?: ModelOrderByRelationAggregateInput
+    project?: ProjectOrderByWithRelationInput
+  }
+
+  export type ModelTypeWhereUniqueInput = {
+    id?: string
+  }
+
+  export type ModelTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ModelTypeCountOrderByAggregateInput
+    _max?: ModelTypeMaxOrderByAggregateInput
+    _min?: ModelTypeMinOrderByAggregateInput
+  }
+
+  export type ModelTypeScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ModelTypeScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ModelTypeScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ModelTypeScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    projectId?: StringWithAggregatesFilter | string
+    name?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
   export type ModelWhereInput = {
     AND?: Enumerable<ModelWhereInput>
     OR?: Enumerable<ModelWhereInput>
     NOT?: Enumerable<ModelWhereInput>
     id?: StringFilter | string
     pageId?: StringFilter | string
+    modelTypeId?: StringFilter | string
     name?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
     page?: XOR<PageRelationFilter, PageWhereInput>
+    modelType?: XOR<ModelTypeRelationFilter, ModelTypeWhereInput>
   }
 
   export type ModelOrderByWithRelationInput = {
     id?: SortOrder
     pageId?: SortOrder
+    modelTypeId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     page?: PageOrderByWithRelationInput
+    modelType?: ModelTypeOrderByWithRelationInput
   }
 
   export type ModelWhereUniqueInput = {
@@ -3639,6 +6280,7 @@ export namespace Prisma {
   export type ModelOrderByWithAggregationInput = {
     id?: SortOrder
     pageId?: SortOrder
+    modelTypeId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3653,7 +6295,90 @@ export namespace Prisma {
     NOT?: Enumerable<ModelScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     pageId?: StringWithAggregatesFilter | string
+    modelTypeId?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type ConnectionWhereInput = {
+    AND?: Enumerable<ConnectionWhereInput>
+    OR?: Enumerable<ConnectionWhereInput>
+    NOT?: Enumerable<ConnectionWhereInput>
+    from?: StringFilter | string
+    to?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+  }
+
+  export type ConnectionOrderByWithRelationInput = {
+    from?: SortOrder
+    to?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConnectionWhereUniqueInput = {
+    from_to?: ConnectionFromToCompoundUniqueInput
+  }
+
+  export type ConnectionOrderByWithAggregationInput = {
+    from?: SortOrder
+    to?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ConnectionCountOrderByAggregateInput
+    _max?: ConnectionMaxOrderByAggregateInput
+    _min?: ConnectionMinOrderByAggregateInput
+  }
+
+  export type ConnectionScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ConnectionScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ConnectionScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ConnectionScalarWhereWithAggregatesInput>
+    from?: StringWithAggregatesFilter | string
+    to?: StringWithAggregatesFilter | string
+    createdAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type DependencyWhereInput = {
+    AND?: Enumerable<DependencyWhereInput>
+    OR?: Enumerable<DependencyWhereInput>
+    NOT?: Enumerable<DependencyWhereInput>
+    parent?: StringFilter | string
+    child?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+  }
+
+  export type DependencyOrderByWithRelationInput = {
+    parent?: SortOrder
+    child?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DependencyWhereUniqueInput = {
+    parent_child?: DependencyParentChildCompoundUniqueInput
+  }
+
+  export type DependencyOrderByWithAggregationInput = {
+    parent?: SortOrder
+    child?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DependencyCountOrderByAggregateInput
+    _max?: DependencyMaxOrderByAggregateInput
+    _min?: DependencyMinOrderByAggregateInput
+  }
+
+  export type DependencyScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<DependencyScalarWhereWithAggregatesInput>
+    OR?: Enumerable<DependencyScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<DependencyScalarWhereWithAggregatesInput>
+    parent?: StringWithAggregatesFilter | string
+    child?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
@@ -3664,6 +6389,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     Page?: PageCreateNestedManyWithoutProjectInput
+    ModelType?: ModelTypeCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -3672,6 +6398,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     Page?: PageUncheckedCreateNestedManyWithoutProjectInput
+    ModelType?: ModelTypeUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -3680,6 +6407,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Page?: PageUpdateManyWithoutProjectInput
+    ModelType?: ModelTypeUpdateManyWithoutProjectInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -3688,6 +6416,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Page?: PageUncheckedUpdateManyWithoutProjectInput
+    ModelType?: ModelTypeUncheckedUpdateManyWithoutProjectInput
   }
 
   export type ProjectUpdateManyMutationInput = {
@@ -3761,17 +6490,70 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ModelTypeCreateInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Model?: ModelCreateNestedManyWithoutModelTypeInput
+    project: ProjectCreateNestedOneWithoutModelTypeInput
+  }
+
+  export type ModelTypeUncheckedCreateInput = {
+    id?: string
+    projectId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Model?: ModelUncheckedCreateNestedManyWithoutModelTypeInput
+  }
+
+  export type ModelTypeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Model?: ModelUpdateManyWithoutModelTypeInput
+    project?: ProjectUpdateOneRequiredWithoutModelTypeInput
+  }
+
+  export type ModelTypeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Model?: ModelUncheckedUpdateManyWithoutModelTypeInput
+  }
+
+  export type ModelTypeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelTypeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ModelCreateInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
     page: PageCreateNestedOneWithoutModelInput
+    modelType: ModelTypeCreateNestedOneWithoutModelInput
   }
 
   export type ModelUncheckedCreateInput = {
     id?: string
     pageId: string
+    modelTypeId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -3783,11 +6565,13 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     page?: PageUpdateOneRequiredWithoutModelInput
+    modelType?: ModelTypeUpdateOneRequiredWithoutModelInput
   }
 
   export type ModelUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     pageId?: StringFieldUpdateOperationsInput | string
+    modelTypeId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -3803,7 +6587,92 @@ export namespace Prisma {
   export type ModelUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     pageId?: StringFieldUpdateOperationsInput | string
+    modelTypeId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectionCreateInput = {
+    from: string
+    to: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConnectionUncheckedCreateInput = {
+    from: string
+    to: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConnectionUpdateInput = {
+    from?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectionUncheckedUpdateInput = {
+    from?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectionUpdateManyMutationInput = {
+    from?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectionUncheckedUpdateManyInput = {
+    from?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DependencyCreateInput = {
+    parent: string
+    child: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DependencyUncheckedCreateInput = {
+    parent: string
+    child: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DependencyUpdateInput = {
+    parent?: StringFieldUpdateOperationsInput | string
+    child?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DependencyUncheckedUpdateInput = {
+    parent?: StringFieldUpdateOperationsInput | string
+    child?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DependencyUpdateManyMutationInput = {
+    parent?: StringFieldUpdateOperationsInput | string
+    child?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DependencyUncheckedUpdateManyInput = {
+    parent?: StringFieldUpdateOperationsInput | string
+    child?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3839,7 +6708,17 @@ export namespace Prisma {
     none?: PageWhereInput
   }
 
+  export type ModelTypeListRelationFilter = {
+    every?: ModelTypeWhereInput
+    some?: ModelTypeWhereInput
+    none?: ModelTypeWhereInput
+  }
+
   export type PageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ModelTypeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -3982,14 +6861,44 @@ export namespace Prisma {
     _max?: NestedIntFilter
   }
 
+  export type ModelTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ModelTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ModelTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    projectId?: SortOrder
+    name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type PageRelationFilter = {
     is?: PageWhereInput
     isNot?: PageWhereInput
   }
 
+  export type ModelTypeRelationFilter = {
+    is?: ModelTypeWhereInput
+    isNot?: ModelTypeWhereInput
+  }
+
   export type ModelCountOrderByAggregateInput = {
     id?: SortOrder
     pageId?: SortOrder
+    modelTypeId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -3998,6 +6907,7 @@ export namespace Prisma {
   export type ModelMaxOrderByAggregateInput = {
     id?: SortOrder
     pageId?: SortOrder
+    modelTypeId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -4006,7 +6916,60 @@ export namespace Prisma {
   export type ModelMinOrderByAggregateInput = {
     id?: SortOrder
     pageId?: SortOrder
+    modelTypeId?: SortOrder
     name?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConnectionFromToCompoundUniqueInput = {
+    from: string
+    to: string
+  }
+
+  export type ConnectionCountOrderByAggregateInput = {
+    from?: SortOrder
+    to?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConnectionMaxOrderByAggregateInput = {
+    from?: SortOrder
+    to?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConnectionMinOrderByAggregateInput = {
+    from?: SortOrder
+    to?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DependencyParentChildCompoundUniqueInput = {
+    parent: string
+    child: string
+  }
+
+  export type DependencyCountOrderByAggregateInput = {
+    parent?: SortOrder
+    child?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DependencyMaxOrderByAggregateInput = {
+    parent?: SortOrder
+    child?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DependencyMinOrderByAggregateInput = {
+    parent?: SortOrder
+    child?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -4017,10 +6980,22 @@ export namespace Prisma {
     connect?: Enumerable<PageWhereUniqueInput>
   }
 
+  export type ModelTypeCreateNestedManyWithoutProjectInput = {
+    create?: XOR<Enumerable<ModelTypeCreateWithoutProjectInput>, Enumerable<ModelTypeUncheckedCreateWithoutProjectInput>>
+    connectOrCreate?: Enumerable<ModelTypeCreateOrConnectWithoutProjectInput>
+    connect?: Enumerable<ModelTypeWhereUniqueInput>
+  }
+
   export type PageUncheckedCreateNestedManyWithoutProjectInput = {
     create?: XOR<Enumerable<PageCreateWithoutProjectInput>, Enumerable<PageUncheckedCreateWithoutProjectInput>>
     connectOrCreate?: Enumerable<PageCreateOrConnectWithoutProjectInput>
     connect?: Enumerable<PageWhereUniqueInput>
+  }
+
+  export type ModelTypeUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<Enumerable<ModelTypeCreateWithoutProjectInput>, Enumerable<ModelTypeUncheckedCreateWithoutProjectInput>>
+    connectOrCreate?: Enumerable<ModelTypeCreateOrConnectWithoutProjectInput>
+    connect?: Enumerable<ModelTypeWhereUniqueInput>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -4044,6 +7019,19 @@ export namespace Prisma {
     deleteMany?: Enumerable<PageScalarWhereInput>
   }
 
+  export type ModelTypeUpdateManyWithoutProjectInput = {
+    create?: XOR<Enumerable<ModelTypeCreateWithoutProjectInput>, Enumerable<ModelTypeUncheckedCreateWithoutProjectInput>>
+    connectOrCreate?: Enumerable<ModelTypeCreateOrConnectWithoutProjectInput>
+    upsert?: Enumerable<ModelTypeUpsertWithWhereUniqueWithoutProjectInput>
+    set?: Enumerable<ModelTypeWhereUniqueInput>
+    disconnect?: Enumerable<ModelTypeWhereUniqueInput>
+    delete?: Enumerable<ModelTypeWhereUniqueInput>
+    connect?: Enumerable<ModelTypeWhereUniqueInput>
+    update?: Enumerable<ModelTypeUpdateWithWhereUniqueWithoutProjectInput>
+    updateMany?: Enumerable<ModelTypeUpdateManyWithWhereWithoutProjectInput>
+    deleteMany?: Enumerable<ModelTypeScalarWhereInput>
+  }
+
   export type PageUncheckedUpdateManyWithoutProjectInput = {
     create?: XOR<Enumerable<PageCreateWithoutProjectInput>, Enumerable<PageUncheckedCreateWithoutProjectInput>>
     connectOrCreate?: Enumerable<PageCreateOrConnectWithoutProjectInput>
@@ -4055,6 +7043,19 @@ export namespace Prisma {
     update?: Enumerable<PageUpdateWithWhereUniqueWithoutProjectInput>
     updateMany?: Enumerable<PageUpdateManyWithWhereWithoutProjectInput>
     deleteMany?: Enumerable<PageScalarWhereInput>
+  }
+
+  export type ModelTypeUncheckedUpdateManyWithoutProjectInput = {
+    create?: XOR<Enumerable<ModelTypeCreateWithoutProjectInput>, Enumerable<ModelTypeUncheckedCreateWithoutProjectInput>>
+    connectOrCreate?: Enumerable<ModelTypeCreateOrConnectWithoutProjectInput>
+    upsert?: Enumerable<ModelTypeUpsertWithWhereUniqueWithoutProjectInput>
+    set?: Enumerable<ModelTypeWhereUniqueInput>
+    disconnect?: Enumerable<ModelTypeWhereUniqueInput>
+    delete?: Enumerable<ModelTypeWhereUniqueInput>
+    connect?: Enumerable<ModelTypeWhereUniqueInput>
+    update?: Enumerable<ModelTypeUpdateWithWhereUniqueWithoutProjectInput>
+    updateMany?: Enumerable<ModelTypeUpdateManyWithWhereWithoutProjectInput>
+    deleteMany?: Enumerable<ModelTypeScalarWhereInput>
   }
 
   export type ProjectCreateNestedOneWithoutPageInput = {
@@ -4117,10 +7118,68 @@ export namespace Prisma {
     deleteMany?: Enumerable<ModelScalarWhereInput>
   }
 
+  export type ModelCreateNestedManyWithoutModelTypeInput = {
+    create?: XOR<Enumerable<ModelCreateWithoutModelTypeInput>, Enumerable<ModelUncheckedCreateWithoutModelTypeInput>>
+    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutModelTypeInput>
+    connect?: Enumerable<ModelWhereUniqueInput>
+  }
+
+  export type ProjectCreateNestedOneWithoutModelTypeInput = {
+    create?: XOR<ProjectCreateWithoutModelTypeInput, ProjectUncheckedCreateWithoutModelTypeInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutModelTypeInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type ModelUncheckedCreateNestedManyWithoutModelTypeInput = {
+    create?: XOR<Enumerable<ModelCreateWithoutModelTypeInput>, Enumerable<ModelUncheckedCreateWithoutModelTypeInput>>
+    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutModelTypeInput>
+    connect?: Enumerable<ModelWhereUniqueInput>
+  }
+
+  export type ModelUpdateManyWithoutModelTypeInput = {
+    create?: XOR<Enumerable<ModelCreateWithoutModelTypeInput>, Enumerable<ModelUncheckedCreateWithoutModelTypeInput>>
+    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutModelTypeInput>
+    upsert?: Enumerable<ModelUpsertWithWhereUniqueWithoutModelTypeInput>
+    set?: Enumerable<ModelWhereUniqueInput>
+    disconnect?: Enumerable<ModelWhereUniqueInput>
+    delete?: Enumerable<ModelWhereUniqueInput>
+    connect?: Enumerable<ModelWhereUniqueInput>
+    update?: Enumerable<ModelUpdateWithWhereUniqueWithoutModelTypeInput>
+    updateMany?: Enumerable<ModelUpdateManyWithWhereWithoutModelTypeInput>
+    deleteMany?: Enumerable<ModelScalarWhereInput>
+  }
+
+  export type ProjectUpdateOneRequiredWithoutModelTypeInput = {
+    create?: XOR<ProjectCreateWithoutModelTypeInput, ProjectUncheckedCreateWithoutModelTypeInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutModelTypeInput
+    upsert?: ProjectUpsertWithoutModelTypeInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<ProjectUpdateWithoutModelTypeInput, ProjectUncheckedUpdateWithoutModelTypeInput>
+  }
+
+  export type ModelUncheckedUpdateManyWithoutModelTypeInput = {
+    create?: XOR<Enumerable<ModelCreateWithoutModelTypeInput>, Enumerable<ModelUncheckedCreateWithoutModelTypeInput>>
+    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutModelTypeInput>
+    upsert?: Enumerable<ModelUpsertWithWhereUniqueWithoutModelTypeInput>
+    set?: Enumerable<ModelWhereUniqueInput>
+    disconnect?: Enumerable<ModelWhereUniqueInput>
+    delete?: Enumerable<ModelWhereUniqueInput>
+    connect?: Enumerable<ModelWhereUniqueInput>
+    update?: Enumerable<ModelUpdateWithWhereUniqueWithoutModelTypeInput>
+    updateMany?: Enumerable<ModelUpdateManyWithWhereWithoutModelTypeInput>
+    deleteMany?: Enumerable<ModelScalarWhereInput>
+  }
+
   export type PageCreateNestedOneWithoutModelInput = {
     create?: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
     connectOrCreate?: PageCreateOrConnectWithoutModelInput
     connect?: PageWhereUniqueInput
+  }
+
+  export type ModelTypeCreateNestedOneWithoutModelInput = {
+    create?: XOR<ModelTypeCreateWithoutModelInput, ModelTypeUncheckedCreateWithoutModelInput>
+    connectOrCreate?: ModelTypeCreateOrConnectWithoutModelInput
+    connect?: ModelTypeWhereUniqueInput
   }
 
   export type PageUpdateOneRequiredWithoutModelInput = {
@@ -4129,6 +7188,14 @@ export namespace Prisma {
     upsert?: PageUpsertWithoutModelInput
     connect?: PageWhereUniqueInput
     update?: XOR<PageUpdateWithoutModelInput, PageUncheckedUpdateWithoutModelInput>
+  }
+
+  export type ModelTypeUpdateOneRequiredWithoutModelInput = {
+    create?: XOR<ModelTypeCreateWithoutModelInput, ModelTypeUncheckedCreateWithoutModelInput>
+    connectOrCreate?: ModelTypeCreateOrConnectWithoutModelInput
+    upsert?: ModelTypeUpsertWithoutModelInput
+    connect?: ModelTypeWhereUniqueInput
+    update?: XOR<ModelTypeUpdateWithoutModelInput, ModelTypeUncheckedUpdateWithoutModelInput>
   }
 
   export type NestedStringFilter = {
@@ -4248,6 +7315,27 @@ export namespace Prisma {
     create: XOR<PageCreateWithoutProjectInput, PageUncheckedCreateWithoutProjectInput>
   }
 
+  export type ModelTypeCreateWithoutProjectInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Model?: ModelCreateNestedManyWithoutModelTypeInput
+  }
+
+  export type ModelTypeUncheckedCreateWithoutProjectInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Model?: ModelUncheckedCreateNestedManyWithoutModelTypeInput
+  }
+
+  export type ModelTypeCreateOrConnectWithoutProjectInput = {
+    where: ModelTypeWhereUniqueInput
+    create: XOR<ModelTypeCreateWithoutProjectInput, ModelTypeUncheckedCreateWithoutProjectInput>
+  }
+
   export type PageUpsertWithWhereUniqueWithoutProjectInput = {
     where: PageWhereUniqueInput
     update: XOR<PageUpdateWithoutProjectInput, PageUncheckedUpdateWithoutProjectInput>
@@ -4276,11 +7364,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter | Date | string
   }
 
+  export type ModelTypeUpsertWithWhereUniqueWithoutProjectInput = {
+    where: ModelTypeWhereUniqueInput
+    update: XOR<ModelTypeUpdateWithoutProjectInput, ModelTypeUncheckedUpdateWithoutProjectInput>
+    create: XOR<ModelTypeCreateWithoutProjectInput, ModelTypeUncheckedCreateWithoutProjectInput>
+  }
+
+  export type ModelTypeUpdateWithWhereUniqueWithoutProjectInput = {
+    where: ModelTypeWhereUniqueInput
+    data: XOR<ModelTypeUpdateWithoutProjectInput, ModelTypeUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type ModelTypeUpdateManyWithWhereWithoutProjectInput = {
+    where: ModelTypeScalarWhereInput
+    data: XOR<ModelTypeUpdateManyMutationInput, ModelTypeUncheckedUpdateManyWithoutModelTypeInput>
+  }
+
+  export type ModelTypeScalarWhereInput = {
+    AND?: Enumerable<ModelTypeScalarWhereInput>
+    OR?: Enumerable<ModelTypeScalarWhereInput>
+    NOT?: Enumerable<ModelTypeScalarWhereInput>
+    id?: StringFilter | string
+    projectId?: StringFilter | string
+    name?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+  }
+
   export type ProjectCreateWithoutPageInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    ModelType?: ModelTypeCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutPageInput = {
@@ -4288,6 +7404,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    ModelType?: ModelTypeUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutPageInput = {
@@ -4300,10 +7417,12 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    modelType: ModelTypeCreateNestedOneWithoutModelInput
   }
 
   export type ModelUncheckedCreateWithoutPageInput = {
     id?: string
+    modelTypeId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -4324,6 +7443,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ModelType?: ModelTypeUpdateManyWithoutProjectInput
   }
 
   export type ProjectUncheckedUpdateWithoutPageInput = {
@@ -4331,6 +7451,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ModelType?: ModelTypeUncheckedUpdateManyWithoutProjectInput
   }
 
   export type ModelUpsertWithWhereUniqueWithoutPageInput = {
@@ -4355,9 +7476,89 @@ export namespace Prisma {
     NOT?: Enumerable<ModelScalarWhereInput>
     id?: StringFilter | string
     pageId?: StringFilter | string
+    modelTypeId?: StringFilter | string
     name?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
+  }
+
+  export type ModelCreateWithoutModelTypeInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    page: PageCreateNestedOneWithoutModelInput
+  }
+
+  export type ModelUncheckedCreateWithoutModelTypeInput = {
+    id?: string
+    pageId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ModelCreateOrConnectWithoutModelTypeInput = {
+    where: ModelWhereUniqueInput
+    create: XOR<ModelCreateWithoutModelTypeInput, ModelUncheckedCreateWithoutModelTypeInput>
+  }
+
+  export type ProjectCreateWithoutModelTypeInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Page?: PageCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutModelTypeInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Page?: PageUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutModelTypeInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutModelTypeInput, ProjectUncheckedCreateWithoutModelTypeInput>
+  }
+
+  export type ModelUpsertWithWhereUniqueWithoutModelTypeInput = {
+    where: ModelWhereUniqueInput
+    update: XOR<ModelUpdateWithoutModelTypeInput, ModelUncheckedUpdateWithoutModelTypeInput>
+    create: XOR<ModelCreateWithoutModelTypeInput, ModelUncheckedCreateWithoutModelTypeInput>
+  }
+
+  export type ModelUpdateWithWhereUniqueWithoutModelTypeInput = {
+    where: ModelWhereUniqueInput
+    data: XOR<ModelUpdateWithoutModelTypeInput, ModelUncheckedUpdateWithoutModelTypeInput>
+  }
+
+  export type ModelUpdateManyWithWhereWithoutModelTypeInput = {
+    where: ModelScalarWhereInput
+    data: XOR<ModelUpdateManyMutationInput, ModelUncheckedUpdateManyWithoutModelInput>
+  }
+
+  export type ProjectUpsertWithoutModelTypeInput = {
+    update: XOR<ProjectUpdateWithoutModelTypeInput, ProjectUncheckedUpdateWithoutModelTypeInput>
+    create: XOR<ProjectCreateWithoutModelTypeInput, ProjectUncheckedCreateWithoutModelTypeInput>
+  }
+
+  export type ProjectUpdateWithoutModelTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Page?: PageUpdateManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutModelTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Page?: PageUncheckedUpdateManyWithoutProjectInput
   }
 
   export type PageCreateWithoutModelInput = {
@@ -4383,6 +7584,27 @@ export namespace Prisma {
     create: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
   }
 
+  export type ModelTypeCreateWithoutModelInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutModelTypeInput
+  }
+
+  export type ModelTypeUncheckedCreateWithoutModelInput = {
+    id?: string
+    projectId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ModelTypeCreateOrConnectWithoutModelInput = {
+    where: ModelTypeWhereUniqueInput
+    create: XOR<ModelTypeCreateWithoutModelInput, ModelTypeUncheckedCreateWithoutModelInput>
+  }
+
   export type PageUpsertWithoutModelInput = {
     update: XOR<PageUpdateWithoutModelInput, PageUncheckedUpdateWithoutModelInput>
     create: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
@@ -4401,6 +7623,27 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     projectId?: StringFieldUpdateOperationsInput | string
     level?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelTypeUpsertWithoutModelInput = {
+    update: XOR<ModelTypeUpdateWithoutModelInput, ModelTypeUncheckedUpdateWithoutModelInput>
+    create: XOR<ModelTypeCreateWithoutModelInput, ModelTypeUncheckedCreateWithoutModelInput>
+  }
+
+  export type ModelTypeUpdateWithoutModelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutModelTypeInput
+  }
+
+  export type ModelTypeUncheckedUpdateWithoutModelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4432,15 +7675,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ModelUpdateWithoutPageInput = {
+  export type ModelTypeUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Model?: ModelUpdateManyWithoutModelTypeInput
+  }
+
+  export type ModelTypeUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Model?: ModelUncheckedUpdateManyWithoutModelTypeInput
+  }
+
+  export type ModelTypeUncheckedUpdateManyWithoutModelTypeInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ModelUpdateWithoutPageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    modelType?: ModelTypeUpdateOneRequiredWithoutModelInput
+  }
+
   export type ModelUncheckedUpdateWithoutPageInput = {
     id?: StringFieldUpdateOperationsInput | string
+    modelTypeId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -4448,6 +7716,23 @@ export namespace Prisma {
 
   export type ModelUncheckedUpdateManyWithoutModelInput = {
     id?: StringFieldUpdateOperationsInput | string
+    modelTypeId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModelUpdateWithoutModelTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    page?: PageUpdateOneRequiredWithoutModelInput
+  }
+
+  export type ModelUncheckedUpdateWithoutModelTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pageId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

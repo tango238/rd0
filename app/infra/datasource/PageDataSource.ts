@@ -1,6 +1,7 @@
 import { PageRepository } from '~/application/repository/PageRepository'
 import { db } from '~/utils/db.server'
 import { Page } from '~/infra/datasource/generated'
+import invariant from 'tiny-invariant'
 
 
 export class PageDataSource implements PageRepository {
@@ -25,9 +26,12 @@ export class PageDataSource implements PageRepository {
     })
   }
 
-  findById(pageId: string): Promise<(Page | null)> {
-    return db.page.findUnique({
+  async getById(pageId: string): Promise<Page> {
+    const result = await db.page.findUnique({
       where: { id: pageId }
     })
+    invariant(result)
+
+    return result
   }
 }

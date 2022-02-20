@@ -12,4 +12,8 @@ export class ProjectDataSource implements ProjectRepository {
   findAll(): Promise<Array<Project>> {
     return db.project.findMany()
   }
+
+  findById(projectId: string): Promise<Project | null> {
+    return db.project.findUnique({ where: { id: projectId } })
+  }
 }

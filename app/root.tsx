@@ -2,6 +2,21 @@ import "reflect-metadata"
 import type { MetaFunction } from "remix"
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "remix"
 import { registerToContainer } from '~/injections'
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#556cd6',
+    },
+    secondary: {
+      main: '#19857b',
+    },
+    error: {
+      main: '#994455',
+    },
+  },
+})
 
 registerToContainer()
 
@@ -14,7 +29,7 @@ export default function App() {
     <html lang="ja">
     <head>
       <meta charSet="utf-8"/>
-      <meta name="viewport" content="width=device-width,initial-scale=1"/>
+      <meta name="viewport" content="initial-scale=1, width=device-width"/>
       <Meta/>
       <link
         rel="stylesheet"
@@ -27,7 +42,10 @@ export default function App() {
       <Links/>
     </head>
     <body>
-    <Outlet/>
+    <CssBaseline/>
+    <ThemeProvider theme={theme}>
+      <Outlet/>
+    </ThemeProvider>
     <ScrollRestoration/>
     <Scripts/>
     <LiveReload/>

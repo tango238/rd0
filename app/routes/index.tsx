@@ -2,6 +2,7 @@ import type { LoaderFunction } from "remix"
 import { Link, useLoaderData } from "remix"
 import { container } from 'tsyringe'
 import { ProjectAllView, ProjectController } from '~/application/controller/ProjectController'
+import { project_detail } from '~/routes/URLs'
 
 const controller = container.resolve(ProjectController)
 
@@ -20,7 +21,7 @@ export default function Index() {
       <ul>
         {data.projects.map(project => (
           <li key={project.id}>
-            <Link to={`/projects/${project.id}`}>{project.name}</Link>
+            <Link to={project_detail(project.id)}>{project.name}</Link>
           </li>
         ))}
       </ul>
