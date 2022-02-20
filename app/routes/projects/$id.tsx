@@ -1,29 +1,19 @@
 import type { LoaderFunction } from 'remix'
 import { Link, useLoaderData } from 'remix'
-import { Page } from '~/infra/datasource/generated'
 import { container } from 'tsyringe'
-import { PageController } from '~/application/controller/PageController'
+import { PageAllView, PageController } from '~/application/controller/PageController'
 import invariant from 'tiny-invariant'
 
 const controller = container.resolve(PageController)
 
-type LoaderData = {
-  pages: Array<Page>
-  projectId: string
-};
-
 export const loader: LoaderFunction = async ({ params}) => {
   const projectId = params.id
   invariant(typeof projectId === 'string')
-  const data: LoaderData = {
-    pages: await controller.all(projectId),
-    projectId: projectId
-  }
-  return data
+  return await controller.all(projectId)
 }
 
 export default function ProjectWindow() {
-  const data = useLoaderData<LoaderData>()
+  const data = useLoaderData<PageAllView>()
   return (
     <>
       <p>
@@ -33,9 +23,9 @@ export default function ProjectWindow() {
       </p>
       <p>Pages</p>
       <ul>
-        {data.pages.map(p => (
-          <li key={p.id}>
-            <Link to={`/pages/${p.id}`}>{p.name}</Link>
+        {data.pages.map(page => (
+          <li key={page.id}>
+            <Link to={`/pages/${page.id}`}>{page.name}</Link>
           </li>
         ))}
       </ul>

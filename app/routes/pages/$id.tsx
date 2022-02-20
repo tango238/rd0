@@ -24,7 +24,7 @@ export default function PageWindow() {
       <ul>
         {data.models.map(m => (
           <li key={m.id}>
-            <Link to={`/m/${m.id}`}>{m.name}</Link>
+            <Link to={`/pages/${data.pageId}/m/${m.id}`}>{m.name}</Link>
           </li>
         ))}
       </ul>

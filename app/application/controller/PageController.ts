@@ -3,6 +3,11 @@ import { PageRepository } from '~/application/repository/PageRepository'
 import { Model, Page } from '~/infra/datasource/generated'
 import { ModelRepository } from '~/application/repository/ModelRepository'
 
+export type PageAllView = {
+  projectId: string
+  pages: Array<Page>
+}
+
 export type PageGetView = {
   pageId: string
   page: Page | null
@@ -18,8 +23,11 @@ export class PageController {
   ) {
   }
 
-  all(projectId: string): Promise<Page[]> {
-    return this.pageRepo.findAll(projectId)
+  async all(projectId: string): Promise<PageAllView> {
+    const pages = await this.pageRepo.findAll(projectId)
+    return {
+      projectId, pages
+    }
   }
 
   async create(projectId: string, name: string) {

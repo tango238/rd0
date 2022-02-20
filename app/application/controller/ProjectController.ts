@@ -2,6 +2,10 @@ import { inject, injectable } from 'tsyringe'
 import { ProjectRepository } from '~/application/repository/ProjectRepository'
 import { Project } from '~/infra/datasource/generated'
 
+export type ProjectAllView = {
+  projects: Array<Project>
+}
+
 @injectable()
 export class ProjectController {
 
@@ -10,11 +14,12 @@ export class ProjectController {
   ) {
   }
 
-  all(): Promise<Array<Project>> {
-    return this.repository.findAll()
+  async all(): Promise<ProjectAllView> {
+    const projects = await this.repository.findAll()
+    return {
+      projects
+    }
   }
-
-  detail() {}
 
   async create(name: string) {
     await this.repository.insert(name)

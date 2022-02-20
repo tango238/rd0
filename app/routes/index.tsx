@@ -1,34 +1,26 @@
 import type { LoaderFunction } from "remix"
 import { Link, useLoaderData } from "remix"
-import { Project } from '~/infra/datasource/generated'
 import { container } from 'tsyringe'
-import { ProjectController } from '~/application/controller/ProjectController'
+import { ProjectAllView, ProjectController } from '~/application/controller/ProjectController'
 
 const controller = container.resolve(ProjectController)
 
-type LoaderData = {
-  projects: Array<Project>;
-};
-
 export const loader: LoaderFunction = async () => {
-  const data: LoaderData = {
-    projects: await controller.all()
-  }
-  return data
+  return await controller.all()
 }
 
 export default function Index() {
-  const data = useLoaderData<LoaderData>()
+  const data = useLoaderData<ProjectAllView>()
   return (
     <>
       <p>
-        <Link to="/projects/new">Create a new project</Link>
+        <Link to="/projects/new">Create Project</Link>
       </p>
       <p>Projects</p>
       <ul>
-        {data.projects.map(p => (
-          <li key={p.id}>
-            <Link to={`/projects/${p.id}`}>{p.name}</Link>
+        {data.projects.map(project => (
+          <li key={project.id}>
+            <Link to={`/projects/${project.id}`}>{project.name}</Link>
           </li>
         ))}
       </ul>
