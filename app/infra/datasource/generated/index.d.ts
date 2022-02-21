@@ -37,10 +37,10 @@ export type Page = {
 }
 
 /**
- * Model ModelType
+ * Model Category
  * 
  */
-export type ModelType = {
+export type Category = {
   id: string
   projectId: string
   name: string
@@ -49,13 +49,13 @@ export type ModelType = {
 }
 
 /**
- * Model Model
+ * Model Item
  * 
  */
-export type Model = {
+export type Item = {
   id: string
   pageId: string
-  modelTypeId: string
+  categoryId: string
   name: string
   createdAt: Date
   updatedAt: Date
@@ -66,6 +66,7 @@ export type Model = {
  * 
  */
 export type Connection = {
+  id: string
   from: string
   to: string
   createdAt: Date
@@ -77,6 +78,7 @@ export type Connection = {
  * 
  */
 export type Dependency = {
+  id: string
   parent: string
   child: string
   createdAt: Date
@@ -245,24 +247,24 @@ export class PrismaClient<
   get page(): Prisma.PageDelegate<GlobalReject>;
 
   /**
-   * `prisma.modelType`: Exposes CRUD operations for the **ModelType** model.
+   * `prisma.category`: Exposes CRUD operations for the **Category** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more ModelTypes
-    * const modelTypes = await prisma.modelType.findMany()
+    * // Fetch zero or more Categories
+    * const categories = await prisma.category.findMany()
     * ```
     */
-  get modelType(): Prisma.ModelTypeDelegate<GlobalReject>;
+  get category(): Prisma.CategoryDelegate<GlobalReject>;
 
   /**
-   * `prisma.model`: Exposes CRUD operations for the **Model** model.
+   * `prisma.item`: Exposes CRUD operations for the **Item** model.
     * Example usage:
     * ```ts
-    * // Fetch zero or more Models
-    * const models = await prisma.model.findMany()
+    * // Fetch zero or more Items
+    * const items = await prisma.item.findMany()
     * ```
     */
-  get model(): Prisma.ModelDelegate<GlobalReject>;
+  get item(): Prisma.ItemDelegate<GlobalReject>;
 
   /**
    * `prisma.connection`: Exposes CRUD operations for the **Connection** model.
@@ -695,8 +697,8 @@ export namespace Prisma {
   export const ModelName: {
     Project: 'Project',
     Page: 'Page',
-    ModelType: 'ModelType',
-    Model: 'Model',
+    Category: 'Category',
+    Item: 'Item',
     Connection: 'Connection',
     Dependency: 'Dependency'
   };
@@ -860,13 +862,13 @@ export namespace Prisma {
 
 
   export type ProjectCountOutputType = {
-    Page: number
-    ModelType: number
+    pages: number
+    categories: number
   }
 
   export type ProjectCountOutputTypeSelect = {
-    Page?: boolean
-    ModelType?: boolean
+    pages?: boolean
+    categories?: boolean
   }
 
   export type ProjectCountOutputTypeGetPayload<
@@ -912,11 +914,11 @@ export namespace Prisma {
 
 
   export type PageCountOutputType = {
-    Model: number
+    items: number
   }
 
   export type PageCountOutputTypeSelect = {
-    Model?: boolean
+    items?: boolean
   }
 
   export type PageCountOutputTypeGetPayload<
@@ -957,36 +959,36 @@ export namespace Prisma {
 
 
   /**
-   * Count Type ModelTypeCountOutputType
+   * Count Type CategoryCountOutputType
    */
 
 
-  export type ModelTypeCountOutputType = {
-    Model: number
+  export type CategoryCountOutputType = {
+    items: number
   }
 
-  export type ModelTypeCountOutputTypeSelect = {
-    Model?: boolean
+  export type CategoryCountOutputTypeSelect = {
+    items?: boolean
   }
 
-  export type ModelTypeCountOutputTypeGetPayload<
-    S extends boolean | null | undefined | ModelTypeCountOutputTypeArgs,
+  export type CategoryCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | CategoryCountOutputTypeArgs,
     U = keyof S
       > = S extends true
-        ? ModelTypeCountOutputType
+        ? CategoryCountOutputType
     : S extends undefined
     ? never
-    : S extends ModelTypeCountOutputTypeArgs
+    : S extends CategoryCountOutputTypeArgs
     ?'include' extends U
-    ? ModelTypeCountOutputType 
+    ? CategoryCountOutputType 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof ModelTypeCountOutputType ?ModelTypeCountOutputType [P]
+    [P in TrueKeys<S['select']>]: P extends keyof CategoryCountOutputType ?CategoryCountOutputType [P]
   : 
      never
   } 
-    : ModelTypeCountOutputType
-  : ModelTypeCountOutputType
+    : CategoryCountOutputType
+  : CategoryCountOutputType
 
 
 
@@ -994,14 +996,66 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * ModelTypeCountOutputType without action
+   * CategoryCountOutputType without action
    */
-  export type ModelTypeCountOutputTypeArgs = {
+  export type CategoryCountOutputTypeArgs = {
     /**
-     * Select specific fields to fetch from the ModelTypeCountOutputType
+     * Select specific fields to fetch from the CategoryCountOutputType
      * 
     **/
-    select?: ModelTypeCountOutputTypeSelect | null
+    select?: CategoryCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type ItemCountOutputType
+   */
+
+
+  export type ItemCountOutputType = {
+    connections: number
+    dependencies: number
+  }
+
+  export type ItemCountOutputTypeSelect = {
+    connections?: boolean
+    dependencies?: boolean
+  }
+
+  export type ItemCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | ItemCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? ItemCountOutputType
+    : S extends undefined
+    ? never
+    : S extends ItemCountOutputTypeArgs
+    ?'include' extends U
+    ? ItemCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof ItemCountOutputType ?ItemCountOutputType [P]
+  : 
+     never
+  } 
+    : ItemCountOutputType
+  : ItemCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * ItemCountOutputType without action
+   */
+  export type ItemCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the ItemCountOutputType
+     * 
+    **/
+    select?: ItemCountOutputTypeSelect | null
   }
 
 
@@ -1173,14 +1227,14 @@ export namespace Prisma {
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    Page?: boolean | PageFindManyArgs
-    ModelType?: boolean | ModelTypeFindManyArgs
+    pages?: boolean | PageFindManyArgs
+    categories?: boolean | CategoryFindManyArgs
     _count?: boolean | ProjectCountOutputTypeArgs
   }
 
   export type ProjectInclude = {
-    Page?: boolean | PageFindManyArgs
-    ModelType?: boolean | ModelTypeFindManyArgs
+    pages?: boolean | PageFindManyArgs
+    categories?: boolean | CategoryFindManyArgs
     _count?: boolean | ProjectCountOutputTypeArgs
   }
 
@@ -1195,10 +1249,10 @@ export namespace Prisma {
     ?'include' extends U
     ? Project  & {
     [P in TrueKeys<S['include']>]: 
-          P extends 'Page'
+          P extends 'pages'
         ? Array < PageGetPayload<S['include'][P]>>  :
-        P extends 'ModelType'
-        ? Array < ModelTypeGetPayload<S['include'][P]>>  :
+        P extends 'categories'
+        ? Array < CategoryGetPayload<S['include'][P]>>  :
         P extends '_count'
         ? ProjectCountOutputTypeGetPayload<S['include'][P]> : never
   } 
@@ -1206,10 +1260,10 @@ export namespace Prisma {
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof Project ?Project [P]
   : 
-          P extends 'Page'
+          P extends 'pages'
         ? Array < PageGetPayload<S['select'][P]>>  :
-        P extends 'ModelType'
-        ? Array < ModelTypeGetPayload<S['select'][P]>>  :
+        P extends 'categories'
+        ? Array < CategoryGetPayload<S['select'][P]>>  :
         P extends '_count'
         ? ProjectCountOutputTypeGetPayload<S['select'][P]> : never
   } 
@@ -1535,9 +1589,9 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    Page<T extends PageFindManyArgs = {}>(args?: Subset<T, PageFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Page>>, PrismaPromise<Array<PageGetPayload<T>>>>;
+    pages<T extends PageFindManyArgs = {}>(args?: Subset<T, PageFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Page>>, PrismaPromise<Array<PageGetPayload<T>>>>;
 
-    ModelType<T extends ModelTypeFindManyArgs = {}>(args?: Subset<T, ModelTypeFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ModelType>>, PrismaPromise<Array<ModelTypeGetPayload<T>>>>;
+    categories<T extends CategoryFindManyArgs = {}>(args?: Subset<T, CategoryFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Category>>, PrismaPromise<Array<CategoryGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -2068,13 +2122,13 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     project?: boolean | ProjectArgs
-    Model?: boolean | ModelFindManyArgs
+    items?: boolean | ItemFindManyArgs
     _count?: boolean | PageCountOutputTypeArgs
   }
 
   export type PageInclude = {
     project?: boolean | ProjectArgs
-    Model?: boolean | ModelFindManyArgs
+    items?: boolean | ItemFindManyArgs
     _count?: boolean | PageCountOutputTypeArgs
   }
 
@@ -2091,8 +2145,8 @@ export namespace Prisma {
     [P in TrueKeys<S['include']>]: 
           P extends 'project'
         ? ProjectGetPayload<S['include'][P]> :
-        P extends 'Model'
-        ? Array < ModelGetPayload<S['include'][P]>>  :
+        P extends 'items'
+        ? Array < ItemGetPayload<S['include'][P]>>  :
         P extends '_count'
         ? PageCountOutputTypeGetPayload<S['include'][P]> : never
   } 
@@ -2102,8 +2156,8 @@ export namespace Prisma {
   : 
           P extends 'project'
         ? ProjectGetPayload<S['select'][P]> :
-        P extends 'Model'
-        ? Array < ModelGetPayload<S['select'][P]>>  :
+        P extends 'items'
+        ? Array < ItemGetPayload<S['select'][P]>>  :
         P extends '_count'
         ? PageCountOutputTypeGetPayload<S['select'][P]> : never
   } 
@@ -2431,7 +2485,7 @@ export namespace Prisma {
 
     project<T extends ProjectArgs = {}>(args?: Subset<T, ProjectArgs>): CheckSelect<T, Prisma__ProjectClient<Project | null >, Prisma__ProjectClient<ProjectGetPayload<T> | null >>;
 
-    Model<T extends ModelFindManyArgs = {}>(args?: Subset<T, ModelFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Model>>, PrismaPromise<Array<ModelGetPayload<T>>>>;
+    items<T extends ItemFindManyArgs = {}>(args?: Subset<T, ItemFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Item>>, PrismaPromise<Array<ItemGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -2749,17 +2803,17 @@ export namespace Prisma {
 
 
   /**
-   * Model ModelType
+   * Model Category
    */
 
 
-  export type AggregateModelType = {
-    _count: ModelTypeCountAggregateOutputType | null
-    _min: ModelTypeMinAggregateOutputType | null
-    _max: ModelTypeMaxAggregateOutputType | null
+  export type AggregateCategory = {
+    _count: CategoryCountAggregateOutputType | null
+    _min: CategoryMinAggregateOutputType | null
+    _max: CategoryMaxAggregateOutputType | null
   }
 
-  export type ModelTypeMinAggregateOutputType = {
+  export type CategoryMinAggregateOutputType = {
     id: string | null
     projectId: string | null
     name: string | null
@@ -2767,7 +2821,7 @@ export namespace Prisma {
     updatedAt: Date | null
   }
 
-  export type ModelTypeMaxAggregateOutputType = {
+  export type CategoryMaxAggregateOutputType = {
     id: string | null
     projectId: string | null
     name: string | null
@@ -2775,7 +2829,7 @@ export namespace Prisma {
     updatedAt: Date | null
   }
 
-  export type ModelTypeCountAggregateOutputType = {
+  export type CategoryCountAggregateOutputType = {
     id: number
     projectId: number
     name: number
@@ -2785,7 +2839,7 @@ export namespace Prisma {
   }
 
 
-  export type ModelTypeMinAggregateInputType = {
+  export type CategoryMinAggregateInputType = {
     id?: true
     projectId?: true
     name?: true
@@ -2793,7 +2847,7 @@ export namespace Prisma {
     updatedAt?: true
   }
 
-  export type ModelTypeMaxAggregateInputType = {
+  export type CategoryMaxAggregateInputType = {
     id?: true
     projectId?: true
     name?: true
@@ -2801,7 +2855,7 @@ export namespace Prisma {
     updatedAt?: true
   }
 
-  export type ModelTypeCountAggregateInputType = {
+  export type CategoryCountAggregateInputType = {
     id?: true
     projectId?: true
     name?: true
@@ -2810,256 +2864,256 @@ export namespace Prisma {
     _all?: true
   }
 
-  export type ModelTypeAggregateArgs = {
+  export type CategoryAggregateArgs = {
     /**
-     * Filter which ModelType to aggregate.
+     * Filter which Category to aggregate.
      * 
     **/
-    where?: ModelTypeWhereInput
+    where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ModelTypes to fetch.
+     * Determine the order of Categories to fetch.
      * 
     **/
-    orderBy?: Enumerable<ModelTypeOrderByWithRelationInput>
+    orderBy?: Enumerable<CategoryOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      * 
     **/
-    cursor?: ModelTypeWhereUniqueInput
+    cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ModelTypes from the position of the cursor.
+     * Take `±n` Categories from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ModelTypes.
+     * Skip the first `n` Categories.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned ModelTypes
+     * Count returned Categories
     **/
-    _count?: true | ModelTypeCountAggregateInputType
+    _count?: true | CategoryCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ModelTypeMinAggregateInputType
+    _min?: CategoryMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ModelTypeMaxAggregateInputType
+    _max?: CategoryMaxAggregateInputType
   }
 
-  export type GetModelTypeAggregateType<T extends ModelTypeAggregateArgs> = {
-        [P in keyof T & keyof AggregateModelType]: P extends '_count' | 'count'
+  export type GetCategoryAggregateType<T extends CategoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateCategory]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateModelType[P]>
-      : GetScalarType<T[P], AggregateModelType[P]>
+        : GetScalarType<T[P], AggregateCategory[P]>
+      : GetScalarType<T[P], AggregateCategory[P]>
   }
 
 
 
 
-  export type ModelTypeGroupByArgs = {
-    where?: ModelTypeWhereInput
-    orderBy?: Enumerable<ModelTypeOrderByWithAggregationInput>
-    by: Array<ModelTypeScalarFieldEnum>
-    having?: ModelTypeScalarWhereWithAggregatesInput
+  export type CategoryGroupByArgs = {
+    where?: CategoryWhereInput
+    orderBy?: Enumerable<CategoryOrderByWithAggregationInput>
+    by: Array<CategoryScalarFieldEnum>
+    having?: CategoryScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ModelTypeCountAggregateInputType | true
-    _min?: ModelTypeMinAggregateInputType
-    _max?: ModelTypeMaxAggregateInputType
+    _count?: CategoryCountAggregateInputType | true
+    _min?: CategoryMinAggregateInputType
+    _max?: CategoryMaxAggregateInputType
   }
 
 
-  export type ModelTypeGroupByOutputType = {
+  export type CategoryGroupByOutputType = {
     id: string
     projectId: string
     name: string
     createdAt: Date
     updatedAt: Date
-    _count: ModelTypeCountAggregateOutputType | null
-    _min: ModelTypeMinAggregateOutputType | null
-    _max: ModelTypeMaxAggregateOutputType | null
+    _count: CategoryCountAggregateOutputType | null
+    _min: CategoryMinAggregateOutputType | null
+    _max: CategoryMaxAggregateOutputType | null
   }
 
-  type GetModelTypeGroupByPayload<T extends ModelTypeGroupByArgs> = Promise<
+  type GetCategoryGroupByPayload<T extends CategoryGroupByArgs> = Promise<
     Array<
-      PickArray<ModelTypeGroupByOutputType, T['by']> &
+      PickArray<CategoryGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ModelTypeGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof CategoryGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ModelTypeGroupByOutputType[P]>
-            : GetScalarType<T[P], ModelTypeGroupByOutputType[P]>
+              : GetScalarType<T[P], CategoryGroupByOutputType[P]>
+            : GetScalarType<T[P], CategoryGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ModelTypeSelect = {
+  export type CategorySelect = {
     id?: boolean
     projectId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    Model?: boolean | ModelFindManyArgs
+    items?: boolean | ItemFindManyArgs
     project?: boolean | ProjectArgs
-    _count?: boolean | ModelTypeCountOutputTypeArgs
+    _count?: boolean | CategoryCountOutputTypeArgs
   }
 
-  export type ModelTypeInclude = {
-    Model?: boolean | ModelFindManyArgs
+  export type CategoryInclude = {
+    items?: boolean | ItemFindManyArgs
     project?: boolean | ProjectArgs
-    _count?: boolean | ModelTypeCountOutputTypeArgs
+    _count?: boolean | CategoryCountOutputTypeArgs
   }
 
-  export type ModelTypeGetPayload<
-    S extends boolean | null | undefined | ModelTypeArgs,
+  export type CategoryGetPayload<
+    S extends boolean | null | undefined | CategoryArgs,
     U = keyof S
       > = S extends true
-        ? ModelType
+        ? Category
     : S extends undefined
     ? never
-    : S extends ModelTypeArgs | ModelTypeFindManyArgs
+    : S extends CategoryArgs | CategoryFindManyArgs
     ?'include' extends U
-    ? ModelType  & {
+    ? Category  & {
     [P in TrueKeys<S['include']>]: 
-          P extends 'Model'
-        ? Array < ModelGetPayload<S['include'][P]>>  :
+          P extends 'items'
+        ? Array < ItemGetPayload<S['include'][P]>>  :
         P extends 'project'
         ? ProjectGetPayload<S['include'][P]> :
         P extends '_count'
-        ? ModelTypeCountOutputTypeGetPayload<S['include'][P]> : never
+        ? CategoryCountOutputTypeGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof ModelType ?ModelType [P]
+    [P in TrueKeys<S['select']>]: P extends keyof Category ?Category [P]
   : 
-          P extends 'Model'
-        ? Array < ModelGetPayload<S['select'][P]>>  :
+          P extends 'items'
+        ? Array < ItemGetPayload<S['select'][P]>>  :
         P extends 'project'
         ? ProjectGetPayload<S['select'][P]> :
         P extends '_count'
-        ? ModelTypeCountOutputTypeGetPayload<S['select'][P]> : never
+        ? CategoryCountOutputTypeGetPayload<S['select'][P]> : never
   } 
-    : ModelType
-  : ModelType
+    : Category
+  : Category
 
 
-  type ModelTypeCountArgs = Merge<
-    Omit<ModelTypeFindManyArgs, 'select' | 'include'> & {
-      select?: ModelTypeCountAggregateInputType | true
+  type CategoryCountArgs = Merge<
+    Omit<CategoryFindManyArgs, 'select' | 'include'> & {
+      select?: CategoryCountAggregateInputType | true
     }
   >
 
-  export interface ModelTypeDelegate<GlobalRejectSettings> {
+  export interface CategoryDelegate<GlobalRejectSettings> {
     /**
-     * Find zero or one ModelType that matches the filter.
-     * @param {ModelTypeFindUniqueArgs} args - Arguments to find a ModelType
+     * Find zero or one Category that matches the filter.
+     * @param {CategoryFindUniqueArgs} args - Arguments to find a Category
      * @example
-     * // Get one ModelType
-     * const modelType = await prisma.modelType.findUnique({
+     * // Get one Category
+     * const category = await prisma.category.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends ModelTypeFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, ModelTypeFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ModelType'> extends True ? CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>> : CheckSelect<T, Prisma__ModelTypeClient<ModelType | null >, Prisma__ModelTypeClient<ModelTypeGetPayload<T> | null >>
+    findUnique<T extends CategoryFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, CategoryFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Category'> extends True ? CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>> : CheckSelect<T, Prisma__CategoryClient<Category | null >, Prisma__CategoryClient<CategoryGetPayload<T> | null >>
 
     /**
-     * Find the first ModelType that matches the filter.
+     * Find the first Category that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelTypeFindFirstArgs} args - Arguments to find a ModelType
+     * @param {CategoryFindFirstArgs} args - Arguments to find a Category
      * @example
-     * // Get one ModelType
-     * const modelType = await prisma.modelType.findFirst({
+     * // Get one Category
+     * const category = await prisma.category.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends ModelTypeFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, ModelTypeFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ModelType'> extends True ? CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>> : CheckSelect<T, Prisma__ModelTypeClient<ModelType | null >, Prisma__ModelTypeClient<ModelTypeGetPayload<T> | null >>
+    findFirst<T extends CategoryFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, CategoryFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Category'> extends True ? CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>> : CheckSelect<T, Prisma__CategoryClient<Category | null >, Prisma__CategoryClient<CategoryGetPayload<T> | null >>
 
     /**
-     * Find zero or more ModelTypes that matches the filter.
+     * Find zero or more Categories that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelTypeFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {CategoryFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all ModelTypes
-     * const modelTypes = await prisma.modelType.findMany()
+     * // Get all Categories
+     * const categories = await prisma.category.findMany()
      * 
-     * // Get first 10 ModelTypes
-     * const modelTypes = await prisma.modelType.findMany({ take: 10 })
+     * // Get first 10 Categories
+     * const categories = await prisma.category.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const modelTypeWithIdOnly = await prisma.modelType.findMany({ select: { id: true } })
+     * const categoryWithIdOnly = await prisma.category.findMany({ select: { id: true } })
      * 
     **/
-    findMany<T extends ModelTypeFindManyArgs>(
-      args?: SelectSubset<T, ModelTypeFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<ModelType>>, PrismaPromise<Array<ModelTypeGetPayload<T>>>>
+    findMany<T extends CategoryFindManyArgs>(
+      args?: SelectSubset<T, CategoryFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Category>>, PrismaPromise<Array<CategoryGetPayload<T>>>>
 
     /**
-     * Create a ModelType.
-     * @param {ModelTypeCreateArgs} args - Arguments to create a ModelType.
+     * Create a Category.
+     * @param {CategoryCreateArgs} args - Arguments to create a Category.
      * @example
-     * // Create one ModelType
-     * const ModelType = await prisma.modelType.create({
+     * // Create one Category
+     * const Category = await prisma.category.create({
      *   data: {
-     *     // ... data to create a ModelType
+     *     // ... data to create a Category
      *   }
      * })
      * 
     **/
-    create<T extends ModelTypeCreateArgs>(
-      args: SelectSubset<T, ModelTypeCreateArgs>
-    ): CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>>
+    create<T extends CategoryCreateArgs>(
+      args: SelectSubset<T, CategoryCreateArgs>
+    ): CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>>
 
     /**
-     * Delete a ModelType.
-     * @param {ModelTypeDeleteArgs} args - Arguments to delete one ModelType.
+     * Delete a Category.
+     * @param {CategoryDeleteArgs} args - Arguments to delete one Category.
      * @example
-     * // Delete one ModelType
-     * const ModelType = await prisma.modelType.delete({
+     * // Delete one Category
+     * const Category = await prisma.category.delete({
      *   where: {
-     *     // ... filter to delete one ModelType
+     *     // ... filter to delete one Category
      *   }
      * })
      * 
     **/
-    delete<T extends ModelTypeDeleteArgs>(
-      args: SelectSubset<T, ModelTypeDeleteArgs>
-    ): CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>>
+    delete<T extends CategoryDeleteArgs>(
+      args: SelectSubset<T, CategoryDeleteArgs>
+    ): CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>>
 
     /**
-     * Update one ModelType.
-     * @param {ModelTypeUpdateArgs} args - Arguments to update one ModelType.
+     * Update one Category.
+     * @param {CategoryUpdateArgs} args - Arguments to update one Category.
      * @example
-     * // Update one ModelType
-     * const modelType = await prisma.modelType.update({
+     * // Update one Category
+     * const category = await prisma.category.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3069,34 +3123,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends ModelTypeUpdateArgs>(
-      args: SelectSubset<T, ModelTypeUpdateArgs>
-    ): CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>>
+    update<T extends CategoryUpdateArgs>(
+      args: SelectSubset<T, CategoryUpdateArgs>
+    ): CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>>
 
     /**
-     * Delete zero or more ModelTypes.
-     * @param {ModelTypeDeleteManyArgs} args - Arguments to filter ModelTypes to delete.
+     * Delete zero or more Categories.
+     * @param {CategoryDeleteManyArgs} args - Arguments to filter Categories to delete.
      * @example
-     * // Delete a few ModelTypes
-     * const { count } = await prisma.modelType.deleteMany({
+     * // Delete a few Categories
+     * const { count } = await prisma.category.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends ModelTypeDeleteManyArgs>(
-      args?: SelectSubset<T, ModelTypeDeleteManyArgs>
+    deleteMany<T extends CategoryDeleteManyArgs>(
+      args?: SelectSubset<T, CategoryDeleteManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more ModelTypes.
+     * Update zero or more Categories.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {CategoryUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many ModelTypes
-     * const modelType = await prisma.modelType.updateMany({
+     * // Update many Categories
+     * const category = await prisma.category.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3106,59 +3160,59 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends ModelTypeUpdateManyArgs>(
-      args: SelectSubset<T, ModelTypeUpdateManyArgs>
+    updateMany<T extends CategoryUpdateManyArgs>(
+      args: SelectSubset<T, CategoryUpdateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one ModelType.
-     * @param {ModelTypeUpsertArgs} args - Arguments to update or create a ModelType.
+     * Create or update one Category.
+     * @param {CategoryUpsertArgs} args - Arguments to update or create a Category.
      * @example
-     * // Update or create a ModelType
-     * const modelType = await prisma.modelType.upsert({
+     * // Update or create a Category
+     * const category = await prisma.category.upsert({
      *   create: {
-     *     // ... data to create a ModelType
+     *     // ... data to create a Category
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the ModelType we want to update
+     *     // ... the filter for the Category we want to update
      *   }
      * })
     **/
-    upsert<T extends ModelTypeUpsertArgs>(
-      args: SelectSubset<T, ModelTypeUpsertArgs>
-    ): CheckSelect<T, Prisma__ModelTypeClient<ModelType>, Prisma__ModelTypeClient<ModelTypeGetPayload<T>>>
+    upsert<T extends CategoryUpsertArgs>(
+      args: SelectSubset<T, CategoryUpsertArgs>
+    ): CheckSelect<T, Prisma__CategoryClient<Category>, Prisma__CategoryClient<CategoryGetPayload<T>>>
 
     /**
-     * Count the number of ModelTypes.
+     * Count the number of Categories.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelTypeCountArgs} args - Arguments to filter ModelTypes to count.
+     * @param {CategoryCountArgs} args - Arguments to filter Categories to count.
      * @example
-     * // Count the number of ModelTypes
-     * const count = await prisma.modelType.count({
+     * // Count the number of Categories
+     * const count = await prisma.category.count({
      *   where: {
-     *     // ... the filter for the ModelTypes we want to count
+     *     // ... the filter for the Categories we want to count
      *   }
      * })
     **/
-    count<T extends ModelTypeCountArgs>(
-      args?: Subset<T, ModelTypeCountArgs>,
+    count<T extends CategoryCountArgs>(
+      args?: Subset<T, CategoryCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ModelTypeCountAggregateOutputType>
+          : GetScalarType<T['select'], CategoryCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a ModelType.
+     * Allows you to perform aggregations operations on a Category.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {CategoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -3178,13 +3232,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ModelTypeAggregateArgs>(args: Subset<T, ModelTypeAggregateArgs>): PrismaPromise<GetModelTypeAggregateType<T>>
+    aggregate<T extends CategoryAggregateArgs>(args: Subset<T, CategoryAggregateArgs>): PrismaPromise<GetCategoryAggregateType<T>>
 
     /**
-     * Group by ModelType.
+     * Group by Category.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelTypeGroupByArgs} args - Group by arguments.
+     * @param {CategoryGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -3199,14 +3253,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ModelTypeGroupByArgs,
+      T extends CategoryGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ModelTypeGroupByArgs['orderBy'] }
-        : { orderBy?: ModelTypeGroupByArgs['orderBy'] },
+        ? { orderBy: CategoryGroupByArgs['orderBy'] }
+        : { orderBy?: CategoryGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -3255,16 +3309,16 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ModelTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetModelTypeGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, CategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCategoryGroupByPayload<T> : Promise<InputErrors>
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for ModelType.
+   * The delegate class that acts as a "Promise-like" for Category.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__ModelTypeClient<T> implements PrismaPromise<T> {
+  export class Prisma__CategoryClient<T> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -3281,7 +3335,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    Model<T extends ModelFindManyArgs = {}>(args?: Subset<T, ModelFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Model>>, PrismaPromise<Array<ModelGetPayload<T>>>>;
+    items<T extends ItemFindManyArgs = {}>(args?: Subset<T, ItemFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Item>>, PrismaPromise<Array<ItemGetPayload<T>>>>;
 
     project<T extends ProjectArgs = {}>(args?: Subset<T, ProjectArgs>): CheckSelect<T, Prisma__ProjectClient<Project | null >, Prisma__ProjectClient<ProjectGetPayload<T> | null >>;
 
@@ -3311,328 +3365,328 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * ModelType findUnique
+   * Category findUnique
    */
-  export type ModelTypeFindUniqueArgs = {
+  export type CategoryFindUniqueArgs = {
     /**
-     * Select specific fields to fetch from the ModelType
+     * Select specific fields to fetch from the Category
      * 
     **/
-    select?: ModelTypeSelect | null
+    select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelTypeInclude | null
+    include?: CategoryInclude | null
     /**
-     * Throw an Error if a ModelType can't be found
+     * Throw an Error if a Category can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which ModelType to fetch.
+     * Filter, which Category to fetch.
      * 
     **/
-    where: ModelTypeWhereUniqueInput
+    where: CategoryWhereUniqueInput
   }
 
 
   /**
-   * ModelType findFirst
+   * Category findFirst
    */
-  export type ModelTypeFindFirstArgs = {
+  export type CategoryFindFirstArgs = {
     /**
-     * Select specific fields to fetch from the ModelType
+     * Select specific fields to fetch from the Category
      * 
     **/
-    select?: ModelTypeSelect | null
+    select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelTypeInclude | null
+    include?: CategoryInclude | null
     /**
-     * Throw an Error if a ModelType can't be found
+     * Throw an Error if a Category can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which ModelType to fetch.
+     * Filter, which Category to fetch.
      * 
     **/
-    where?: ModelTypeWhereInput
+    where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ModelTypes to fetch.
+     * Determine the order of Categories to fetch.
      * 
     **/
-    orderBy?: Enumerable<ModelTypeOrderByWithRelationInput>
+    orderBy?: Enumerable<CategoryOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for ModelTypes.
+     * Sets the position for searching for Categories.
      * 
     **/
-    cursor?: ModelTypeWhereUniqueInput
+    cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ModelTypes from the position of the cursor.
+     * Take `±n` Categories from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ModelTypes.
+     * Skip the first `n` Categories.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of ModelTypes.
+     * Filter by unique combinations of Categories.
      * 
     **/
-    distinct?: Enumerable<ModelTypeScalarFieldEnum>
+    distinct?: Enumerable<CategoryScalarFieldEnum>
   }
 
 
   /**
-   * ModelType findMany
+   * Category findMany
    */
-  export type ModelTypeFindManyArgs = {
+  export type CategoryFindManyArgs = {
     /**
-     * Select specific fields to fetch from the ModelType
+     * Select specific fields to fetch from the Category
      * 
     **/
-    select?: ModelTypeSelect | null
+    select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelTypeInclude | null
+    include?: CategoryInclude | null
     /**
-     * Filter, which ModelTypes to fetch.
+     * Filter, which Categories to fetch.
      * 
     **/
-    where?: ModelTypeWhereInput
+    where?: CategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of ModelTypes to fetch.
+     * Determine the order of Categories to fetch.
      * 
     **/
-    orderBy?: Enumerable<ModelTypeOrderByWithRelationInput>
+    orderBy?: Enumerable<CategoryOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing ModelTypes.
+     * Sets the position for listing Categories.
      * 
     **/
-    cursor?: ModelTypeWhereUniqueInput
+    cursor?: CategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` ModelTypes from the position of the cursor.
+     * Take `±n` Categories from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` ModelTypes.
+     * Skip the first `n` Categories.
      * 
     **/
     skip?: number
-    distinct?: Enumerable<ModelTypeScalarFieldEnum>
+    distinct?: Enumerable<CategoryScalarFieldEnum>
   }
 
 
   /**
-   * ModelType create
+   * Category create
    */
-  export type ModelTypeCreateArgs = {
+  export type CategoryCreateArgs = {
     /**
-     * Select specific fields to fetch from the ModelType
+     * Select specific fields to fetch from the Category
      * 
     **/
-    select?: ModelTypeSelect | null
+    select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelTypeInclude | null
+    include?: CategoryInclude | null
     /**
-     * The data needed to create a ModelType.
+     * The data needed to create a Category.
      * 
     **/
-    data: XOR<ModelTypeCreateInput, ModelTypeUncheckedCreateInput>
+    data: XOR<CategoryCreateInput, CategoryUncheckedCreateInput>
   }
 
 
   /**
-   * ModelType update
+   * Category update
    */
-  export type ModelTypeUpdateArgs = {
+  export type CategoryUpdateArgs = {
     /**
-     * Select specific fields to fetch from the ModelType
+     * Select specific fields to fetch from the Category
      * 
     **/
-    select?: ModelTypeSelect | null
+    select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelTypeInclude | null
+    include?: CategoryInclude | null
     /**
-     * The data needed to update a ModelType.
+     * The data needed to update a Category.
      * 
     **/
-    data: XOR<ModelTypeUpdateInput, ModelTypeUncheckedUpdateInput>
+    data: XOR<CategoryUpdateInput, CategoryUncheckedUpdateInput>
     /**
-     * Choose, which ModelType to update.
+     * Choose, which Category to update.
      * 
     **/
-    where: ModelTypeWhereUniqueInput
+    where: CategoryWhereUniqueInput
   }
 
 
   /**
-   * ModelType updateMany
+   * Category updateMany
    */
-  export type ModelTypeUpdateManyArgs = {
+  export type CategoryUpdateManyArgs = {
     /**
-     * The data used to update ModelTypes.
+     * The data used to update Categories.
      * 
     **/
-    data: XOR<ModelTypeUpdateManyMutationInput, ModelTypeUncheckedUpdateManyInput>
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyInput>
     /**
-     * Filter which ModelTypes to update
+     * Filter which Categories to update
      * 
     **/
-    where?: ModelTypeWhereInput
+    where?: CategoryWhereInput
   }
 
 
   /**
-   * ModelType upsert
+   * Category upsert
    */
-  export type ModelTypeUpsertArgs = {
+  export type CategoryUpsertArgs = {
     /**
-     * Select specific fields to fetch from the ModelType
+     * Select specific fields to fetch from the Category
      * 
     **/
-    select?: ModelTypeSelect | null
+    select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelTypeInclude | null
+    include?: CategoryInclude | null
     /**
-     * The filter to search for the ModelType to update in case it exists.
+     * The filter to search for the Category to update in case it exists.
      * 
     **/
-    where: ModelTypeWhereUniqueInput
+    where: CategoryWhereUniqueInput
     /**
-     * In case the ModelType found by the `where` argument doesn't exist, create a new ModelType with this data.
+     * In case the Category found by the `where` argument doesn't exist, create a new Category with this data.
      * 
     **/
-    create: XOR<ModelTypeCreateInput, ModelTypeUncheckedCreateInput>
+    create: XOR<CategoryCreateInput, CategoryUncheckedCreateInput>
     /**
-     * In case the ModelType was found with the provided `where` argument, update it with this data.
+     * In case the Category was found with the provided `where` argument, update it with this data.
      * 
     **/
-    update: XOR<ModelTypeUpdateInput, ModelTypeUncheckedUpdateInput>
+    update: XOR<CategoryUpdateInput, CategoryUncheckedUpdateInput>
   }
 
 
   /**
-   * ModelType delete
+   * Category delete
    */
-  export type ModelTypeDeleteArgs = {
+  export type CategoryDeleteArgs = {
     /**
-     * Select specific fields to fetch from the ModelType
+     * Select specific fields to fetch from the Category
      * 
     **/
-    select?: ModelTypeSelect | null
+    select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelTypeInclude | null
+    include?: CategoryInclude | null
     /**
-     * Filter which ModelType to delete.
+     * Filter which Category to delete.
      * 
     **/
-    where: ModelTypeWhereUniqueInput
+    where: CategoryWhereUniqueInput
   }
 
 
   /**
-   * ModelType deleteMany
+   * Category deleteMany
    */
-  export type ModelTypeDeleteManyArgs = {
+  export type CategoryDeleteManyArgs = {
     /**
-     * Filter which ModelTypes to delete
+     * Filter which Categories to delete
      * 
     **/
-    where?: ModelTypeWhereInput
+    where?: CategoryWhereInput
   }
 
 
   /**
-   * ModelType without action
+   * Category without action
    */
-  export type ModelTypeArgs = {
+  export type CategoryArgs = {
     /**
-     * Select specific fields to fetch from the ModelType
+     * Select specific fields to fetch from the Category
      * 
     **/
-    select?: ModelTypeSelect | null
+    select?: CategorySelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelTypeInclude | null
+    include?: CategoryInclude | null
   }
 
 
 
   /**
-   * Model Model
+   * Model Item
    */
 
 
-  export type AggregateModel = {
-    _count: ModelCountAggregateOutputType | null
-    _min: ModelMinAggregateOutputType | null
-    _max: ModelMaxAggregateOutputType | null
+  export type AggregateItem = {
+    _count: ItemCountAggregateOutputType | null
+    _min: ItemMinAggregateOutputType | null
+    _max: ItemMaxAggregateOutputType | null
   }
 
-  export type ModelMinAggregateOutputType = {
+  export type ItemMinAggregateOutputType = {
     id: string | null
     pageId: string | null
-    modelTypeId: string | null
+    categoryId: string | null
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type ModelMaxAggregateOutputType = {
+  export type ItemMaxAggregateOutputType = {
     id: string | null
     pageId: string | null
-    modelTypeId: string | null
+    categoryId: string | null
     name: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
 
-  export type ModelCountAggregateOutputType = {
+  export type ItemCountAggregateOutputType = {
     id: number
     pageId: number
-    modelTypeId: number
+    categoryId: number
     name: number
     createdAt: number
     updatedAt: number
@@ -3640,280 +3694,298 @@ export namespace Prisma {
   }
 
 
-  export type ModelMinAggregateInputType = {
+  export type ItemMinAggregateInputType = {
     id?: true
     pageId?: true
-    modelTypeId?: true
+    categoryId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type ModelMaxAggregateInputType = {
+  export type ItemMaxAggregateInputType = {
     id?: true
     pageId?: true
-    modelTypeId?: true
+    categoryId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
   }
 
-  export type ModelCountAggregateInputType = {
+  export type ItemCountAggregateInputType = {
     id?: true
     pageId?: true
-    modelTypeId?: true
+    categoryId?: true
     name?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
   }
 
-  export type ModelAggregateArgs = {
+  export type ItemAggregateArgs = {
     /**
-     * Filter which Model to aggregate.
+     * Filter which Item to aggregate.
      * 
     **/
-    where?: ModelWhereInput
+    where?: ItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Models to fetch.
+     * Determine the order of Items to fetch.
      * 
     **/
-    orderBy?: Enumerable<ModelOrderByWithRelationInput>
+    orderBy?: Enumerable<ItemOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
      * Sets the start position
      * 
     **/
-    cursor?: ModelWhereUniqueInput
+    cursor?: ItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Models from the position of the cursor.
+     * Take `±n` Items from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Models.
+     * Skip the first `n` Items.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Count returned Models
+     * Count returned Items
     **/
-    _count?: true | ModelCountAggregateInputType
+    _count?: true | ItemCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the minimum value
     **/
-    _min?: ModelMinAggregateInputType
+    _min?: ItemMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
      * Select which fields to find the maximum value
     **/
-    _max?: ModelMaxAggregateInputType
+    _max?: ItemMaxAggregateInputType
   }
 
-  export type GetModelAggregateType<T extends ModelAggregateArgs> = {
-        [P in keyof T & keyof AggregateModel]: P extends '_count' | 'count'
+  export type GetItemAggregateType<T extends ItemAggregateArgs> = {
+        [P in keyof T & keyof AggregateItem]: P extends '_count' | 'count'
       ? T[P] extends true
         ? number
-        : GetScalarType<T[P], AggregateModel[P]>
-      : GetScalarType<T[P], AggregateModel[P]>
+        : GetScalarType<T[P], AggregateItem[P]>
+      : GetScalarType<T[P], AggregateItem[P]>
   }
 
 
 
 
-  export type ModelGroupByArgs = {
-    where?: ModelWhereInput
-    orderBy?: Enumerable<ModelOrderByWithAggregationInput>
-    by: Array<ModelScalarFieldEnum>
-    having?: ModelScalarWhereWithAggregatesInput
+  export type ItemGroupByArgs = {
+    where?: ItemWhereInput
+    orderBy?: Enumerable<ItemOrderByWithAggregationInput>
+    by: Array<ItemScalarFieldEnum>
+    having?: ItemScalarWhereWithAggregatesInput
     take?: number
     skip?: number
-    _count?: ModelCountAggregateInputType | true
-    _min?: ModelMinAggregateInputType
-    _max?: ModelMaxAggregateInputType
+    _count?: ItemCountAggregateInputType | true
+    _min?: ItemMinAggregateInputType
+    _max?: ItemMaxAggregateInputType
   }
 
 
-  export type ModelGroupByOutputType = {
+  export type ItemGroupByOutputType = {
     id: string
     pageId: string
-    modelTypeId: string
+    categoryId: string
     name: string
     createdAt: Date
     updatedAt: Date
-    _count: ModelCountAggregateOutputType | null
-    _min: ModelMinAggregateOutputType | null
-    _max: ModelMaxAggregateOutputType | null
+    _count: ItemCountAggregateOutputType | null
+    _min: ItemMinAggregateOutputType | null
+    _max: ItemMaxAggregateOutputType | null
   }
 
-  type GetModelGroupByPayload<T extends ModelGroupByArgs> = Promise<
+  type GetItemGroupByPayload<T extends ItemGroupByArgs> = Promise<
     Array<
-      PickArray<ModelGroupByOutputType, T['by']> &
+      PickArray<ItemGroupByOutputType, T['by']> &
         {
-          [P in ((keyof T) & (keyof ModelGroupByOutputType))]: P extends '_count'
+          [P in ((keyof T) & (keyof ItemGroupByOutputType))]: P extends '_count'
             ? T[P] extends boolean
               ? number
-              : GetScalarType<T[P], ModelGroupByOutputType[P]>
-            : GetScalarType<T[P], ModelGroupByOutputType[P]>
+              : GetScalarType<T[P], ItemGroupByOutputType[P]>
+            : GetScalarType<T[P], ItemGroupByOutputType[P]>
         }
       >
     >
 
 
-  export type ModelSelect = {
+  export type ItemSelect = {
     id?: boolean
     pageId?: boolean
-    modelTypeId?: boolean
+    categoryId?: boolean
     name?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     page?: boolean | PageArgs
-    modelType?: boolean | ModelTypeArgs
+    category?: boolean | CategoryArgs
+    connections?: boolean | ConnectionFindManyArgs
+    dependencies?: boolean | DependencyFindManyArgs
+    _count?: boolean | ItemCountOutputTypeArgs
   }
 
-  export type ModelInclude = {
+  export type ItemInclude = {
     page?: boolean | PageArgs
-    modelType?: boolean | ModelTypeArgs
+    category?: boolean | CategoryArgs
+    connections?: boolean | ConnectionFindManyArgs
+    dependencies?: boolean | DependencyFindManyArgs
+    _count?: boolean | ItemCountOutputTypeArgs
   }
 
-  export type ModelGetPayload<
-    S extends boolean | null | undefined | ModelArgs,
+  export type ItemGetPayload<
+    S extends boolean | null | undefined | ItemArgs,
     U = keyof S
       > = S extends true
-        ? Model
+        ? Item
     : S extends undefined
     ? never
-    : S extends ModelArgs | ModelFindManyArgs
+    : S extends ItemArgs | ItemFindManyArgs
     ?'include' extends U
-    ? Model  & {
+    ? Item  & {
     [P in TrueKeys<S['include']>]: 
           P extends 'page'
         ? PageGetPayload<S['include'][P]> :
-        P extends 'modelType'
-        ? ModelTypeGetPayload<S['include'][P]> : never
+        P extends 'category'
+        ? CategoryGetPayload<S['include'][P]> :
+        P extends 'connections'
+        ? Array < ConnectionGetPayload<S['include'][P]>>  :
+        P extends 'dependencies'
+        ? Array < DependencyGetPayload<S['include'][P]>>  :
+        P extends '_count'
+        ? ItemCountOutputTypeGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
-    [P in TrueKeys<S['select']>]: P extends keyof Model ?Model [P]
+    [P in TrueKeys<S['select']>]: P extends keyof Item ?Item [P]
   : 
           P extends 'page'
         ? PageGetPayload<S['select'][P]> :
-        P extends 'modelType'
-        ? ModelTypeGetPayload<S['select'][P]> : never
+        P extends 'category'
+        ? CategoryGetPayload<S['select'][P]> :
+        P extends 'connections'
+        ? Array < ConnectionGetPayload<S['select'][P]>>  :
+        P extends 'dependencies'
+        ? Array < DependencyGetPayload<S['select'][P]>>  :
+        P extends '_count'
+        ? ItemCountOutputTypeGetPayload<S['select'][P]> : never
   } 
-    : Model
-  : Model
+    : Item
+  : Item
 
 
-  type ModelCountArgs = Merge<
-    Omit<ModelFindManyArgs, 'select' | 'include'> & {
-      select?: ModelCountAggregateInputType | true
+  type ItemCountArgs = Merge<
+    Omit<ItemFindManyArgs, 'select' | 'include'> & {
+      select?: ItemCountAggregateInputType | true
     }
   >
 
-  export interface ModelDelegate<GlobalRejectSettings> {
+  export interface ItemDelegate<GlobalRejectSettings> {
     /**
-     * Find zero or one Model that matches the filter.
-     * @param {ModelFindUniqueArgs} args - Arguments to find a Model
+     * Find zero or one Item that matches the filter.
+     * @param {ItemFindUniqueArgs} args - Arguments to find a Item
      * @example
-     * // Get one Model
-     * const model = await prisma.model.findUnique({
+     * // Get one Item
+     * const item = await prisma.item.findUnique({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findUnique<T extends ModelFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, ModelFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Model'> extends True ? CheckSelect<T, Prisma__ModelClient<Model>, Prisma__ModelClient<ModelGetPayload<T>>> : CheckSelect<T, Prisma__ModelClient<Model | null >, Prisma__ModelClient<ModelGetPayload<T> | null >>
+    findUnique<T extends ItemFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ItemFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Item'> extends True ? CheckSelect<T, Prisma__ItemClient<Item>, Prisma__ItemClient<ItemGetPayload<T>>> : CheckSelect<T, Prisma__ItemClient<Item | null >, Prisma__ItemClient<ItemGetPayload<T> | null >>
 
     /**
-     * Find the first Model that matches the filter.
+     * Find the first Item that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelFindFirstArgs} args - Arguments to find a Model
+     * @param {ItemFindFirstArgs} args - Arguments to find a Item
      * @example
-     * // Get one Model
-     * const model = await prisma.model.findFirst({
+     * // Get one Item
+     * const item = await prisma.item.findFirst({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
     **/
-    findFirst<T extends ModelFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, ModelFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Model'> extends True ? CheckSelect<T, Prisma__ModelClient<Model>, Prisma__ModelClient<ModelGetPayload<T>>> : CheckSelect<T, Prisma__ModelClient<Model | null >, Prisma__ModelClient<ModelGetPayload<T> | null >>
+    findFirst<T extends ItemFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ItemFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Item'> extends True ? CheckSelect<T, Prisma__ItemClient<Item>, Prisma__ItemClient<ItemGetPayload<T>>> : CheckSelect<T, Prisma__ItemClient<Item | null >, Prisma__ItemClient<ItemGetPayload<T> | null >>
 
     /**
-     * Find zero or more Models that matches the filter.
+     * Find zero or more Items that matches the filter.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @param {ItemFindManyArgs=} args - Arguments to filter and select certain fields only.
      * @example
-     * // Get all Models
-     * const models = await prisma.model.findMany()
+     * // Get all Items
+     * const items = await prisma.item.findMany()
      * 
-     * // Get first 10 Models
-     * const models = await prisma.model.findMany({ take: 10 })
+     * // Get first 10 Items
+     * const items = await prisma.item.findMany({ take: 10 })
      * 
      * // Only select the `id`
-     * const modelWithIdOnly = await prisma.model.findMany({ select: { id: true } })
+     * const itemWithIdOnly = await prisma.item.findMany({ select: { id: true } })
      * 
     **/
-    findMany<T extends ModelFindManyArgs>(
-      args?: SelectSubset<T, ModelFindManyArgs>
-    ): CheckSelect<T, PrismaPromise<Array<Model>>, PrismaPromise<Array<ModelGetPayload<T>>>>
+    findMany<T extends ItemFindManyArgs>(
+      args?: SelectSubset<T, ItemFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Item>>, PrismaPromise<Array<ItemGetPayload<T>>>>
 
     /**
-     * Create a Model.
-     * @param {ModelCreateArgs} args - Arguments to create a Model.
+     * Create a Item.
+     * @param {ItemCreateArgs} args - Arguments to create a Item.
      * @example
-     * // Create one Model
-     * const Model = await prisma.model.create({
+     * // Create one Item
+     * const Item = await prisma.item.create({
      *   data: {
-     *     // ... data to create a Model
+     *     // ... data to create a Item
      *   }
      * })
      * 
     **/
-    create<T extends ModelCreateArgs>(
-      args: SelectSubset<T, ModelCreateArgs>
-    ): CheckSelect<T, Prisma__ModelClient<Model>, Prisma__ModelClient<ModelGetPayload<T>>>
+    create<T extends ItemCreateArgs>(
+      args: SelectSubset<T, ItemCreateArgs>
+    ): CheckSelect<T, Prisma__ItemClient<Item>, Prisma__ItemClient<ItemGetPayload<T>>>
 
     /**
-     * Delete a Model.
-     * @param {ModelDeleteArgs} args - Arguments to delete one Model.
+     * Delete a Item.
+     * @param {ItemDeleteArgs} args - Arguments to delete one Item.
      * @example
-     * // Delete one Model
-     * const Model = await prisma.model.delete({
+     * // Delete one Item
+     * const Item = await prisma.item.delete({
      *   where: {
-     *     // ... filter to delete one Model
+     *     // ... filter to delete one Item
      *   }
      * })
      * 
     **/
-    delete<T extends ModelDeleteArgs>(
-      args: SelectSubset<T, ModelDeleteArgs>
-    ): CheckSelect<T, Prisma__ModelClient<Model>, Prisma__ModelClient<ModelGetPayload<T>>>
+    delete<T extends ItemDeleteArgs>(
+      args: SelectSubset<T, ItemDeleteArgs>
+    ): CheckSelect<T, Prisma__ItemClient<Item>, Prisma__ItemClient<ItemGetPayload<T>>>
 
     /**
-     * Update one Model.
-     * @param {ModelUpdateArgs} args - Arguments to update one Model.
+     * Update one Item.
+     * @param {ItemUpdateArgs} args - Arguments to update one Item.
      * @example
-     * // Update one Model
-     * const model = await prisma.model.update({
+     * // Update one Item
+     * const item = await prisma.item.update({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3923,34 +3995,34 @@ export namespace Prisma {
      * })
      * 
     **/
-    update<T extends ModelUpdateArgs>(
-      args: SelectSubset<T, ModelUpdateArgs>
-    ): CheckSelect<T, Prisma__ModelClient<Model>, Prisma__ModelClient<ModelGetPayload<T>>>
+    update<T extends ItemUpdateArgs>(
+      args: SelectSubset<T, ItemUpdateArgs>
+    ): CheckSelect<T, Prisma__ItemClient<Item>, Prisma__ItemClient<ItemGetPayload<T>>>
 
     /**
-     * Delete zero or more Models.
-     * @param {ModelDeleteManyArgs} args - Arguments to filter Models to delete.
+     * Delete zero or more Items.
+     * @param {ItemDeleteManyArgs} args - Arguments to filter Items to delete.
      * @example
-     * // Delete a few Models
-     * const { count } = await prisma.model.deleteMany({
+     * // Delete a few Items
+     * const { count } = await prisma.item.deleteMany({
      *   where: {
      *     // ... provide filter here
      *   }
      * })
      * 
     **/
-    deleteMany<T extends ModelDeleteManyArgs>(
-      args?: SelectSubset<T, ModelDeleteManyArgs>
+    deleteMany<T extends ItemDeleteManyArgs>(
+      args?: SelectSubset<T, ItemDeleteManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Update zero or more Models.
+     * Update zero or more Items.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelUpdateManyArgs} args - Arguments to update one or more rows.
+     * @param {ItemUpdateManyArgs} args - Arguments to update one or more rows.
      * @example
-     * // Update many Models
-     * const model = await prisma.model.updateMany({
+     * // Update many Items
+     * const item = await prisma.item.updateMany({
      *   where: {
      *     // ... provide filter here
      *   },
@@ -3960,59 +4032,59 @@ export namespace Prisma {
      * })
      * 
     **/
-    updateMany<T extends ModelUpdateManyArgs>(
-      args: SelectSubset<T, ModelUpdateManyArgs>
+    updateMany<T extends ItemUpdateManyArgs>(
+      args: SelectSubset<T, ItemUpdateManyArgs>
     ): PrismaPromise<BatchPayload>
 
     /**
-     * Create or update one Model.
-     * @param {ModelUpsertArgs} args - Arguments to update or create a Model.
+     * Create or update one Item.
+     * @param {ItemUpsertArgs} args - Arguments to update or create a Item.
      * @example
-     * // Update or create a Model
-     * const model = await prisma.model.upsert({
+     * // Update or create a Item
+     * const item = await prisma.item.upsert({
      *   create: {
-     *     // ... data to create a Model
+     *     // ... data to create a Item
      *   },
      *   update: {
      *     // ... in case it already exists, update
      *   },
      *   where: {
-     *     // ... the filter for the Model we want to update
+     *     // ... the filter for the Item we want to update
      *   }
      * })
     **/
-    upsert<T extends ModelUpsertArgs>(
-      args: SelectSubset<T, ModelUpsertArgs>
-    ): CheckSelect<T, Prisma__ModelClient<Model>, Prisma__ModelClient<ModelGetPayload<T>>>
+    upsert<T extends ItemUpsertArgs>(
+      args: SelectSubset<T, ItemUpsertArgs>
+    ): CheckSelect<T, Prisma__ItemClient<Item>, Prisma__ItemClient<ItemGetPayload<T>>>
 
     /**
-     * Count the number of Models.
+     * Count the number of Items.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelCountArgs} args - Arguments to filter Models to count.
+     * @param {ItemCountArgs} args - Arguments to filter Items to count.
      * @example
-     * // Count the number of Models
-     * const count = await prisma.model.count({
+     * // Count the number of Items
+     * const count = await prisma.item.count({
      *   where: {
-     *     // ... the filter for the Models we want to count
+     *     // ... the filter for the Items we want to count
      *   }
      * })
     **/
-    count<T extends ModelCountArgs>(
-      args?: Subset<T, ModelCountArgs>,
+    count<T extends ItemCountArgs>(
+      args?: Subset<T, ItemCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
-          : GetScalarType<T['select'], ModelCountAggregateOutputType>
+          : GetScalarType<T['select'], ItemCountAggregateOutputType>
         : number
     >
 
     /**
-     * Allows you to perform aggregations operations on a Model.
+     * Allows you to perform aggregations operations on a Item.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @param {ItemAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
      * @example
      * // Ordered by age ascending
      * // Where email contains prisma.io
@@ -4032,13 +4104,13 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends ModelAggregateArgs>(args: Subset<T, ModelAggregateArgs>): PrismaPromise<GetModelAggregateType<T>>
+    aggregate<T extends ItemAggregateArgs>(args: Subset<T, ItemAggregateArgs>): PrismaPromise<GetItemAggregateType<T>>
 
     /**
-     * Group by Model.
+     * Group by Item.
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * @param {ModelGroupByArgs} args - Group by arguments.
+     * @param {ItemGroupByArgs} args - Group by arguments.
      * @example
      * // Group by city, order by createdAt, get count
      * const result = await prisma.user.groupBy({
@@ -4053,14 +4125,14 @@ export namespace Prisma {
      * 
     **/
     groupBy<
-      T extends ModelGroupByArgs,
+      T extends ItemGroupByArgs,
       HasSelectOrTake extends Or<
         Extends<'skip', Keys<T>>,
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ModelGroupByArgs['orderBy'] }
-        : { orderBy?: ModelGroupByArgs['orderBy'] },
+        ? { orderBy: ItemGroupByArgs['orderBy'] }
+        : { orderBy?: ItemGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -4109,16 +4181,16 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, ModelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetModelGroupByPayload<T> : Promise<InputErrors>
+    >(args: SubsetIntersection<T, ItemGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetItemGroupByPayload<T> : Promise<InputErrors>
   }
 
   /**
-   * The delegate class that acts as a "Promise-like" for Model.
+   * The delegate class that acts as a "Promise-like" for Item.
    * Why is this prefixed with `Prisma__`?
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__ModelClient<T> implements PrismaPromise<T> {
+  export class Prisma__ItemClient<T> implements PrismaPromise<T> {
     [prisma]: true;
     private readonly _dmmf;
     private readonly _fetcher;
@@ -4137,7 +4209,11 @@ export namespace Prisma {
 
     page<T extends PageArgs = {}>(args?: Subset<T, PageArgs>): CheckSelect<T, Prisma__PageClient<Page | null >, Prisma__PageClient<PageGetPayload<T> | null >>;
 
-    modelType<T extends ModelTypeArgs = {}>(args?: Subset<T, ModelTypeArgs>): CheckSelect<T, Prisma__ModelTypeClient<ModelType | null >, Prisma__ModelTypeClient<ModelTypeGetPayload<T> | null >>;
+    category<T extends CategoryArgs = {}>(args?: Subset<T, CategoryArgs>): CheckSelect<T, Prisma__CategoryClient<Category | null >, Prisma__CategoryClient<CategoryGetPayload<T> | null >>;
+
+    connections<T extends ConnectionFindManyArgs = {}>(args?: Subset<T, ConnectionFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Connection>>, PrismaPromise<Array<ConnectionGetPayload<T>>>>;
+
+    dependencies<T extends DependencyFindManyArgs = {}>(args?: Subset<T, DependencyFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Dependency>>, PrismaPromise<Array<DependencyGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -4165,291 +4241,291 @@ export namespace Prisma {
   // Custom InputTypes
 
   /**
-   * Model findUnique
+   * Item findUnique
    */
-  export type ModelFindUniqueArgs = {
+  export type ItemFindUniqueArgs = {
     /**
-     * Select specific fields to fetch from the Model
+     * Select specific fields to fetch from the Item
      * 
     **/
-    select?: ModelSelect | null
+    select?: ItemSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelInclude | null
+    include?: ItemInclude | null
     /**
-     * Throw an Error if a Model can't be found
+     * Throw an Error if a Item can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which Model to fetch.
+     * Filter, which Item to fetch.
      * 
     **/
-    where: ModelWhereUniqueInput
+    where: ItemWhereUniqueInput
   }
 
 
   /**
-   * Model findFirst
+   * Item findFirst
    */
-  export type ModelFindFirstArgs = {
+  export type ItemFindFirstArgs = {
     /**
-     * Select specific fields to fetch from the Model
+     * Select specific fields to fetch from the Item
      * 
     **/
-    select?: ModelSelect | null
+    select?: ItemSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelInclude | null
+    include?: ItemInclude | null
     /**
-     * Throw an Error if a Model can't be found
+     * Throw an Error if a Item can't be found
      * 
     **/
     rejectOnNotFound?: RejectOnNotFound
     /**
-     * Filter, which Model to fetch.
+     * Filter, which Item to fetch.
      * 
     **/
-    where?: ModelWhereInput
+    where?: ItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Models to fetch.
+     * Determine the order of Items to fetch.
      * 
     **/
-    orderBy?: Enumerable<ModelOrderByWithRelationInput>
+    orderBy?: Enumerable<ItemOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for searching for Models.
+     * Sets the position for searching for Items.
      * 
     **/
-    cursor?: ModelWhereUniqueInput
+    cursor?: ItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Models from the position of the cursor.
+     * Take `±n` Items from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Models.
+     * Skip the first `n` Items.
      * 
     **/
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
      * 
-     * Filter by unique combinations of Models.
+     * Filter by unique combinations of Items.
      * 
     **/
-    distinct?: Enumerable<ModelScalarFieldEnum>
+    distinct?: Enumerable<ItemScalarFieldEnum>
   }
 
 
   /**
-   * Model findMany
+   * Item findMany
    */
-  export type ModelFindManyArgs = {
+  export type ItemFindManyArgs = {
     /**
-     * Select specific fields to fetch from the Model
+     * Select specific fields to fetch from the Item
      * 
     **/
-    select?: ModelSelect | null
+    select?: ItemSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelInclude | null
+    include?: ItemInclude | null
     /**
-     * Filter, which Models to fetch.
+     * Filter, which Items to fetch.
      * 
     **/
-    where?: ModelWhereInput
+    where?: ItemWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
      * 
-     * Determine the order of Models to fetch.
+     * Determine the order of Items to fetch.
      * 
     **/
-    orderBy?: Enumerable<ModelOrderByWithRelationInput>
+    orderBy?: Enumerable<ItemOrderByWithRelationInput>
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
      * 
-     * Sets the position for listing Models.
+     * Sets the position for listing Items.
      * 
     **/
-    cursor?: ModelWhereUniqueInput
+    cursor?: ItemWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Take `±n` Models from the position of the cursor.
+     * Take `±n` Items from the position of the cursor.
      * 
     **/
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
      * 
-     * Skip the first `n` Models.
+     * Skip the first `n` Items.
      * 
     **/
     skip?: number
-    distinct?: Enumerable<ModelScalarFieldEnum>
+    distinct?: Enumerable<ItemScalarFieldEnum>
   }
 
 
   /**
-   * Model create
+   * Item create
    */
-  export type ModelCreateArgs = {
+  export type ItemCreateArgs = {
     /**
-     * Select specific fields to fetch from the Model
+     * Select specific fields to fetch from the Item
      * 
     **/
-    select?: ModelSelect | null
+    select?: ItemSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelInclude | null
+    include?: ItemInclude | null
     /**
-     * The data needed to create a Model.
+     * The data needed to create a Item.
      * 
     **/
-    data: XOR<ModelCreateInput, ModelUncheckedCreateInput>
+    data: XOR<ItemCreateInput, ItemUncheckedCreateInput>
   }
 
 
   /**
-   * Model update
+   * Item update
    */
-  export type ModelUpdateArgs = {
+  export type ItemUpdateArgs = {
     /**
-     * Select specific fields to fetch from the Model
+     * Select specific fields to fetch from the Item
      * 
     **/
-    select?: ModelSelect | null
+    select?: ItemSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelInclude | null
+    include?: ItemInclude | null
     /**
-     * The data needed to update a Model.
+     * The data needed to update a Item.
      * 
     **/
-    data: XOR<ModelUpdateInput, ModelUncheckedUpdateInput>
+    data: XOR<ItemUpdateInput, ItemUncheckedUpdateInput>
     /**
-     * Choose, which Model to update.
+     * Choose, which Item to update.
      * 
     **/
-    where: ModelWhereUniqueInput
+    where: ItemWhereUniqueInput
   }
 
 
   /**
-   * Model updateMany
+   * Item updateMany
    */
-  export type ModelUpdateManyArgs = {
+  export type ItemUpdateManyArgs = {
     /**
-     * The data used to update Models.
+     * The data used to update Items.
      * 
     **/
-    data: XOR<ModelUpdateManyMutationInput, ModelUncheckedUpdateManyInput>
+    data: XOR<ItemUpdateManyMutationInput, ItemUncheckedUpdateManyInput>
     /**
-     * Filter which Models to update
+     * Filter which Items to update
      * 
     **/
-    where?: ModelWhereInput
+    where?: ItemWhereInput
   }
 
 
   /**
-   * Model upsert
+   * Item upsert
    */
-  export type ModelUpsertArgs = {
+  export type ItemUpsertArgs = {
     /**
-     * Select specific fields to fetch from the Model
+     * Select specific fields to fetch from the Item
      * 
     **/
-    select?: ModelSelect | null
+    select?: ItemSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelInclude | null
+    include?: ItemInclude | null
     /**
-     * The filter to search for the Model to update in case it exists.
+     * The filter to search for the Item to update in case it exists.
      * 
     **/
-    where: ModelWhereUniqueInput
+    where: ItemWhereUniqueInput
     /**
-     * In case the Model found by the `where` argument doesn't exist, create a new Model with this data.
+     * In case the Item found by the `where` argument doesn't exist, create a new Item with this data.
      * 
     **/
-    create: XOR<ModelCreateInput, ModelUncheckedCreateInput>
+    create: XOR<ItemCreateInput, ItemUncheckedCreateInput>
     /**
-     * In case the Model was found with the provided `where` argument, update it with this data.
+     * In case the Item was found with the provided `where` argument, update it with this data.
      * 
     **/
-    update: XOR<ModelUpdateInput, ModelUncheckedUpdateInput>
+    update: XOR<ItemUpdateInput, ItemUncheckedUpdateInput>
   }
 
 
   /**
-   * Model delete
+   * Item delete
    */
-  export type ModelDeleteArgs = {
+  export type ItemDeleteArgs = {
     /**
-     * Select specific fields to fetch from the Model
+     * Select specific fields to fetch from the Item
      * 
     **/
-    select?: ModelSelect | null
+    select?: ItemSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelInclude | null
+    include?: ItemInclude | null
     /**
-     * Filter which Model to delete.
+     * Filter which Item to delete.
      * 
     **/
-    where: ModelWhereUniqueInput
+    where: ItemWhereUniqueInput
   }
 
 
   /**
-   * Model deleteMany
+   * Item deleteMany
    */
-  export type ModelDeleteManyArgs = {
+  export type ItemDeleteManyArgs = {
     /**
-     * Filter which Models to delete
+     * Filter which Items to delete
      * 
     **/
-    where?: ModelWhereInput
+    where?: ItemWhereInput
   }
 
 
   /**
-   * Model without action
+   * Item without action
    */
-  export type ModelArgs = {
+  export type ItemArgs = {
     /**
-     * Select specific fields to fetch from the Model
+     * Select specific fields to fetch from the Item
      * 
     **/
-    select?: ModelSelect | null
+    select?: ItemSelect | null
     /**
      * Choose, which related nodes to fetch as well.
      * 
     **/
-    include?: ModelInclude | null
+    include?: ItemInclude | null
   }
 
 
@@ -4466,6 +4542,7 @@ export namespace Prisma {
   }
 
   export type ConnectionMinAggregateOutputType = {
+    id: string | null
     from: string | null
     to: string | null
     createdAt: Date | null
@@ -4473,6 +4550,7 @@ export namespace Prisma {
   }
 
   export type ConnectionMaxAggregateOutputType = {
+    id: string | null
     from: string | null
     to: string | null
     createdAt: Date | null
@@ -4480,6 +4558,7 @@ export namespace Prisma {
   }
 
   export type ConnectionCountAggregateOutputType = {
+    id: number
     from: number
     to: number
     createdAt: number
@@ -4489,6 +4568,7 @@ export namespace Prisma {
 
 
   export type ConnectionMinAggregateInputType = {
+    id?: true
     from?: true
     to?: true
     createdAt?: true
@@ -4496,6 +4576,7 @@ export namespace Prisma {
   }
 
   export type ConnectionMaxAggregateInputType = {
+    id?: true
     from?: true
     to?: true
     createdAt?: true
@@ -4503,6 +4584,7 @@ export namespace Prisma {
   }
 
   export type ConnectionCountAggregateInputType = {
+    id?: true
     from?: true
     to?: true
     createdAt?: true
@@ -4589,6 +4671,7 @@ export namespace Prisma {
 
 
   export type ConnectionGroupByOutputType = {
+    id: string
     from: string
     to: string
     createdAt: Date
@@ -4613,10 +4696,16 @@ export namespace Prisma {
 
 
   export type ConnectionSelect = {
+    id?: boolean
     from?: boolean
     to?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    item?: boolean | ItemArgs
+  }
+
+  export type ConnectionInclude = {
+    item?: boolean | ItemArgs
   }
 
   export type ConnectionGetPayload<
@@ -4628,12 +4717,17 @@ export namespace Prisma {
     ? never
     : S extends ConnectionArgs | ConnectionFindManyArgs
     ?'include' extends U
-    ? Connection 
+    ? Connection  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'item'
+        ? ItemGetPayload<S['include'][P]> : never
+  } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof Connection ?Connection [P]
   : 
-     never
+          P extends 'item'
+        ? ItemGetPayload<S['select'][P]> : never
   } 
     : Connection
   : Connection
@@ -4690,8 +4784,8 @@ export namespace Prisma {
      * // Get first 10 Connections
      * const connections = await prisma.connection.findMany({ take: 10 })
      * 
-     * // Only select the `from`
-     * const connectionWithFromOnly = await prisma.connection.findMany({ select: { from: true } })
+     * // Only select the `id`
+     * const connectionWithIdOnly = await prisma.connection.findMany({ select: { id: true } })
      * 
     **/
     findMany<T extends ConnectionFindManyArgs>(
@@ -4957,6 +5051,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
+    item<T extends ItemArgs = {}>(args?: Subset<T, ItemArgs>): CheckSelect<T, Prisma__ItemClient<Item | null >, Prisma__ItemClient<ItemGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -4993,6 +5088,11 @@ export namespace Prisma {
     **/
     select?: ConnectionSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ConnectionInclude | null
+    /**
      * Throw an Error if a Connection can't be found
      * 
     **/
@@ -5014,6 +5114,11 @@ export namespace Prisma {
      * 
     **/
     select?: ConnectionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ConnectionInclude | null
     /**
      * Throw an Error if a Connection can't be found
      * 
@@ -5072,6 +5177,11 @@ export namespace Prisma {
     **/
     select?: ConnectionSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ConnectionInclude | null
+    /**
      * Filter, which Connections to fetch.
      * 
     **/
@@ -5118,6 +5228,11 @@ export namespace Prisma {
     **/
     select?: ConnectionSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ConnectionInclude | null
+    /**
      * The data needed to create a Connection.
      * 
     **/
@@ -5134,6 +5249,11 @@ export namespace Prisma {
      * 
     **/
     select?: ConnectionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ConnectionInclude | null
     /**
      * The data needed to update a Connection.
      * 
@@ -5174,6 +5294,11 @@ export namespace Prisma {
     **/
     select?: ConnectionSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ConnectionInclude | null
+    /**
      * The filter to search for the Connection to update in case it exists.
      * 
     **/
@@ -5200,6 +5325,11 @@ export namespace Prisma {
      * 
     **/
     select?: ConnectionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ConnectionInclude | null
     /**
      * Filter which Connection to delete.
      * 
@@ -5229,6 +5359,11 @@ export namespace Prisma {
      * 
     **/
     select?: ConnectionSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ConnectionInclude | null
   }
 
 
@@ -5245,6 +5380,7 @@ export namespace Prisma {
   }
 
   export type DependencyMinAggregateOutputType = {
+    id: string | null
     parent: string | null
     child: string | null
     createdAt: Date | null
@@ -5252,6 +5388,7 @@ export namespace Prisma {
   }
 
   export type DependencyMaxAggregateOutputType = {
+    id: string | null
     parent: string | null
     child: string | null
     createdAt: Date | null
@@ -5259,6 +5396,7 @@ export namespace Prisma {
   }
 
   export type DependencyCountAggregateOutputType = {
+    id: number
     parent: number
     child: number
     createdAt: number
@@ -5268,6 +5406,7 @@ export namespace Prisma {
 
 
   export type DependencyMinAggregateInputType = {
+    id?: true
     parent?: true
     child?: true
     createdAt?: true
@@ -5275,6 +5414,7 @@ export namespace Prisma {
   }
 
   export type DependencyMaxAggregateInputType = {
+    id?: true
     parent?: true
     child?: true
     createdAt?: true
@@ -5282,6 +5422,7 @@ export namespace Prisma {
   }
 
   export type DependencyCountAggregateInputType = {
+    id?: true
     parent?: true
     child?: true
     createdAt?: true
@@ -5368,6 +5509,7 @@ export namespace Prisma {
 
 
   export type DependencyGroupByOutputType = {
+    id: string
     parent: string
     child: string
     createdAt: Date
@@ -5392,10 +5534,16 @@ export namespace Prisma {
 
 
   export type DependencySelect = {
+    id?: boolean
     parent?: boolean
     child?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    item?: boolean | ItemArgs
+  }
+
+  export type DependencyInclude = {
+    item?: boolean | ItemArgs
   }
 
   export type DependencyGetPayload<
@@ -5407,12 +5555,17 @@ export namespace Prisma {
     ? never
     : S extends DependencyArgs | DependencyFindManyArgs
     ?'include' extends U
-    ? Dependency 
+    ? Dependency  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'item'
+        ? ItemGetPayload<S['include'][P]> : never
+  } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof Dependency ?Dependency [P]
   : 
-     never
+          P extends 'item'
+        ? ItemGetPayload<S['select'][P]> : never
   } 
     : Dependency
   : Dependency
@@ -5469,8 +5622,8 @@ export namespace Prisma {
      * // Get first 10 Dependencies
      * const dependencies = await prisma.dependency.findMany({ take: 10 })
      * 
-     * // Only select the `parent`
-     * const dependencyWithParentOnly = await prisma.dependency.findMany({ select: { parent: true } })
+     * // Only select the `id`
+     * const dependencyWithIdOnly = await prisma.dependency.findMany({ select: { id: true } })
      * 
     **/
     findMany<T extends DependencyFindManyArgs>(
@@ -5736,6 +5889,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
+    item<T extends ItemArgs = {}>(args?: Subset<T, ItemArgs>): CheckSelect<T, Prisma__ItemClient<Item | null >, Prisma__ItemClient<ItemGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -5772,6 +5926,11 @@ export namespace Prisma {
     **/
     select?: DependencySelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: DependencyInclude | null
+    /**
      * Throw an Error if a Dependency can't be found
      * 
     **/
@@ -5793,6 +5952,11 @@ export namespace Prisma {
      * 
     **/
     select?: DependencySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: DependencyInclude | null
     /**
      * Throw an Error if a Dependency can't be found
      * 
@@ -5851,6 +6015,11 @@ export namespace Prisma {
     **/
     select?: DependencySelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: DependencyInclude | null
+    /**
      * Filter, which Dependencies to fetch.
      * 
     **/
@@ -5897,6 +6066,11 @@ export namespace Prisma {
     **/
     select?: DependencySelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: DependencyInclude | null
+    /**
      * The data needed to create a Dependency.
      * 
     **/
@@ -5913,6 +6087,11 @@ export namespace Prisma {
      * 
     **/
     select?: DependencySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: DependencyInclude | null
     /**
      * The data needed to update a Dependency.
      * 
@@ -5953,6 +6132,11 @@ export namespace Prisma {
     **/
     select?: DependencySelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: DependencyInclude | null
+    /**
      * The filter to search for the Dependency to update in case it exists.
      * 
     **/
@@ -5979,6 +6163,11 @@ export namespace Prisma {
      * 
     **/
     select?: DependencySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: DependencyInclude | null
     /**
      * Filter which Dependency to delete.
      * 
@@ -6008,6 +6197,11 @@ export namespace Prisma {
      * 
     **/
     select?: DependencySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: DependencyInclude | null
   }
 
 
@@ -6041,7 +6235,7 @@ export namespace Prisma {
   export type PageScalarFieldEnum = (typeof PageScalarFieldEnum)[keyof typeof PageScalarFieldEnum]
 
 
-  export const ModelTypeScalarFieldEnum: {
+  export const CategoryScalarFieldEnum: {
     id: 'id',
     projectId: 'projectId',
     name: 'name',
@@ -6049,22 +6243,23 @@ export namespace Prisma {
     updatedAt: 'updatedAt'
   };
 
-  export type ModelTypeScalarFieldEnum = (typeof ModelTypeScalarFieldEnum)[keyof typeof ModelTypeScalarFieldEnum]
+  export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
 
 
-  export const ModelScalarFieldEnum: {
+  export const ItemScalarFieldEnum: {
     id: 'id',
     pageId: 'pageId',
-    modelTypeId: 'modelTypeId',
+    categoryId: 'categoryId',
     name: 'name',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
-  export type ModelScalarFieldEnum = (typeof ModelScalarFieldEnum)[keyof typeof ModelScalarFieldEnum]
+  export type ItemScalarFieldEnum = (typeof ItemScalarFieldEnum)[keyof typeof ItemScalarFieldEnum]
 
 
   export const ConnectionScalarFieldEnum: {
+    id: 'id',
     from: 'from',
     to: 'to',
     createdAt: 'createdAt',
@@ -6075,6 +6270,7 @@ export namespace Prisma {
 
 
   export const DependencyScalarFieldEnum: {
+    id: 'id',
     parent: 'parent',
     child: 'child',
     createdAt: 'createdAt',
@@ -6105,8 +6301,8 @@ export namespace Prisma {
     name?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
-    Page?: PageListRelationFilter
-    ModelType?: ModelTypeListRelationFilter
+    pages?: PageListRelationFilter
+    categories?: CategoryListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -6114,8 +6310,8 @@ export namespace Prisma {
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    Page?: PageOrderByRelationAggregateInput
-    ModelType?: ModelTypeOrderByRelationAggregateInput
+    pages?: PageOrderByRelationAggregateInput
+    categories?: CategoryOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = {
@@ -6153,7 +6349,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
     project?: XOR<ProjectRelationFilter, ProjectWhereInput>
-    Model?: ModelListRelationFilter
+    items?: ItemListRelationFilter
   }
 
   export type PageOrderByWithRelationInput = {
@@ -6164,7 +6360,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     project?: ProjectOrderByWithRelationInput
-    Model?: ModelOrderByRelationAggregateInput
+    items?: ItemOrderByRelationAggregateInput
   }
 
   export type PageWhereUniqueInput = {
@@ -6199,48 +6395,48 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
-  export type ModelTypeWhereInput = {
-    AND?: Enumerable<ModelTypeWhereInput>
-    OR?: Enumerable<ModelTypeWhereInput>
-    NOT?: Enumerable<ModelTypeWhereInput>
+  export type CategoryWhereInput = {
+    AND?: Enumerable<CategoryWhereInput>
+    OR?: Enumerable<CategoryWhereInput>
+    NOT?: Enumerable<CategoryWhereInput>
     id?: StringFilter | string
     projectId?: StringFilter | string
     name?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
-    Model?: ModelListRelationFilter
+    items?: ItemListRelationFilter
     project?: XOR<ProjectRelationFilter, ProjectWhereInput>
   }
 
-  export type ModelTypeOrderByWithRelationInput = {
+  export type CategoryOrderByWithRelationInput = {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    Model?: ModelOrderByRelationAggregateInput
+    items?: ItemOrderByRelationAggregateInput
     project?: ProjectOrderByWithRelationInput
   }
 
-  export type ModelTypeWhereUniqueInput = {
+  export type CategoryWhereUniqueInput = {
     id?: string
   }
 
-  export type ModelTypeOrderByWithAggregationInput = {
+  export type CategoryOrderByWithAggregationInput = {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: ModelTypeCountOrderByAggregateInput
-    _max?: ModelTypeMaxOrderByAggregateInput
-    _min?: ModelTypeMinOrderByAggregateInput
+    _count?: CategoryCountOrderByAggregateInput
+    _max?: CategoryMaxOrderByAggregateInput
+    _min?: CategoryMinOrderByAggregateInput
   }
 
-  export type ModelTypeScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<ModelTypeScalarWhereWithAggregatesInput>
-    OR?: Enumerable<ModelTypeScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<ModelTypeScalarWhereWithAggregatesInput>
+  export type CategoryScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<CategoryScalarWhereWithAggregatesInput>
+    OR?: Enumerable<CategoryScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<CategoryScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     projectId?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
@@ -6248,54 +6444,58 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
-  export type ModelWhereInput = {
-    AND?: Enumerable<ModelWhereInput>
-    OR?: Enumerable<ModelWhereInput>
-    NOT?: Enumerable<ModelWhereInput>
+  export type ItemWhereInput = {
+    AND?: Enumerable<ItemWhereInput>
+    OR?: Enumerable<ItemWhereInput>
+    NOT?: Enumerable<ItemWhereInput>
     id?: StringFilter | string
     pageId?: StringFilter | string
-    modelTypeId?: StringFilter | string
+    categoryId?: StringFilter | string
     name?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
     page?: XOR<PageRelationFilter, PageWhereInput>
-    modelType?: XOR<ModelTypeRelationFilter, ModelTypeWhereInput>
+    category?: XOR<CategoryRelationFilter, CategoryWhereInput>
+    connections?: ConnectionListRelationFilter
+    dependencies?: DependencyListRelationFilter
   }
 
-  export type ModelOrderByWithRelationInput = {
+  export type ItemOrderByWithRelationInput = {
     id?: SortOrder
     pageId?: SortOrder
-    modelTypeId?: SortOrder
+    categoryId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     page?: PageOrderByWithRelationInput
-    modelType?: ModelTypeOrderByWithRelationInput
+    category?: CategoryOrderByWithRelationInput
+    connections?: ConnectionOrderByRelationAggregateInput
+    dependencies?: DependencyOrderByRelationAggregateInput
   }
 
-  export type ModelWhereUniqueInput = {
+  export type ItemWhereUniqueInput = {
     id?: string
   }
 
-  export type ModelOrderByWithAggregationInput = {
+  export type ItemOrderByWithAggregationInput = {
     id?: SortOrder
     pageId?: SortOrder
-    modelTypeId?: SortOrder
+    categoryId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    _count?: ModelCountOrderByAggregateInput
-    _max?: ModelMaxOrderByAggregateInput
-    _min?: ModelMinOrderByAggregateInput
+    _count?: ItemCountOrderByAggregateInput
+    _max?: ItemMaxOrderByAggregateInput
+    _min?: ItemMinOrderByAggregateInput
   }
 
-  export type ModelScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<ModelScalarWhereWithAggregatesInput>
-    OR?: Enumerable<ModelScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<ModelScalarWhereWithAggregatesInput>
+  export type ItemScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ItemScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ItemScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ItemScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     pageId?: StringWithAggregatesFilter | string
-    modelTypeId?: StringWithAggregatesFilter | string
+    categoryId?: StringWithAggregatesFilter | string
     name?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
@@ -6305,24 +6505,30 @@ export namespace Prisma {
     AND?: Enumerable<ConnectionWhereInput>
     OR?: Enumerable<ConnectionWhereInput>
     NOT?: Enumerable<ConnectionWhereInput>
+    id?: StringFilter | string
     from?: StringFilter | string
     to?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
+    item?: XOR<ItemRelationFilter, ItemWhereInput>
   }
 
   export type ConnectionOrderByWithRelationInput = {
+    id?: SortOrder
     from?: SortOrder
     to?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    item?: ItemOrderByWithRelationInput
   }
 
   export type ConnectionWhereUniqueInput = {
+    id?: string
     from_to?: ConnectionFromToCompoundUniqueInput
   }
 
   export type ConnectionOrderByWithAggregationInput = {
+    id?: SortOrder
     from?: SortOrder
     to?: SortOrder
     createdAt?: SortOrder
@@ -6336,6 +6542,7 @@ export namespace Prisma {
     AND?: Enumerable<ConnectionScalarWhereWithAggregatesInput>
     OR?: Enumerable<ConnectionScalarWhereWithAggregatesInput>
     NOT?: Enumerable<ConnectionScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
     from?: StringWithAggregatesFilter | string
     to?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
@@ -6346,24 +6553,30 @@ export namespace Prisma {
     AND?: Enumerable<DependencyWhereInput>
     OR?: Enumerable<DependencyWhereInput>
     NOT?: Enumerable<DependencyWhereInput>
+    id?: StringFilter | string
     parent?: StringFilter | string
     child?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
+    item?: XOR<ItemRelationFilter, ItemWhereInput>
   }
 
   export type DependencyOrderByWithRelationInput = {
+    id?: SortOrder
     parent?: SortOrder
     child?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    item?: ItemOrderByWithRelationInput
   }
 
   export type DependencyWhereUniqueInput = {
+    id?: string
     parent_child?: DependencyParentChildCompoundUniqueInput
   }
 
   export type DependencyOrderByWithAggregationInput = {
+    id?: SortOrder
     parent?: SortOrder
     child?: SortOrder
     createdAt?: SortOrder
@@ -6377,6 +6590,7 @@ export namespace Prisma {
     AND?: Enumerable<DependencyScalarWhereWithAggregatesInput>
     OR?: Enumerable<DependencyScalarWhereWithAggregatesInput>
     NOT?: Enumerable<DependencyScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
     parent?: StringWithAggregatesFilter | string
     child?: StringWithAggregatesFilter | string
     createdAt?: DateTimeWithAggregatesFilter | Date | string
@@ -6388,8 +6602,8 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Page?: PageCreateNestedManyWithoutProjectInput
-    ModelType?: ModelTypeCreateNestedManyWithoutProjectInput
+    pages?: PageCreateNestedManyWithoutProjectInput
+    categories?: CategoryCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -6397,8 +6611,8 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Page?: PageUncheckedCreateNestedManyWithoutProjectInput
-    ModelType?: ModelTypeUncheckedCreateNestedManyWithoutProjectInput
+    pages?: PageUncheckedCreateNestedManyWithoutProjectInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -6406,8 +6620,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Page?: PageUpdateManyWithoutProjectInput
-    ModelType?: ModelTypeUpdateManyWithoutProjectInput
+    pages?: PageUpdateManyWithoutProjectInput
+    categories?: CategoryUpdateManyWithoutProjectInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -6415,8 +6629,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Page?: PageUncheckedUpdateManyWithoutProjectInput
-    ModelType?: ModelTypeUncheckedUpdateManyWithoutProjectInput
+    pages?: PageUncheckedUpdateManyWithoutProjectInput
+    categories?: CategoryUncheckedUpdateManyWithoutProjectInput
   }
 
   export type ProjectUpdateManyMutationInput = {
@@ -6439,8 +6653,8 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    project: ProjectCreateNestedOneWithoutPageInput
-    Model?: ModelCreateNestedManyWithoutPageInput
+    project: ProjectCreateNestedOneWithoutPagesInput
+    items?: ItemCreateNestedManyWithoutPageInput
   }
 
   export type PageUncheckedCreateInput = {
@@ -6450,7 +6664,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Model?: ModelUncheckedCreateNestedManyWithoutPageInput
+    items?: ItemUncheckedCreateNestedManyWithoutPageInput
   }
 
   export type PageUpdateInput = {
@@ -6459,8 +6673,8 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    project?: ProjectUpdateOneRequiredWithoutPageInput
-    Model?: ModelUpdateManyWithoutPageInput
+    project?: ProjectUpdateOneRequiredWithoutPagesInput
+    items?: ItemUpdateManyWithoutPageInput
   }
 
   export type PageUncheckedUpdateInput = {
@@ -6470,7 +6684,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Model?: ModelUncheckedUpdateManyWithoutPageInput
+    items?: ItemUncheckedUpdateManyWithoutPageInput
   }
 
   export type PageUpdateManyMutationInput = {
@@ -6490,117 +6704,127 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ModelTypeCreateInput = {
+  export type CategoryCreateInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Model?: ModelCreateNestedManyWithoutModelTypeInput
-    project: ProjectCreateNestedOneWithoutModelTypeInput
+    items?: ItemCreateNestedManyWithoutCategoryInput
+    project: ProjectCreateNestedOneWithoutCategoriesInput
   }
 
-  export type ModelTypeUncheckedCreateInput = {
+  export type CategoryUncheckedCreateInput = {
     id?: string
     projectId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Model?: ModelUncheckedCreateNestedManyWithoutModelTypeInput
+    items?: ItemUncheckedCreateNestedManyWithoutCategoryInput
   }
 
-  export type ModelTypeUpdateInput = {
+  export type CategoryUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Model?: ModelUpdateManyWithoutModelTypeInput
-    project?: ProjectUpdateOneRequiredWithoutModelTypeInput
+    items?: ItemUpdateManyWithoutCategoryInput
+    project?: ProjectUpdateOneRequiredWithoutCategoriesInput
   }
 
-  export type ModelTypeUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    projectId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Model?: ModelUncheckedUpdateManyWithoutModelTypeInput
-  }
-
-  export type ModelTypeUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ModelTypeUncheckedUpdateManyInput = {
+  export type CategoryUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     projectId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    items?: ItemUncheckedUpdateManyWithoutCategoryInput
   }
 
-  export type ModelCreateInput = {
+  export type CategoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CategoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    projectId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ItemCreateInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    page: PageCreateNestedOneWithoutModelInput
-    modelType: ModelTypeCreateNestedOneWithoutModelInput
+    page: PageCreateNestedOneWithoutItemsInput
+    category: CategoryCreateNestedOneWithoutItemsInput
+    connections?: ConnectionCreateNestedManyWithoutItemInput
+    dependencies?: DependencyCreateNestedManyWithoutItemInput
   }
 
-  export type ModelUncheckedCreateInput = {
+  export type ItemUncheckedCreateInput = {
     id?: string
     pageId: string
-    modelTypeId: string
+    categoryId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    connections?: ConnectionUncheckedCreateNestedManyWithoutItemInput
+    dependencies?: DependencyUncheckedCreateNestedManyWithoutItemInput
   }
 
-  export type ModelUpdateInput = {
+  export type ItemUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    page?: PageUpdateOneRequiredWithoutModelInput
-    modelType?: ModelTypeUpdateOneRequiredWithoutModelInput
+    page?: PageUpdateOneRequiredWithoutItemsInput
+    category?: CategoryUpdateOneRequiredWithoutItemsInput
+    connections?: ConnectionUpdateManyWithoutItemInput
+    dependencies?: DependencyUpdateManyWithoutItemInput
   }
 
-  export type ModelUncheckedUpdateInput = {
+  export type ItemUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     pageId?: StringFieldUpdateOperationsInput | string
-    modelTypeId?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    connections?: ConnectionUncheckedUpdateManyWithoutItemInput
+    dependencies?: DependencyUncheckedUpdateManyWithoutItemInput
   }
 
-  export type ModelUpdateManyMutationInput = {
+  export type ItemUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ModelUncheckedUpdateManyInput = {
+  export type ItemUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     pageId?: StringFieldUpdateOperationsInput | string
-    modelTypeId?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ConnectionCreateInput = {
-    from: string
+    id?: string
     to: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    item: ItemCreateNestedOneWithoutConnectionsInput
   }
 
   export type ConnectionUncheckedCreateInput = {
+    id?: string
     from: string
     to: string
     createdAt?: Date | string
@@ -6608,13 +6832,15 @@ export namespace Prisma {
   }
 
   export type ConnectionUpdateInput = {
-    from?: StringFieldUpdateOperationsInput | string
+    id?: StringFieldUpdateOperationsInput | string
     to?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    item?: ItemUpdateOneRequiredWithoutConnectionsInput
   }
 
   export type ConnectionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     from?: StringFieldUpdateOperationsInput | string
     to?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6622,13 +6848,14 @@ export namespace Prisma {
   }
 
   export type ConnectionUpdateManyMutationInput = {
-    from?: StringFieldUpdateOperationsInput | string
+    id?: StringFieldUpdateOperationsInput | string
     to?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ConnectionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
     from?: StringFieldUpdateOperationsInput | string
     to?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6636,13 +6863,15 @@ export namespace Prisma {
   }
 
   export type DependencyCreateInput = {
-    parent: string
+    id?: string
     child: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    item: ItemCreateNestedOneWithoutDependenciesInput
   }
 
   export type DependencyUncheckedCreateInput = {
+    id?: string
     parent: string
     child: string
     createdAt?: Date | string
@@ -6650,13 +6879,15 @@ export namespace Prisma {
   }
 
   export type DependencyUpdateInput = {
-    parent?: StringFieldUpdateOperationsInput | string
+    id?: StringFieldUpdateOperationsInput | string
     child?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    item?: ItemUpdateOneRequiredWithoutDependenciesInput
   }
 
   export type DependencyUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
     parent?: StringFieldUpdateOperationsInput | string
     child?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6664,13 +6895,14 @@ export namespace Prisma {
   }
 
   export type DependencyUpdateManyMutationInput = {
-    parent?: StringFieldUpdateOperationsInput | string
+    id?: StringFieldUpdateOperationsInput | string
     child?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DependencyUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
     parent?: StringFieldUpdateOperationsInput | string
     child?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -6708,17 +6940,17 @@ export namespace Prisma {
     none?: PageWhereInput
   }
 
-  export type ModelTypeListRelationFilter = {
-    every?: ModelTypeWhereInput
-    some?: ModelTypeWhereInput
-    none?: ModelTypeWhereInput
+  export type CategoryListRelationFilter = {
+    every?: CategoryWhereInput
+    some?: CategoryWhereInput
+    none?: CategoryWhereInput
   }
 
   export type PageOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type ModelTypeOrderByRelationAggregateInput = {
+  export type CategoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6790,13 +7022,13 @@ export namespace Prisma {
     isNot?: ProjectWhereInput
   }
 
-  export type ModelListRelationFilter = {
-    every?: ModelWhereInput
-    some?: ModelWhereInput
-    none?: ModelWhereInput
+  export type ItemListRelationFilter = {
+    every?: ItemWhereInput
+    some?: ItemWhereInput
+    none?: ItemWhereInput
   }
 
-  export type ModelOrderByRelationAggregateInput = {
+  export type ItemOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6861,7 +7093,7 @@ export namespace Prisma {
     _max?: NestedIntFilter
   }
 
-  export type ModelTypeCountOrderByAggregateInput = {
+  export type CategoryCountOrderByAggregateInput = {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
@@ -6869,7 +7101,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type ModelTypeMaxOrderByAggregateInput = {
+  export type CategoryMaxOrderByAggregateInput = {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
@@ -6877,7 +7109,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type ModelTypeMinOrderByAggregateInput = {
+  export type CategoryMinOrderByAggregateInput = {
     id?: SortOrder
     projectId?: SortOrder
     name?: SortOrder
@@ -6890,36 +7122,61 @@ export namespace Prisma {
     isNot?: PageWhereInput
   }
 
-  export type ModelTypeRelationFilter = {
-    is?: ModelTypeWhereInput
-    isNot?: ModelTypeWhereInput
+  export type CategoryRelationFilter = {
+    is?: CategoryWhereInput
+    isNot?: CategoryWhereInput
   }
 
-  export type ModelCountOrderByAggregateInput = {
+  export type ConnectionListRelationFilter = {
+    every?: ConnectionWhereInput
+    some?: ConnectionWhereInput
+    none?: ConnectionWhereInput
+  }
+
+  export type DependencyListRelationFilter = {
+    every?: DependencyWhereInput
+    some?: DependencyWhereInput
+    none?: DependencyWhereInput
+  }
+
+  export type ConnectionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DependencyOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ItemCountOrderByAggregateInput = {
     id?: SortOrder
     pageId?: SortOrder
-    modelTypeId?: SortOrder
+    categoryId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type ModelMaxOrderByAggregateInput = {
+  export type ItemMaxOrderByAggregateInput = {
     id?: SortOrder
     pageId?: SortOrder
-    modelTypeId?: SortOrder
+    categoryId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
 
-  export type ModelMinOrderByAggregateInput = {
+  export type ItemMinOrderByAggregateInput = {
     id?: SortOrder
     pageId?: SortOrder
-    modelTypeId?: SortOrder
+    categoryId?: SortOrder
     name?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type ItemRelationFilter = {
+    is?: ItemWhereInput
+    isNot?: ItemWhereInput
   }
 
   export type ConnectionFromToCompoundUniqueInput = {
@@ -6928,6 +7185,7 @@ export namespace Prisma {
   }
 
   export type ConnectionCountOrderByAggregateInput = {
+    id?: SortOrder
     from?: SortOrder
     to?: SortOrder
     createdAt?: SortOrder
@@ -6935,6 +7193,7 @@ export namespace Prisma {
   }
 
   export type ConnectionMaxOrderByAggregateInput = {
+    id?: SortOrder
     from?: SortOrder
     to?: SortOrder
     createdAt?: SortOrder
@@ -6942,6 +7201,7 @@ export namespace Prisma {
   }
 
   export type ConnectionMinOrderByAggregateInput = {
+    id?: SortOrder
     from?: SortOrder
     to?: SortOrder
     createdAt?: SortOrder
@@ -6954,6 +7214,7 @@ export namespace Prisma {
   }
 
   export type DependencyCountOrderByAggregateInput = {
+    id?: SortOrder
     parent?: SortOrder
     child?: SortOrder
     createdAt?: SortOrder
@@ -6961,6 +7222,7 @@ export namespace Prisma {
   }
 
   export type DependencyMaxOrderByAggregateInput = {
+    id?: SortOrder
     parent?: SortOrder
     child?: SortOrder
     createdAt?: SortOrder
@@ -6968,6 +7230,7 @@ export namespace Prisma {
   }
 
   export type DependencyMinOrderByAggregateInput = {
+    id?: SortOrder
     parent?: SortOrder
     child?: SortOrder
     createdAt?: SortOrder
@@ -6980,10 +7243,10 @@ export namespace Prisma {
     connect?: Enumerable<PageWhereUniqueInput>
   }
 
-  export type ModelTypeCreateNestedManyWithoutProjectInput = {
-    create?: XOR<Enumerable<ModelTypeCreateWithoutProjectInput>, Enumerable<ModelTypeUncheckedCreateWithoutProjectInput>>
-    connectOrCreate?: Enumerable<ModelTypeCreateOrConnectWithoutProjectInput>
-    connect?: Enumerable<ModelTypeWhereUniqueInput>
+  export type CategoryCreateNestedManyWithoutProjectInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutProjectInput>, Enumerable<CategoryUncheckedCreateWithoutProjectInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutProjectInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
   }
 
   export type PageUncheckedCreateNestedManyWithoutProjectInput = {
@@ -6992,10 +7255,10 @@ export namespace Prisma {
     connect?: Enumerable<PageWhereUniqueInput>
   }
 
-  export type ModelTypeUncheckedCreateNestedManyWithoutProjectInput = {
-    create?: XOR<Enumerable<ModelTypeCreateWithoutProjectInput>, Enumerable<ModelTypeUncheckedCreateWithoutProjectInput>>
-    connectOrCreate?: Enumerable<ModelTypeCreateOrConnectWithoutProjectInput>
-    connect?: Enumerable<ModelTypeWhereUniqueInput>
+  export type CategoryUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutProjectInput>, Enumerable<CategoryUncheckedCreateWithoutProjectInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutProjectInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -7019,17 +7282,17 @@ export namespace Prisma {
     deleteMany?: Enumerable<PageScalarWhereInput>
   }
 
-  export type ModelTypeUpdateManyWithoutProjectInput = {
-    create?: XOR<Enumerable<ModelTypeCreateWithoutProjectInput>, Enumerable<ModelTypeUncheckedCreateWithoutProjectInput>>
-    connectOrCreate?: Enumerable<ModelTypeCreateOrConnectWithoutProjectInput>
-    upsert?: Enumerable<ModelTypeUpsertWithWhereUniqueWithoutProjectInput>
-    set?: Enumerable<ModelTypeWhereUniqueInput>
-    disconnect?: Enumerable<ModelTypeWhereUniqueInput>
-    delete?: Enumerable<ModelTypeWhereUniqueInput>
-    connect?: Enumerable<ModelTypeWhereUniqueInput>
-    update?: Enumerable<ModelTypeUpdateWithWhereUniqueWithoutProjectInput>
-    updateMany?: Enumerable<ModelTypeUpdateManyWithWhereWithoutProjectInput>
-    deleteMany?: Enumerable<ModelTypeScalarWhereInput>
+  export type CategoryUpdateManyWithoutProjectInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutProjectInput>, Enumerable<CategoryUncheckedCreateWithoutProjectInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutProjectInput>
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutProjectInput>
+    set?: Enumerable<CategoryWhereUniqueInput>
+    disconnect?: Enumerable<CategoryWhereUniqueInput>
+    delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutProjectInput>
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutProjectInput>
+    deleteMany?: Enumerable<CategoryScalarWhereInput>
   }
 
   export type PageUncheckedUpdateManyWithoutProjectInput = {
@@ -7045,35 +7308,35 @@ export namespace Prisma {
     deleteMany?: Enumerable<PageScalarWhereInput>
   }
 
-  export type ModelTypeUncheckedUpdateManyWithoutProjectInput = {
-    create?: XOR<Enumerable<ModelTypeCreateWithoutProjectInput>, Enumerable<ModelTypeUncheckedCreateWithoutProjectInput>>
-    connectOrCreate?: Enumerable<ModelTypeCreateOrConnectWithoutProjectInput>
-    upsert?: Enumerable<ModelTypeUpsertWithWhereUniqueWithoutProjectInput>
-    set?: Enumerable<ModelTypeWhereUniqueInput>
-    disconnect?: Enumerable<ModelTypeWhereUniqueInput>
-    delete?: Enumerable<ModelTypeWhereUniqueInput>
-    connect?: Enumerable<ModelTypeWhereUniqueInput>
-    update?: Enumerable<ModelTypeUpdateWithWhereUniqueWithoutProjectInput>
-    updateMany?: Enumerable<ModelTypeUpdateManyWithWhereWithoutProjectInput>
-    deleteMany?: Enumerable<ModelTypeScalarWhereInput>
+  export type CategoryUncheckedUpdateManyWithoutProjectInput = {
+    create?: XOR<Enumerable<CategoryCreateWithoutProjectInput>, Enumerable<CategoryUncheckedCreateWithoutProjectInput>>
+    connectOrCreate?: Enumerable<CategoryCreateOrConnectWithoutProjectInput>
+    upsert?: Enumerable<CategoryUpsertWithWhereUniqueWithoutProjectInput>
+    set?: Enumerable<CategoryWhereUniqueInput>
+    disconnect?: Enumerable<CategoryWhereUniqueInput>
+    delete?: Enumerable<CategoryWhereUniqueInput>
+    connect?: Enumerable<CategoryWhereUniqueInput>
+    update?: Enumerable<CategoryUpdateWithWhereUniqueWithoutProjectInput>
+    updateMany?: Enumerable<CategoryUpdateManyWithWhereWithoutProjectInput>
+    deleteMany?: Enumerable<CategoryScalarWhereInput>
   }
 
-  export type ProjectCreateNestedOneWithoutPageInput = {
-    create?: XOR<ProjectCreateWithoutPageInput, ProjectUncheckedCreateWithoutPageInput>
-    connectOrCreate?: ProjectCreateOrConnectWithoutPageInput
+  export type ProjectCreateNestedOneWithoutPagesInput = {
+    create?: XOR<ProjectCreateWithoutPagesInput, ProjectUncheckedCreateWithoutPagesInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutPagesInput
     connect?: ProjectWhereUniqueInput
   }
 
-  export type ModelCreateNestedManyWithoutPageInput = {
-    create?: XOR<Enumerable<ModelCreateWithoutPageInput>, Enumerable<ModelUncheckedCreateWithoutPageInput>>
-    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutPageInput>
-    connect?: Enumerable<ModelWhereUniqueInput>
+  export type ItemCreateNestedManyWithoutPageInput = {
+    create?: XOR<Enumerable<ItemCreateWithoutPageInput>, Enumerable<ItemUncheckedCreateWithoutPageInput>>
+    connectOrCreate?: Enumerable<ItemCreateOrConnectWithoutPageInput>
+    connect?: Enumerable<ItemWhereUniqueInput>
   }
 
-  export type ModelUncheckedCreateNestedManyWithoutPageInput = {
-    create?: XOR<Enumerable<ModelCreateWithoutPageInput>, Enumerable<ModelUncheckedCreateWithoutPageInput>>
-    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutPageInput>
-    connect?: Enumerable<ModelWhereUniqueInput>
+  export type ItemUncheckedCreateNestedManyWithoutPageInput = {
+    create?: XOR<Enumerable<ItemCreateWithoutPageInput>, Enumerable<ItemUncheckedCreateWithoutPageInput>>
+    connectOrCreate?: Enumerable<ItemCreateOrConnectWithoutPageInput>
+    connect?: Enumerable<ItemWhereUniqueInput>
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -7084,118 +7347,222 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type ProjectUpdateOneRequiredWithoutPageInput = {
-    create?: XOR<ProjectCreateWithoutPageInput, ProjectUncheckedCreateWithoutPageInput>
-    connectOrCreate?: ProjectCreateOrConnectWithoutPageInput
-    upsert?: ProjectUpsertWithoutPageInput
+  export type ProjectUpdateOneRequiredWithoutPagesInput = {
+    create?: XOR<ProjectCreateWithoutPagesInput, ProjectUncheckedCreateWithoutPagesInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutPagesInput
+    upsert?: ProjectUpsertWithoutPagesInput
     connect?: ProjectWhereUniqueInput
-    update?: XOR<ProjectUpdateWithoutPageInput, ProjectUncheckedUpdateWithoutPageInput>
+    update?: XOR<ProjectUpdateWithoutPagesInput, ProjectUncheckedUpdateWithoutPagesInput>
   }
 
-  export type ModelUpdateManyWithoutPageInput = {
-    create?: XOR<Enumerable<ModelCreateWithoutPageInput>, Enumerable<ModelUncheckedCreateWithoutPageInput>>
-    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutPageInput>
-    upsert?: Enumerable<ModelUpsertWithWhereUniqueWithoutPageInput>
-    set?: Enumerable<ModelWhereUniqueInput>
-    disconnect?: Enumerable<ModelWhereUniqueInput>
-    delete?: Enumerable<ModelWhereUniqueInput>
-    connect?: Enumerable<ModelWhereUniqueInput>
-    update?: Enumerable<ModelUpdateWithWhereUniqueWithoutPageInput>
-    updateMany?: Enumerable<ModelUpdateManyWithWhereWithoutPageInput>
-    deleteMany?: Enumerable<ModelScalarWhereInput>
+  export type ItemUpdateManyWithoutPageInput = {
+    create?: XOR<Enumerable<ItemCreateWithoutPageInput>, Enumerable<ItemUncheckedCreateWithoutPageInput>>
+    connectOrCreate?: Enumerable<ItemCreateOrConnectWithoutPageInput>
+    upsert?: Enumerable<ItemUpsertWithWhereUniqueWithoutPageInput>
+    set?: Enumerable<ItemWhereUniqueInput>
+    disconnect?: Enumerable<ItemWhereUniqueInput>
+    delete?: Enumerable<ItemWhereUniqueInput>
+    connect?: Enumerable<ItemWhereUniqueInput>
+    update?: Enumerable<ItemUpdateWithWhereUniqueWithoutPageInput>
+    updateMany?: Enumerable<ItemUpdateManyWithWhereWithoutPageInput>
+    deleteMany?: Enumerable<ItemScalarWhereInput>
   }
 
-  export type ModelUncheckedUpdateManyWithoutPageInput = {
-    create?: XOR<Enumerable<ModelCreateWithoutPageInput>, Enumerable<ModelUncheckedCreateWithoutPageInput>>
-    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutPageInput>
-    upsert?: Enumerable<ModelUpsertWithWhereUniqueWithoutPageInput>
-    set?: Enumerable<ModelWhereUniqueInput>
-    disconnect?: Enumerable<ModelWhereUniqueInput>
-    delete?: Enumerable<ModelWhereUniqueInput>
-    connect?: Enumerable<ModelWhereUniqueInput>
-    update?: Enumerable<ModelUpdateWithWhereUniqueWithoutPageInput>
-    updateMany?: Enumerable<ModelUpdateManyWithWhereWithoutPageInput>
-    deleteMany?: Enumerable<ModelScalarWhereInput>
+  export type ItemUncheckedUpdateManyWithoutPageInput = {
+    create?: XOR<Enumerable<ItemCreateWithoutPageInput>, Enumerable<ItemUncheckedCreateWithoutPageInput>>
+    connectOrCreate?: Enumerable<ItemCreateOrConnectWithoutPageInput>
+    upsert?: Enumerable<ItemUpsertWithWhereUniqueWithoutPageInput>
+    set?: Enumerable<ItemWhereUniqueInput>
+    disconnect?: Enumerable<ItemWhereUniqueInput>
+    delete?: Enumerable<ItemWhereUniqueInput>
+    connect?: Enumerable<ItemWhereUniqueInput>
+    update?: Enumerable<ItemUpdateWithWhereUniqueWithoutPageInput>
+    updateMany?: Enumerable<ItemUpdateManyWithWhereWithoutPageInput>
+    deleteMany?: Enumerable<ItemScalarWhereInput>
   }
 
-  export type ModelCreateNestedManyWithoutModelTypeInput = {
-    create?: XOR<Enumerable<ModelCreateWithoutModelTypeInput>, Enumerable<ModelUncheckedCreateWithoutModelTypeInput>>
-    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutModelTypeInput>
-    connect?: Enumerable<ModelWhereUniqueInput>
+  export type ItemCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<Enumerable<ItemCreateWithoutCategoryInput>, Enumerable<ItemUncheckedCreateWithoutCategoryInput>>
+    connectOrCreate?: Enumerable<ItemCreateOrConnectWithoutCategoryInput>
+    connect?: Enumerable<ItemWhereUniqueInput>
   }
 
-  export type ProjectCreateNestedOneWithoutModelTypeInput = {
-    create?: XOR<ProjectCreateWithoutModelTypeInput, ProjectUncheckedCreateWithoutModelTypeInput>
-    connectOrCreate?: ProjectCreateOrConnectWithoutModelTypeInput
+  export type ProjectCreateNestedOneWithoutCategoriesInput = {
+    create?: XOR<ProjectCreateWithoutCategoriesInput, ProjectUncheckedCreateWithoutCategoriesInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutCategoriesInput
     connect?: ProjectWhereUniqueInput
   }
 
-  export type ModelUncheckedCreateNestedManyWithoutModelTypeInput = {
-    create?: XOR<Enumerable<ModelCreateWithoutModelTypeInput>, Enumerable<ModelUncheckedCreateWithoutModelTypeInput>>
-    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutModelTypeInput>
-    connect?: Enumerable<ModelWhereUniqueInput>
+  export type ItemUncheckedCreateNestedManyWithoutCategoryInput = {
+    create?: XOR<Enumerable<ItemCreateWithoutCategoryInput>, Enumerable<ItemUncheckedCreateWithoutCategoryInput>>
+    connectOrCreate?: Enumerable<ItemCreateOrConnectWithoutCategoryInput>
+    connect?: Enumerable<ItemWhereUniqueInput>
   }
 
-  export type ModelUpdateManyWithoutModelTypeInput = {
-    create?: XOR<Enumerable<ModelCreateWithoutModelTypeInput>, Enumerable<ModelUncheckedCreateWithoutModelTypeInput>>
-    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutModelTypeInput>
-    upsert?: Enumerable<ModelUpsertWithWhereUniqueWithoutModelTypeInput>
-    set?: Enumerable<ModelWhereUniqueInput>
-    disconnect?: Enumerable<ModelWhereUniqueInput>
-    delete?: Enumerable<ModelWhereUniqueInput>
-    connect?: Enumerable<ModelWhereUniqueInput>
-    update?: Enumerable<ModelUpdateWithWhereUniqueWithoutModelTypeInput>
-    updateMany?: Enumerable<ModelUpdateManyWithWhereWithoutModelTypeInput>
-    deleteMany?: Enumerable<ModelScalarWhereInput>
+  export type ItemUpdateManyWithoutCategoryInput = {
+    create?: XOR<Enumerable<ItemCreateWithoutCategoryInput>, Enumerable<ItemUncheckedCreateWithoutCategoryInput>>
+    connectOrCreate?: Enumerable<ItemCreateOrConnectWithoutCategoryInput>
+    upsert?: Enumerable<ItemUpsertWithWhereUniqueWithoutCategoryInput>
+    set?: Enumerable<ItemWhereUniqueInput>
+    disconnect?: Enumerable<ItemWhereUniqueInput>
+    delete?: Enumerable<ItemWhereUniqueInput>
+    connect?: Enumerable<ItemWhereUniqueInput>
+    update?: Enumerable<ItemUpdateWithWhereUniqueWithoutCategoryInput>
+    updateMany?: Enumerable<ItemUpdateManyWithWhereWithoutCategoryInput>
+    deleteMany?: Enumerable<ItemScalarWhereInput>
   }
 
-  export type ProjectUpdateOneRequiredWithoutModelTypeInput = {
-    create?: XOR<ProjectCreateWithoutModelTypeInput, ProjectUncheckedCreateWithoutModelTypeInput>
-    connectOrCreate?: ProjectCreateOrConnectWithoutModelTypeInput
-    upsert?: ProjectUpsertWithoutModelTypeInput
+  export type ProjectUpdateOneRequiredWithoutCategoriesInput = {
+    create?: XOR<ProjectCreateWithoutCategoriesInput, ProjectUncheckedCreateWithoutCategoriesInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutCategoriesInput
+    upsert?: ProjectUpsertWithoutCategoriesInput
     connect?: ProjectWhereUniqueInput
-    update?: XOR<ProjectUpdateWithoutModelTypeInput, ProjectUncheckedUpdateWithoutModelTypeInput>
+    update?: XOR<ProjectUpdateWithoutCategoriesInput, ProjectUncheckedUpdateWithoutCategoriesInput>
   }
 
-  export type ModelUncheckedUpdateManyWithoutModelTypeInput = {
-    create?: XOR<Enumerable<ModelCreateWithoutModelTypeInput>, Enumerable<ModelUncheckedCreateWithoutModelTypeInput>>
-    connectOrCreate?: Enumerable<ModelCreateOrConnectWithoutModelTypeInput>
-    upsert?: Enumerable<ModelUpsertWithWhereUniqueWithoutModelTypeInput>
-    set?: Enumerable<ModelWhereUniqueInput>
-    disconnect?: Enumerable<ModelWhereUniqueInput>
-    delete?: Enumerable<ModelWhereUniqueInput>
-    connect?: Enumerable<ModelWhereUniqueInput>
-    update?: Enumerable<ModelUpdateWithWhereUniqueWithoutModelTypeInput>
-    updateMany?: Enumerable<ModelUpdateManyWithWhereWithoutModelTypeInput>
-    deleteMany?: Enumerable<ModelScalarWhereInput>
+  export type ItemUncheckedUpdateManyWithoutCategoryInput = {
+    create?: XOR<Enumerable<ItemCreateWithoutCategoryInput>, Enumerable<ItemUncheckedCreateWithoutCategoryInput>>
+    connectOrCreate?: Enumerable<ItemCreateOrConnectWithoutCategoryInput>
+    upsert?: Enumerable<ItemUpsertWithWhereUniqueWithoutCategoryInput>
+    set?: Enumerable<ItemWhereUniqueInput>
+    disconnect?: Enumerable<ItemWhereUniqueInput>
+    delete?: Enumerable<ItemWhereUniqueInput>
+    connect?: Enumerable<ItemWhereUniqueInput>
+    update?: Enumerable<ItemUpdateWithWhereUniqueWithoutCategoryInput>
+    updateMany?: Enumerable<ItemUpdateManyWithWhereWithoutCategoryInput>
+    deleteMany?: Enumerable<ItemScalarWhereInput>
   }
 
-  export type PageCreateNestedOneWithoutModelInput = {
-    create?: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
-    connectOrCreate?: PageCreateOrConnectWithoutModelInput
+  export type PageCreateNestedOneWithoutItemsInput = {
+    create?: XOR<PageCreateWithoutItemsInput, PageUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: PageCreateOrConnectWithoutItemsInput
     connect?: PageWhereUniqueInput
   }
 
-  export type ModelTypeCreateNestedOneWithoutModelInput = {
-    create?: XOR<ModelTypeCreateWithoutModelInput, ModelTypeUncheckedCreateWithoutModelInput>
-    connectOrCreate?: ModelTypeCreateOrConnectWithoutModelInput
-    connect?: ModelTypeWhereUniqueInput
+  export type CategoryCreateNestedOneWithoutItemsInput = {
+    create?: XOR<CategoryCreateWithoutItemsInput, CategoryUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutItemsInput
+    connect?: CategoryWhereUniqueInput
   }
 
-  export type PageUpdateOneRequiredWithoutModelInput = {
-    create?: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
-    connectOrCreate?: PageCreateOrConnectWithoutModelInput
-    upsert?: PageUpsertWithoutModelInput
+  export type ConnectionCreateNestedManyWithoutItemInput = {
+    create?: XOR<Enumerable<ConnectionCreateWithoutItemInput>, Enumerable<ConnectionUncheckedCreateWithoutItemInput>>
+    connectOrCreate?: Enumerable<ConnectionCreateOrConnectWithoutItemInput>
+    connect?: Enumerable<ConnectionWhereUniqueInput>
+  }
+
+  export type DependencyCreateNestedManyWithoutItemInput = {
+    create?: XOR<Enumerable<DependencyCreateWithoutItemInput>, Enumerable<DependencyUncheckedCreateWithoutItemInput>>
+    connectOrCreate?: Enumerable<DependencyCreateOrConnectWithoutItemInput>
+    connect?: Enumerable<DependencyWhereUniqueInput>
+  }
+
+  export type ConnectionUncheckedCreateNestedManyWithoutItemInput = {
+    create?: XOR<Enumerable<ConnectionCreateWithoutItemInput>, Enumerable<ConnectionUncheckedCreateWithoutItemInput>>
+    connectOrCreate?: Enumerable<ConnectionCreateOrConnectWithoutItemInput>
+    connect?: Enumerable<ConnectionWhereUniqueInput>
+  }
+
+  export type DependencyUncheckedCreateNestedManyWithoutItemInput = {
+    create?: XOR<Enumerable<DependencyCreateWithoutItemInput>, Enumerable<DependencyUncheckedCreateWithoutItemInput>>
+    connectOrCreate?: Enumerable<DependencyCreateOrConnectWithoutItemInput>
+    connect?: Enumerable<DependencyWhereUniqueInput>
+  }
+
+  export type PageUpdateOneRequiredWithoutItemsInput = {
+    create?: XOR<PageCreateWithoutItemsInput, PageUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: PageCreateOrConnectWithoutItemsInput
+    upsert?: PageUpsertWithoutItemsInput
     connect?: PageWhereUniqueInput
-    update?: XOR<PageUpdateWithoutModelInput, PageUncheckedUpdateWithoutModelInput>
+    update?: XOR<PageUpdateWithoutItemsInput, PageUncheckedUpdateWithoutItemsInput>
   }
 
-  export type ModelTypeUpdateOneRequiredWithoutModelInput = {
-    create?: XOR<ModelTypeCreateWithoutModelInput, ModelTypeUncheckedCreateWithoutModelInput>
-    connectOrCreate?: ModelTypeCreateOrConnectWithoutModelInput
-    upsert?: ModelTypeUpsertWithoutModelInput
-    connect?: ModelTypeWhereUniqueInput
-    update?: XOR<ModelTypeUpdateWithoutModelInput, ModelTypeUncheckedUpdateWithoutModelInput>
+  export type CategoryUpdateOneRequiredWithoutItemsInput = {
+    create?: XOR<CategoryCreateWithoutItemsInput, CategoryUncheckedCreateWithoutItemsInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutItemsInput
+    upsert?: CategoryUpsertWithoutItemsInput
+    connect?: CategoryWhereUniqueInput
+    update?: XOR<CategoryUpdateWithoutItemsInput, CategoryUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type ConnectionUpdateManyWithoutItemInput = {
+    create?: XOR<Enumerable<ConnectionCreateWithoutItemInput>, Enumerable<ConnectionUncheckedCreateWithoutItemInput>>
+    connectOrCreate?: Enumerable<ConnectionCreateOrConnectWithoutItemInput>
+    upsert?: Enumerable<ConnectionUpsertWithWhereUniqueWithoutItemInput>
+    set?: Enumerable<ConnectionWhereUniqueInput>
+    disconnect?: Enumerable<ConnectionWhereUniqueInput>
+    delete?: Enumerable<ConnectionWhereUniqueInput>
+    connect?: Enumerable<ConnectionWhereUniqueInput>
+    update?: Enumerable<ConnectionUpdateWithWhereUniqueWithoutItemInput>
+    updateMany?: Enumerable<ConnectionUpdateManyWithWhereWithoutItemInput>
+    deleteMany?: Enumerable<ConnectionScalarWhereInput>
+  }
+
+  export type DependencyUpdateManyWithoutItemInput = {
+    create?: XOR<Enumerable<DependencyCreateWithoutItemInput>, Enumerable<DependencyUncheckedCreateWithoutItemInput>>
+    connectOrCreate?: Enumerable<DependencyCreateOrConnectWithoutItemInput>
+    upsert?: Enumerable<DependencyUpsertWithWhereUniqueWithoutItemInput>
+    set?: Enumerable<DependencyWhereUniqueInput>
+    disconnect?: Enumerable<DependencyWhereUniqueInput>
+    delete?: Enumerable<DependencyWhereUniqueInput>
+    connect?: Enumerable<DependencyWhereUniqueInput>
+    update?: Enumerable<DependencyUpdateWithWhereUniqueWithoutItemInput>
+    updateMany?: Enumerable<DependencyUpdateManyWithWhereWithoutItemInput>
+    deleteMany?: Enumerable<DependencyScalarWhereInput>
+  }
+
+  export type ConnectionUncheckedUpdateManyWithoutItemInput = {
+    create?: XOR<Enumerable<ConnectionCreateWithoutItemInput>, Enumerable<ConnectionUncheckedCreateWithoutItemInput>>
+    connectOrCreate?: Enumerable<ConnectionCreateOrConnectWithoutItemInput>
+    upsert?: Enumerable<ConnectionUpsertWithWhereUniqueWithoutItemInput>
+    set?: Enumerable<ConnectionWhereUniqueInput>
+    disconnect?: Enumerable<ConnectionWhereUniqueInput>
+    delete?: Enumerable<ConnectionWhereUniqueInput>
+    connect?: Enumerable<ConnectionWhereUniqueInput>
+    update?: Enumerable<ConnectionUpdateWithWhereUniqueWithoutItemInput>
+    updateMany?: Enumerable<ConnectionUpdateManyWithWhereWithoutItemInput>
+    deleteMany?: Enumerable<ConnectionScalarWhereInput>
+  }
+
+  export type DependencyUncheckedUpdateManyWithoutItemInput = {
+    create?: XOR<Enumerable<DependencyCreateWithoutItemInput>, Enumerable<DependencyUncheckedCreateWithoutItemInput>>
+    connectOrCreate?: Enumerable<DependencyCreateOrConnectWithoutItemInput>
+    upsert?: Enumerable<DependencyUpsertWithWhereUniqueWithoutItemInput>
+    set?: Enumerable<DependencyWhereUniqueInput>
+    disconnect?: Enumerable<DependencyWhereUniqueInput>
+    delete?: Enumerable<DependencyWhereUniqueInput>
+    connect?: Enumerable<DependencyWhereUniqueInput>
+    update?: Enumerable<DependencyUpdateWithWhereUniqueWithoutItemInput>
+    updateMany?: Enumerable<DependencyUpdateManyWithWhereWithoutItemInput>
+    deleteMany?: Enumerable<DependencyScalarWhereInput>
+  }
+
+  export type ItemCreateNestedOneWithoutConnectionsInput = {
+    create?: XOR<ItemCreateWithoutConnectionsInput, ItemUncheckedCreateWithoutConnectionsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutConnectionsInput
+    connect?: ItemWhereUniqueInput
+  }
+
+  export type ItemUpdateOneRequiredWithoutConnectionsInput = {
+    create?: XOR<ItemCreateWithoutConnectionsInput, ItemUncheckedCreateWithoutConnectionsInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutConnectionsInput
+    upsert?: ItemUpsertWithoutConnectionsInput
+    connect?: ItemWhereUniqueInput
+    update?: XOR<ItemUpdateWithoutConnectionsInput, ItemUncheckedUpdateWithoutConnectionsInput>
+  }
+
+  export type ItemCreateNestedOneWithoutDependenciesInput = {
+    create?: XOR<ItemCreateWithoutDependenciesInput, ItemUncheckedCreateWithoutDependenciesInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutDependenciesInput
+    connect?: ItemWhereUniqueInput
+  }
+
+  export type ItemUpdateOneRequiredWithoutDependenciesInput = {
+    create?: XOR<ItemCreateWithoutDependenciesInput, ItemUncheckedCreateWithoutDependenciesInput>
+    connectOrCreate?: ItemCreateOrConnectWithoutDependenciesInput
+    upsert?: ItemUpsertWithoutDependenciesInput
+    connect?: ItemWhereUniqueInput
+    update?: XOR<ItemUpdateWithoutDependenciesInput, ItemUncheckedUpdateWithoutDependenciesInput>
   }
 
   export type NestedStringFilter = {
@@ -7298,7 +7665,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Model?: ModelCreateNestedManyWithoutPageInput
+    items?: ItemCreateNestedManyWithoutPageInput
   }
 
   export type PageUncheckedCreateWithoutProjectInput = {
@@ -7307,7 +7674,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Model?: ModelUncheckedCreateNestedManyWithoutPageInput
+    items?: ItemUncheckedCreateNestedManyWithoutPageInput
   }
 
   export type PageCreateOrConnectWithoutProjectInput = {
@@ -7315,25 +7682,25 @@ export namespace Prisma {
     create: XOR<PageCreateWithoutProjectInput, PageUncheckedCreateWithoutProjectInput>
   }
 
-  export type ModelTypeCreateWithoutProjectInput = {
+  export type CategoryCreateWithoutProjectInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Model?: ModelCreateNestedManyWithoutModelTypeInput
+    items?: ItemCreateNestedManyWithoutCategoryInput
   }
 
-  export type ModelTypeUncheckedCreateWithoutProjectInput = {
+  export type CategoryUncheckedCreateWithoutProjectInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Model?: ModelUncheckedCreateNestedManyWithoutModelTypeInput
+    items?: ItemUncheckedCreateNestedManyWithoutCategoryInput
   }
 
-  export type ModelTypeCreateOrConnectWithoutProjectInput = {
-    where: ModelTypeWhereUniqueInput
-    create: XOR<ModelTypeCreateWithoutProjectInput, ModelTypeUncheckedCreateWithoutProjectInput>
+  export type CategoryCreateOrConnectWithoutProjectInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutProjectInput, CategoryUncheckedCreateWithoutProjectInput>
   }
 
   export type PageUpsertWithWhereUniqueWithoutProjectInput = {
@@ -7349,7 +7716,7 @@ export namespace Prisma {
 
   export type PageUpdateManyWithWhereWithoutProjectInput = {
     where: PageScalarWhereInput
-    data: XOR<PageUpdateManyMutationInput, PageUncheckedUpdateManyWithoutPageInput>
+    data: XOR<PageUpdateManyMutationInput, PageUncheckedUpdateManyWithoutPagesInput>
   }
 
   export type PageScalarWhereInput = {
@@ -7364,26 +7731,26 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter | Date | string
   }
 
-  export type ModelTypeUpsertWithWhereUniqueWithoutProjectInput = {
-    where: ModelTypeWhereUniqueInput
-    update: XOR<ModelTypeUpdateWithoutProjectInput, ModelTypeUncheckedUpdateWithoutProjectInput>
-    create: XOR<ModelTypeCreateWithoutProjectInput, ModelTypeUncheckedCreateWithoutProjectInput>
+  export type CategoryUpsertWithWhereUniqueWithoutProjectInput = {
+    where: CategoryWhereUniqueInput
+    update: XOR<CategoryUpdateWithoutProjectInput, CategoryUncheckedUpdateWithoutProjectInput>
+    create: XOR<CategoryCreateWithoutProjectInput, CategoryUncheckedCreateWithoutProjectInput>
   }
 
-  export type ModelTypeUpdateWithWhereUniqueWithoutProjectInput = {
-    where: ModelTypeWhereUniqueInput
-    data: XOR<ModelTypeUpdateWithoutProjectInput, ModelTypeUncheckedUpdateWithoutProjectInput>
+  export type CategoryUpdateWithWhereUniqueWithoutProjectInput = {
+    where: CategoryWhereUniqueInput
+    data: XOR<CategoryUpdateWithoutProjectInput, CategoryUncheckedUpdateWithoutProjectInput>
   }
 
-  export type ModelTypeUpdateManyWithWhereWithoutProjectInput = {
-    where: ModelTypeScalarWhereInput
-    data: XOR<ModelTypeUpdateManyMutationInput, ModelTypeUncheckedUpdateManyWithoutModelTypeInput>
+  export type CategoryUpdateManyWithWhereWithoutProjectInput = {
+    where: CategoryScalarWhereInput
+    data: XOR<CategoryUpdateManyMutationInput, CategoryUncheckedUpdateManyWithoutCategoriesInput>
   }
 
-  export type ModelTypeScalarWhereInput = {
-    AND?: Enumerable<ModelTypeScalarWhereInput>
-    OR?: Enumerable<ModelTypeScalarWhereInput>
-    NOT?: Enumerable<ModelTypeScalarWhereInput>
+  export type CategoryScalarWhereInput = {
+    AND?: Enumerable<CategoryScalarWhereInput>
+    OR?: Enumerable<CategoryScalarWhereInput>
+    NOT?: Enumerable<CategoryScalarWhereInput>
     id?: StringFilter | string
     projectId?: StringFilter | string
     name?: StringFilter | string
@@ -7391,186 +7758,194 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter | Date | string
   }
 
-  export type ProjectCreateWithoutPageInput = {
+  export type ProjectCreateWithoutPagesInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    ModelType?: ModelTypeCreateNestedManyWithoutProjectInput
+    categories?: CategoryCreateNestedManyWithoutProjectInput
   }
 
-  export type ProjectUncheckedCreateWithoutPageInput = {
+  export type ProjectUncheckedCreateWithoutPagesInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    ModelType?: ModelTypeUncheckedCreateNestedManyWithoutProjectInput
+    categories?: CategoryUncheckedCreateNestedManyWithoutProjectInput
   }
 
-  export type ProjectCreateOrConnectWithoutPageInput = {
+  export type ProjectCreateOrConnectWithoutPagesInput = {
     where: ProjectWhereUniqueInput
-    create: XOR<ProjectCreateWithoutPageInput, ProjectUncheckedCreateWithoutPageInput>
+    create: XOR<ProjectCreateWithoutPagesInput, ProjectUncheckedCreateWithoutPagesInput>
   }
 
-  export type ModelCreateWithoutPageInput = {
+  export type ItemCreateWithoutPageInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    modelType: ModelTypeCreateNestedOneWithoutModelInput
+    category: CategoryCreateNestedOneWithoutItemsInput
+    connections?: ConnectionCreateNestedManyWithoutItemInput
+    dependencies?: DependencyCreateNestedManyWithoutItemInput
   }
 
-  export type ModelUncheckedCreateWithoutPageInput = {
+  export type ItemUncheckedCreateWithoutPageInput = {
     id?: string
-    modelTypeId: string
+    categoryId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    connections?: ConnectionUncheckedCreateNestedManyWithoutItemInput
+    dependencies?: DependencyUncheckedCreateNestedManyWithoutItemInput
   }
 
-  export type ModelCreateOrConnectWithoutPageInput = {
-    where: ModelWhereUniqueInput
-    create: XOR<ModelCreateWithoutPageInput, ModelUncheckedCreateWithoutPageInput>
+  export type ItemCreateOrConnectWithoutPageInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutPageInput, ItemUncheckedCreateWithoutPageInput>
   }
 
-  export type ProjectUpsertWithoutPageInput = {
-    update: XOR<ProjectUpdateWithoutPageInput, ProjectUncheckedUpdateWithoutPageInput>
-    create: XOR<ProjectCreateWithoutPageInput, ProjectUncheckedCreateWithoutPageInput>
+  export type ProjectUpsertWithoutPagesInput = {
+    update: XOR<ProjectUpdateWithoutPagesInput, ProjectUncheckedUpdateWithoutPagesInput>
+    create: XOR<ProjectCreateWithoutPagesInput, ProjectUncheckedCreateWithoutPagesInput>
   }
 
-  export type ProjectUpdateWithoutPageInput = {
+  export type ProjectUpdateWithoutPagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ModelType?: ModelTypeUpdateManyWithoutProjectInput
+    categories?: CategoryUpdateManyWithoutProjectInput
   }
 
-  export type ProjectUncheckedUpdateWithoutPageInput = {
+  export type ProjectUncheckedUpdateWithoutPagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ModelType?: ModelTypeUncheckedUpdateManyWithoutProjectInput
+    categories?: CategoryUncheckedUpdateManyWithoutProjectInput
   }
 
-  export type ModelUpsertWithWhereUniqueWithoutPageInput = {
-    where: ModelWhereUniqueInput
-    update: XOR<ModelUpdateWithoutPageInput, ModelUncheckedUpdateWithoutPageInput>
-    create: XOR<ModelCreateWithoutPageInput, ModelUncheckedCreateWithoutPageInput>
+  export type ItemUpsertWithWhereUniqueWithoutPageInput = {
+    where: ItemWhereUniqueInput
+    update: XOR<ItemUpdateWithoutPageInput, ItemUncheckedUpdateWithoutPageInput>
+    create: XOR<ItemCreateWithoutPageInput, ItemUncheckedCreateWithoutPageInput>
   }
 
-  export type ModelUpdateWithWhereUniqueWithoutPageInput = {
-    where: ModelWhereUniqueInput
-    data: XOR<ModelUpdateWithoutPageInput, ModelUncheckedUpdateWithoutPageInput>
+  export type ItemUpdateWithWhereUniqueWithoutPageInput = {
+    where: ItemWhereUniqueInput
+    data: XOR<ItemUpdateWithoutPageInput, ItemUncheckedUpdateWithoutPageInput>
   }
 
-  export type ModelUpdateManyWithWhereWithoutPageInput = {
-    where: ModelScalarWhereInput
-    data: XOR<ModelUpdateManyMutationInput, ModelUncheckedUpdateManyWithoutModelInput>
+  export type ItemUpdateManyWithWhereWithoutPageInput = {
+    where: ItemScalarWhereInput
+    data: XOR<ItemUpdateManyMutationInput, ItemUncheckedUpdateManyWithoutItemsInput>
   }
 
-  export type ModelScalarWhereInput = {
-    AND?: Enumerable<ModelScalarWhereInput>
-    OR?: Enumerable<ModelScalarWhereInput>
-    NOT?: Enumerable<ModelScalarWhereInput>
+  export type ItemScalarWhereInput = {
+    AND?: Enumerable<ItemScalarWhereInput>
+    OR?: Enumerable<ItemScalarWhereInput>
+    NOT?: Enumerable<ItemScalarWhereInput>
     id?: StringFilter | string
     pageId?: StringFilter | string
-    modelTypeId?: StringFilter | string
+    categoryId?: StringFilter | string
     name?: StringFilter | string
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
   }
 
-  export type ModelCreateWithoutModelTypeInput = {
+  export type ItemCreateWithoutCategoryInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    page: PageCreateNestedOneWithoutModelInput
+    page: PageCreateNestedOneWithoutItemsInput
+    connections?: ConnectionCreateNestedManyWithoutItemInput
+    dependencies?: DependencyCreateNestedManyWithoutItemInput
   }
 
-  export type ModelUncheckedCreateWithoutModelTypeInput = {
+  export type ItemUncheckedCreateWithoutCategoryInput = {
     id?: string
     pageId: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    connections?: ConnectionUncheckedCreateNestedManyWithoutItemInput
+    dependencies?: DependencyUncheckedCreateNestedManyWithoutItemInput
   }
 
-  export type ModelCreateOrConnectWithoutModelTypeInput = {
-    where: ModelWhereUniqueInput
-    create: XOR<ModelCreateWithoutModelTypeInput, ModelUncheckedCreateWithoutModelTypeInput>
+  export type ItemCreateOrConnectWithoutCategoryInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutCategoryInput, ItemUncheckedCreateWithoutCategoryInput>
   }
 
-  export type ProjectCreateWithoutModelTypeInput = {
+  export type ProjectCreateWithoutCategoriesInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Page?: PageCreateNestedManyWithoutProjectInput
+    pages?: PageCreateNestedManyWithoutProjectInput
   }
 
-  export type ProjectUncheckedCreateWithoutModelTypeInput = {
+  export type ProjectUncheckedCreateWithoutCategoriesInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    Page?: PageUncheckedCreateNestedManyWithoutProjectInput
+    pages?: PageUncheckedCreateNestedManyWithoutProjectInput
   }
 
-  export type ProjectCreateOrConnectWithoutModelTypeInput = {
+  export type ProjectCreateOrConnectWithoutCategoriesInput = {
     where: ProjectWhereUniqueInput
-    create: XOR<ProjectCreateWithoutModelTypeInput, ProjectUncheckedCreateWithoutModelTypeInput>
+    create: XOR<ProjectCreateWithoutCategoriesInput, ProjectUncheckedCreateWithoutCategoriesInput>
   }
 
-  export type ModelUpsertWithWhereUniqueWithoutModelTypeInput = {
-    where: ModelWhereUniqueInput
-    update: XOR<ModelUpdateWithoutModelTypeInput, ModelUncheckedUpdateWithoutModelTypeInput>
-    create: XOR<ModelCreateWithoutModelTypeInput, ModelUncheckedCreateWithoutModelTypeInput>
+  export type ItemUpsertWithWhereUniqueWithoutCategoryInput = {
+    where: ItemWhereUniqueInput
+    update: XOR<ItemUpdateWithoutCategoryInput, ItemUncheckedUpdateWithoutCategoryInput>
+    create: XOR<ItemCreateWithoutCategoryInput, ItemUncheckedCreateWithoutCategoryInput>
   }
 
-  export type ModelUpdateWithWhereUniqueWithoutModelTypeInput = {
-    where: ModelWhereUniqueInput
-    data: XOR<ModelUpdateWithoutModelTypeInput, ModelUncheckedUpdateWithoutModelTypeInput>
+  export type ItemUpdateWithWhereUniqueWithoutCategoryInput = {
+    where: ItemWhereUniqueInput
+    data: XOR<ItemUpdateWithoutCategoryInput, ItemUncheckedUpdateWithoutCategoryInput>
   }
 
-  export type ModelUpdateManyWithWhereWithoutModelTypeInput = {
-    where: ModelScalarWhereInput
-    data: XOR<ModelUpdateManyMutationInput, ModelUncheckedUpdateManyWithoutModelInput>
+  export type ItemUpdateManyWithWhereWithoutCategoryInput = {
+    where: ItemScalarWhereInput
+    data: XOR<ItemUpdateManyMutationInput, ItemUncheckedUpdateManyWithoutItemsInput>
   }
 
-  export type ProjectUpsertWithoutModelTypeInput = {
-    update: XOR<ProjectUpdateWithoutModelTypeInput, ProjectUncheckedUpdateWithoutModelTypeInput>
-    create: XOR<ProjectCreateWithoutModelTypeInput, ProjectUncheckedCreateWithoutModelTypeInput>
+  export type ProjectUpsertWithoutCategoriesInput = {
+    update: XOR<ProjectUpdateWithoutCategoriesInput, ProjectUncheckedUpdateWithoutCategoriesInput>
+    create: XOR<ProjectCreateWithoutCategoriesInput, ProjectUncheckedCreateWithoutCategoriesInput>
   }
 
-  export type ProjectUpdateWithoutModelTypeInput = {
+  export type ProjectUpdateWithoutCategoriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Page?: PageUpdateManyWithoutProjectInput
+    pages?: PageUpdateManyWithoutProjectInput
   }
 
-  export type ProjectUncheckedUpdateWithoutModelTypeInput = {
+  export type ProjectUncheckedUpdateWithoutCategoriesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Page?: PageUncheckedUpdateManyWithoutProjectInput
+    pages?: PageUncheckedUpdateManyWithoutProjectInput
   }
 
-  export type PageCreateWithoutModelInput = {
+  export type PageCreateWithoutItemsInput = {
     id?: string
     level: number
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    project: ProjectCreateNestedOneWithoutPageInput
+    project: ProjectCreateNestedOneWithoutPagesInput
   }
 
-  export type PageUncheckedCreateWithoutModelInput = {
+  export type PageUncheckedCreateWithoutItemsInput = {
     id?: string
     projectId: string
     level: number
@@ -7579,20 +7954,20 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type PageCreateOrConnectWithoutModelInput = {
+  export type PageCreateOrConnectWithoutItemsInput = {
     where: PageWhereUniqueInput
-    create: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
+    create: XOR<PageCreateWithoutItemsInput, PageUncheckedCreateWithoutItemsInput>
   }
 
-  export type ModelTypeCreateWithoutModelInput = {
+  export type CategoryCreateWithoutItemsInput = {
     id?: string
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    project: ProjectCreateNestedOneWithoutModelTypeInput
+    project: ProjectCreateNestedOneWithoutCategoriesInput
   }
 
-  export type ModelTypeUncheckedCreateWithoutModelInput = {
+  export type CategoryUncheckedCreateWithoutItemsInput = {
     id?: string
     projectId: string
     name: string
@@ -7600,26 +7975,64 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type ModelTypeCreateOrConnectWithoutModelInput = {
-    where: ModelTypeWhereUniqueInput
-    create: XOR<ModelTypeCreateWithoutModelInput, ModelTypeUncheckedCreateWithoutModelInput>
+  export type CategoryCreateOrConnectWithoutItemsInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutItemsInput, CategoryUncheckedCreateWithoutItemsInput>
   }
 
-  export type PageUpsertWithoutModelInput = {
-    update: XOR<PageUpdateWithoutModelInput, PageUncheckedUpdateWithoutModelInput>
-    create: XOR<PageCreateWithoutModelInput, PageUncheckedCreateWithoutModelInput>
+  export type ConnectionCreateWithoutItemInput = {
+    id?: string
+    to: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type PageUpdateWithoutModelInput = {
+  export type ConnectionUncheckedCreateWithoutItemInput = {
+    id?: string
+    to: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConnectionCreateOrConnectWithoutItemInput = {
+    where: ConnectionWhereUniqueInput
+    create: XOR<ConnectionCreateWithoutItemInput, ConnectionUncheckedCreateWithoutItemInput>
+  }
+
+  export type DependencyCreateWithoutItemInput = {
+    id?: string
+    child: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DependencyUncheckedCreateWithoutItemInput = {
+    id?: string
+    child: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DependencyCreateOrConnectWithoutItemInput = {
+    where: DependencyWhereUniqueInput
+    create: XOR<DependencyCreateWithoutItemInput, DependencyUncheckedCreateWithoutItemInput>
+  }
+
+  export type PageUpsertWithoutItemsInput = {
+    update: XOR<PageUpdateWithoutItemsInput, PageUncheckedUpdateWithoutItemsInput>
+    create: XOR<PageCreateWithoutItemsInput, PageUncheckedCreateWithoutItemsInput>
+  }
+
+  export type PageUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     level?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    project?: ProjectUpdateOneRequiredWithoutPageInput
+    project?: ProjectUpdateOneRequiredWithoutPagesInput
   }
 
-  export type PageUncheckedUpdateWithoutModelInput = {
+  export type PageUncheckedUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     projectId?: StringFieldUpdateOperationsInput | string
     level?: IntFieldUpdateOperationsInput | number
@@ -7628,25 +8041,179 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ModelTypeUpsertWithoutModelInput = {
-    update: XOR<ModelTypeUpdateWithoutModelInput, ModelTypeUncheckedUpdateWithoutModelInput>
-    create: XOR<ModelTypeCreateWithoutModelInput, ModelTypeUncheckedCreateWithoutModelInput>
+  export type CategoryUpsertWithoutItemsInput = {
+    update: XOR<CategoryUpdateWithoutItemsInput, CategoryUncheckedUpdateWithoutItemsInput>
+    create: XOR<CategoryCreateWithoutItemsInput, CategoryUncheckedCreateWithoutItemsInput>
   }
 
-  export type ModelTypeUpdateWithoutModelInput = {
+  export type CategoryUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    project?: ProjectUpdateOneRequiredWithoutModelTypeInput
+    project?: ProjectUpdateOneRequiredWithoutCategoriesInput
   }
 
-  export type ModelTypeUncheckedUpdateWithoutModelInput = {
+  export type CategoryUncheckedUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
     projectId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectionUpsertWithWhereUniqueWithoutItemInput = {
+    where: ConnectionWhereUniqueInput
+    update: XOR<ConnectionUpdateWithoutItemInput, ConnectionUncheckedUpdateWithoutItemInput>
+    create: XOR<ConnectionCreateWithoutItemInput, ConnectionUncheckedCreateWithoutItemInput>
+  }
+
+  export type ConnectionUpdateWithWhereUniqueWithoutItemInput = {
+    where: ConnectionWhereUniqueInput
+    data: XOR<ConnectionUpdateWithoutItemInput, ConnectionUncheckedUpdateWithoutItemInput>
+  }
+
+  export type ConnectionUpdateManyWithWhereWithoutItemInput = {
+    where: ConnectionScalarWhereInput
+    data: XOR<ConnectionUpdateManyMutationInput, ConnectionUncheckedUpdateManyWithoutConnectionsInput>
+  }
+
+  export type ConnectionScalarWhereInput = {
+    AND?: Enumerable<ConnectionScalarWhereInput>
+    OR?: Enumerable<ConnectionScalarWhereInput>
+    NOT?: Enumerable<ConnectionScalarWhereInput>
+    id?: StringFilter | string
+    from?: StringFilter | string
+    to?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+  }
+
+  export type DependencyUpsertWithWhereUniqueWithoutItemInput = {
+    where: DependencyWhereUniqueInput
+    update: XOR<DependencyUpdateWithoutItemInput, DependencyUncheckedUpdateWithoutItemInput>
+    create: XOR<DependencyCreateWithoutItemInput, DependencyUncheckedCreateWithoutItemInput>
+  }
+
+  export type DependencyUpdateWithWhereUniqueWithoutItemInput = {
+    where: DependencyWhereUniqueInput
+    data: XOR<DependencyUpdateWithoutItemInput, DependencyUncheckedUpdateWithoutItemInput>
+  }
+
+  export type DependencyUpdateManyWithWhereWithoutItemInput = {
+    where: DependencyScalarWhereInput
+    data: XOR<DependencyUpdateManyMutationInput, DependencyUncheckedUpdateManyWithoutDependenciesInput>
+  }
+
+  export type DependencyScalarWhereInput = {
+    AND?: Enumerable<DependencyScalarWhereInput>
+    OR?: Enumerable<DependencyScalarWhereInput>
+    NOT?: Enumerable<DependencyScalarWhereInput>
+    id?: StringFilter | string
+    parent?: StringFilter | string
+    child?: StringFilter | string
+    createdAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+  }
+
+  export type ItemCreateWithoutConnectionsInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    page: PageCreateNestedOneWithoutItemsInput
+    category: CategoryCreateNestedOneWithoutItemsInput
+    dependencies?: DependencyCreateNestedManyWithoutItemInput
+  }
+
+  export type ItemUncheckedCreateWithoutConnectionsInput = {
+    id?: string
+    pageId: string
+    categoryId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dependencies?: DependencyUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type ItemCreateOrConnectWithoutConnectionsInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutConnectionsInput, ItemUncheckedCreateWithoutConnectionsInput>
+  }
+
+  export type ItemUpsertWithoutConnectionsInput = {
+    update: XOR<ItemUpdateWithoutConnectionsInput, ItemUncheckedUpdateWithoutConnectionsInput>
+    create: XOR<ItemCreateWithoutConnectionsInput, ItemUncheckedCreateWithoutConnectionsInput>
+  }
+
+  export type ItemUpdateWithoutConnectionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    page?: PageUpdateOneRequiredWithoutItemsInput
+    category?: CategoryUpdateOneRequiredWithoutItemsInput
+    dependencies?: DependencyUpdateManyWithoutItemInput
+  }
+
+  export type ItemUncheckedUpdateWithoutConnectionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pageId?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dependencies?: DependencyUncheckedUpdateManyWithoutItemInput
+  }
+
+  export type ItemCreateWithoutDependenciesInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    page: PageCreateNestedOneWithoutItemsInput
+    category: CategoryCreateNestedOneWithoutItemsInput
+    connections?: ConnectionCreateNestedManyWithoutItemInput
+  }
+
+  export type ItemUncheckedCreateWithoutDependenciesInput = {
+    id?: string
+    pageId: string
+    categoryId: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    connections?: ConnectionUncheckedCreateNestedManyWithoutItemInput
+  }
+
+  export type ItemCreateOrConnectWithoutDependenciesInput = {
+    where: ItemWhereUniqueInput
+    create: XOR<ItemCreateWithoutDependenciesInput, ItemUncheckedCreateWithoutDependenciesInput>
+  }
+
+  export type ItemUpsertWithoutDependenciesInput = {
+    update: XOR<ItemUpdateWithoutDependenciesInput, ItemUncheckedUpdateWithoutDependenciesInput>
+    create: XOR<ItemCreateWithoutDependenciesInput, ItemUncheckedCreateWithoutDependenciesInput>
+  }
+
+  export type ItemUpdateWithoutDependenciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    page?: PageUpdateOneRequiredWithoutItemsInput
+    category?: CategoryUpdateOneRequiredWithoutItemsInput
+    connections?: ConnectionUpdateManyWithoutItemInput
+  }
+
+  export type ItemUncheckedUpdateWithoutDependenciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pageId?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    connections?: ConnectionUncheckedUpdateManyWithoutItemInput
   }
 
   export type PageUpdateWithoutProjectInput = {
@@ -7655,7 +8222,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Model?: ModelUpdateManyWithoutPageInput
+    items?: ItemUpdateManyWithoutPageInput
   }
 
   export type PageUncheckedUpdateWithoutProjectInput = {
@@ -7664,10 +8231,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Model?: ModelUncheckedUpdateManyWithoutPageInput
+    items?: ItemUncheckedUpdateManyWithoutPageInput
   }
 
-  export type PageUncheckedUpdateManyWithoutPageInput = {
+  export type PageUncheckedUpdateManyWithoutPagesInput = {
     id?: StringFieldUpdateOperationsInput | string
     level?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
@@ -7675,65 +8242,115 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ModelTypeUpdateWithoutProjectInput = {
+  export type CategoryUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Model?: ModelUpdateManyWithoutModelTypeInput
+    items?: ItemUpdateManyWithoutCategoryInput
   }
 
-  export type ModelTypeUncheckedUpdateWithoutProjectInput = {
+  export type CategoryUncheckedUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Model?: ModelUncheckedUpdateManyWithoutModelTypeInput
+    items?: ItemUncheckedUpdateManyWithoutCategoryInput
   }
 
-  export type ModelTypeUncheckedUpdateManyWithoutModelTypeInput = {
+  export type CategoryUncheckedUpdateManyWithoutCategoriesInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ModelUpdateWithoutPageInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    modelType?: ModelTypeUpdateOneRequiredWithoutModelInput
-  }
-
-  export type ModelUncheckedUpdateWithoutPageInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    modelTypeId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ModelUncheckedUpdateManyWithoutModelInput = {
+  export type ItemUpdateWithoutPageInput = {
     id?: StringFieldUpdateOperationsInput | string
-    modelTypeId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    category?: CategoryUpdateOneRequiredWithoutItemsInput
+    connections?: ConnectionUpdateManyWithoutItemInput
+    dependencies?: DependencyUpdateManyWithoutItemInput
+  }
+
+  export type ItemUncheckedUpdateWithoutPageInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    connections?: ConnectionUncheckedUpdateManyWithoutItemInput
+    dependencies?: DependencyUncheckedUpdateManyWithoutItemInput
+  }
+
+  export type ItemUncheckedUpdateManyWithoutItemsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    categoryId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ModelUpdateWithoutModelTypeInput = {
+  export type ItemUpdateWithoutCategoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    page?: PageUpdateOneRequiredWithoutModelInput
+    page?: PageUpdateOneRequiredWithoutItemsInput
+    connections?: ConnectionUpdateManyWithoutItemInput
+    dependencies?: DependencyUpdateManyWithoutItemInput
   }
 
-  export type ModelUncheckedUpdateWithoutModelTypeInput = {
+  export type ItemUncheckedUpdateWithoutCategoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     pageId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    connections?: ConnectionUncheckedUpdateManyWithoutItemInput
+    dependencies?: DependencyUncheckedUpdateManyWithoutItemInput
+  }
+
+  export type ConnectionUpdateWithoutItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectionUncheckedUpdateWithoutItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConnectionUncheckedUpdateManyWithoutConnectionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DependencyUpdateWithoutItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    child?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DependencyUncheckedUpdateWithoutItemInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    child?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DependencyUncheckedUpdateManyWithoutDependenciesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    child?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

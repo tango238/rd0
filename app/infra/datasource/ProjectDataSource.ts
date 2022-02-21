@@ -1,6 +1,7 @@
 import { ProjectRepository } from '~/application/repository/ProjectRepository'
 import { db } from '~/utils/db.server'
 import { Project } from '~/infra/datasource/generated'
+import invariant from 'tiny-invariant'
 
 export class ProjectDataSource implements ProjectRepository {
   async insert(name: string) {
@@ -13,7 +14,9 @@ export class ProjectDataSource implements ProjectRepository {
     return db.project.findMany()
   }
 
-  findById(projectId: string): Promise<Project | null> {
-    return db.project.findUnique({ where: { id: projectId } })
+  async getById(projectId: string): Promise<Project> {
+    const result = await db.project.findUnique({ where: { id: projectId } })
+    invariant(result)
+    return result
   }
 }

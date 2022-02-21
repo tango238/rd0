@@ -9,12 +9,13 @@ datasource db {
 }
 
 model Project {
-  id        String      @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  Page      Page[]
-  ModelType ModelType[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pages      Page[]
+  categories Category[]
 }
 
 model Page {
@@ -26,47 +27,55 @@ model Page {
   updatedAt DateTime @updatedAt
 
   project Project @relation(fields: [projectId], references: [id])
-  Model   Model[]
+  items   Item[]
+
   @@unique([projectId, level])
   @@unique([projectId, name])
 }
 
-model ModelType {
+model Category {
   id        String   @id @default(uuid())
   projectId String
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Model     Model[]
-  project   Project  @relation(fields: [projectId], references: [id])
+
+  items   Item[]
+  project Project @relation(fields: [projectId], references: [id])
 }
 
-model Model {
-  id          String   @id @default(uuid())
-  pageId      String
-  modelTypeId String
-  name        String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Item {
+  id         String   @id @default(uuid())
+  pageId     String
+  categoryId String
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  page      Page      @relation(fields: [pageId], references: [id])
-  modelType ModelType @relation(fields: [modelTypeId], references: [id])
+  page         Page         @relation(fields: [pageId], references: [id])
+  category     Category     @relation(fields: [categoryId], references: [id])
+  connections  Connection[]
+  dependencies Dependency[]
 }
 
 model Connection {
+  id        String   @id @default(uuid())
   from      String
   to        String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  item Item @relation(fields: [from], references: [id])
   @@unique([from, to])
 }
 
 model Dependency {
+  id        String   @id @default(uuid())
   parent    String
   child     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  item Item @relation(fields: [parent], references: [id])
   @@unique([parent, child])
 }

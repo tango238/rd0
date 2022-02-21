@@ -1,17 +1,17 @@
 import { inject, injectable } from 'tsyringe'
 import { PageRepository } from '~/application/repository/PageRepository'
-import { Model, Page } from '~/infra/datasource/generated'
-import { ModelRepository } from '~/application/repository/ModelRepository'
+import { Item, Page } from '~/infra/datasource/generated'
+import { ItemRepository } from '~/application/repository/ItemRepository'
 
 export type PageAllView = {
   projectId: string
   pages: Array<Page>
 }
 
-export type PageGetView = {
+export type PageDetailView = {
   pageId: string
   page: Page | null
-  models: Array<Model>
+  items: Array<Item>
 }
 
 @injectable()
@@ -19,7 +19,7 @@ export class PageController {
 
   constructor(
     @inject('PageRepository') private pageRepo: PageRepository,
-    @inject('ModelRepository') private modelRepo: ModelRepository
+    @inject('ItemRepository') private itemRepo: ItemRepository
   ) {
   }
 
@@ -34,12 +34,12 @@ export class PageController {
     this.pageRepo.insert(projectId, name)
   }
 
-  async get(pageId: string): Promise<PageGetView> {
+  async detail(pageId: string): Promise<PageDetailView> {
     const page = await this.pageRepo.getById(pageId)
-    const models = await this.modelRepo.findByPageId(pageId)
+    const items = await this.itemRepo.findByPageId(pageId)
 
     return {
-      pageId, page, models
+      pageId, page, items
     }
   }
 

@@ -6,5 +6,5 @@ export interface ProjectRepository {
 
   findAll: () => Promise<Array<Project>>
 
-  findById: (projectId: string) => Promise<Project | null>
+  getById: (projectId: string) => Promise<Project>
 }

@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe'
 import { ProjectRepository } from '~/application/repository/ProjectRepository'
-import { ModelType, Page, Project } from '~/infra/datasource/generated'
+import { Category, Page, Project } from '~/infra/datasource/generated'
 import { PageRepository } from '~/application/repository/PageRepository'
-import { ModelTypeRepository } from '~/application/repository/ModelTypeRepository'
+import { CategoryRepository } from '~/application/repository/CategoryRepository'
 
 export type ProjectAllView = {
   projects: Array<Project>
@@ -11,37 +11,37 @@ export type ProjectAllView = {
 export type ProjectDetailView = {
   project: Project
   pages: Array<Page>
-  types: Array<ModelType>
+  categories: Array<Category>
 }
 
 @injectable()
 export class ProjectController {
 
   constructor(
-    @inject('ProjectRepository') private repository: ProjectRepository,
+    @inject('ProjectRepository') private projectRepo: ProjectRepository,
     @inject('PageRepository') private pageRepo: PageRepository,
-    @inject('ModelTypeRepository') private modelTypeRepo: ModelTypeRepository
+    @inject('CategoryRepository') private categoryRepo: CategoryRepository
   ) {
   }
 
   async all(): Promise<ProjectAllView> {
-    const projects = await this.repository.findAll()
+    const projects = await this.projectRepo.findAll()
     return {
       projects
     }
   }
 
   async create(name: string) {
-    await this.repository.insert(name)
+    await this.projectRepo.insert(name)
   }
 
-  async detail(projectId: string) {
-    const project = await this.repository.findById(projectId)
+  async detail(projectId: string): Promise<ProjectDetailView> {
+    const project = await this.projectRepo.getById(projectId)
     const pages = await this.pageRepo.findAll(projectId)
-    const types = await this.modelTypeRepo.findAll(projectId)
+    const categories = await this.categoryRepo.findAll(projectId)
 
     return {
-      project, pages, types
+      project, pages, categories
     }
   }
 }

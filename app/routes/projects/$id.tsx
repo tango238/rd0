@@ -3,7 +3,7 @@ import { Link, useLoaderData } from 'remix'
 import { container } from 'tsyringe'
 import { PageAllView, PageController } from '~/application/controller/PageController'
 import invariant from 'tiny-invariant'
-import { model_type_detail, page_detail, project_page_new, project_type_new } from '~/routes/URLs'
+import { category_detail, page_detail, project_page_new, project_category_new } from '~/routes/URLs'
 import { ProjectController, ProjectDetailView } from '~/application/controller/ProjectController'
 
 const controller = container.resolve(ProjectController)
@@ -33,15 +33,15 @@ export default function ProjectWindow() {
       </ul>
       <hr />
       <div>
-        <Link to={project_type_new(data.project.id)}>
+        <Link to={project_category_new(data.project.id)}>
           Create Type
         </Link>
       </div>
       <p>Types</p>
       <ul>
-        {data.types.map(type => (
+        {data.categories.map(type => (
           <li key={type.id}>
-            <Link to={model_type_detail(type.id)}>{type.name}</Link>
+            <Link to={category_detail(type.id)}>{type.name}</Link>
           </li>
         ))}
       </ul>

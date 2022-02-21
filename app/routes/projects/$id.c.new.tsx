@@ -3,9 +3,9 @@ import { Box, Button, Container, FormControl, TextField } from '@mui/material'
 import invariant from 'tiny-invariant'
 import { project_detail } from '~/routes/URLs'
 import { container } from 'tsyringe'
-import { ModelTypeController } from '~/application/controller/ModelTypeController'
+import { CategoryController } from '~/application/controller/CategoryController'
 
-const controller = container.resolve(ModelTypeController)
+const controller = container.resolve(CategoryController)
 
 export const loader: LoaderFunction = async ({ params }) => {
   return params.id

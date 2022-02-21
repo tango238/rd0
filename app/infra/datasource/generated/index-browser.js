@@ -92,7 +92,7 @@ exports.Prisma.PageScalarFieldEnum = makeEnum({
   updatedAt: 'updatedAt'
 });
 
-exports.Prisma.ModelTypeScalarFieldEnum = makeEnum({
+exports.Prisma.CategoryScalarFieldEnum = makeEnum({
   id: 'id',
   projectId: 'projectId',
   name: 'name',
@@ -100,16 +100,17 @@ exports.Prisma.ModelTypeScalarFieldEnum = makeEnum({
   updatedAt: 'updatedAt'
 });
 
-exports.Prisma.ModelScalarFieldEnum = makeEnum({
+exports.Prisma.ItemScalarFieldEnum = makeEnum({
   id: 'id',
   pageId: 'pageId',
-  modelTypeId: 'modelTypeId',
+  categoryId: 'categoryId',
   name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 });
 
 exports.Prisma.ConnectionScalarFieldEnum = makeEnum({
+  id: 'id',
   from: 'from',
   to: 'to',
   createdAt: 'createdAt',
@@ -117,6 +118,7 @@ exports.Prisma.ConnectionScalarFieldEnum = makeEnum({
 });
 
 exports.Prisma.DependencyScalarFieldEnum = makeEnum({
+  id: 'id',
   parent: 'parent',
   child: 'child',
   createdAt: 'createdAt',
@@ -132,8 +134,8 @@ exports.Prisma.SortOrder = makeEnum({
 exports.Prisma.ModelName = makeEnum({
   Project: 'Project',
   Page: 'Page',
-  ModelType: 'ModelType',
-  Model: 'Model',
+  Category: 'Category',
+  Item: 'Item',
   Connection: 'Connection',
   Dependency: 'Dependency'
 });

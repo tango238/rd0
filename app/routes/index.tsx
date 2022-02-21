@@ -2,7 +2,7 @@ import type { LoaderFunction } from "remix"
 import { Link, useLoaderData } from "remix"
 import { container } from 'tsyringe'
 import { ProjectAllView, ProjectController } from '~/application/controller/ProjectController'
-import { project_detail } from '~/routes/URLs'
+import { project_detail, project_new } from '~/routes/URLs'
 
 const controller = container.resolve(ProjectController)
 
@@ -15,7 +15,7 @@ export default function Index() {
   return (
     <>
       <p>
-        <Link to="/projects/new">Create Project</Link>
+        <Link to={project_new()}>Create Project</Link>
       </p>
       <p>Projects</p>
       <ul>

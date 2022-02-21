@@ -1,15 +1,16 @@
 // Project
+export const project_new = () => `/projects/new`
 export const project_detail = (projectId: string) => `/projects/${projectId}`
 export const project_page_new = (projectId: string) => `/projects/${projectId}/pages/new`
-export const project_type_new = (projectId: string) => `/projects/${projectId}/t/new`
+export const project_category_new = (projectId: string) => `/projects/${projectId}/c/new`
 
 // Page
 export const page_detail = (pageId: string) => `/pages/${pageId}`
-export const page_model_new = (pageId: string) => `/pages/${pageId}/m/new`
-export const page_model_detail = (pageId: string, modelId: string) => `/pages/${pageId}/m/${modelId}`
+export const page_item_new = (pageId: string) => `/pages/${pageId}/i/new`
+export const page_item_detail = (pageId: string, itemId: string) => `/pages/${pageId}/i/${itemId}`
 
-// ModelType
-export const model_type_detail = (modelTypeId: string) => `/t/${modelTypeId}`
+// Category
+export const category_detail = (categoryId: string) => `/c/${categoryId}`
 
-// Model
-export const model_connection_new = (modelId: string) => `/m/${modelId}/cons/new`
+// Item
+export const item_connection_new = (itemId: string) => `/i/${itemId}/cons/new`
