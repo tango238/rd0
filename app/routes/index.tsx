@@ -10,7 +10,7 @@ export const loader: LoaderFunction = async () => {
   return await controller.all()
 }
 
-export default function Index() {
+export default function View() {
   const data = useLoaderData<ProjectAllView>()
   return (
     <>

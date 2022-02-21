@@ -18,7 +18,7 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect(`/`)
 }
 
-export default function NewProject() {
+export default function View() {
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>

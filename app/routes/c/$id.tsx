@@ -26,7 +26,6 @@ export default function View() {
           <td>{data.category.name}</td>
         </tr>
       </table>
-
     </>
   )
 }

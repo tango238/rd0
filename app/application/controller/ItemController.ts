@@ -34,7 +34,7 @@ export class ItemController {
     this.itemRepo.insert(pageId, name, categoryId)
   }
 
-  async connections(itemId: string): Promise<ItemConnectionsView> {
+  async findConnectionCandidates(itemId: string): Promise<ItemConnectionsView> {
     const item = await this.itemRepo.getById(itemId)
     const pageId = item.pageId
     const connectionCandidates = await this.itemRepo.findConnectionCandidates(pageId, itemId)
@@ -57,5 +57,10 @@ export class ItemController {
     const category = await this.categoryRepo.getById(item.categoryId)
 
     return { page, item: item, category: category }
+  }
+
+  // 相互
+  async addMutualConnection(from: string, to: string) {
+    await this.itemRepo.addMutualConnection(from, to)
   }
 }

@@ -23,14 +23,14 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect(project_detail(projectId))
 }
 
-export default function ProjectTypeNew() {
+export default function View() {
   const projectId = useLoaderData()
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
-        <h3>Create Type</h3>
+        <h3>Create Category</h3>
         <Form method="post">
-          <TextField name="name" label="Type Name" fullWidth sx={{ mt: 4 }}/>
+          <TextField name="name" label="Category Name" fullWidth sx={{ mt: 4 }}/>
           <input type="hidden" name="projectId" value={projectId}/>
 
           <Button type="submit" variant="contained" sx={{ mt: 8 }}>Create</Button>

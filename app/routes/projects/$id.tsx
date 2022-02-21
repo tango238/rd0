@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({ params}) => {
   return await controller.detail(projectId)
 }
 
-export default function ProjectWindow() {
+export default function View() {
   const data = useLoaderData<ProjectDetailView>()
   return (
     <>
@@ -34,10 +34,10 @@ export default function ProjectWindow() {
       <hr />
       <div>
         <Link to={project_category_new(data.project.id)}>
-          Create Type
+          Create Category
         </Link>
       </div>
-      <p>Types</p>
+      <p>Categories</p>
       <ul>
         {data.categories.map(type => (
           <li key={type.id}>

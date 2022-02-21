@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   return await controller.detail(pageId)
 }
 
-export default function PageWindow() {
+export default function View() {
   const data = useLoaderData<PageDetailView>()
   return (
     <>

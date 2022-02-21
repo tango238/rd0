@@ -36,6 +36,19 @@ npx prisma format
 npx prisma db push
 ```
 
+## Debugging
+
+To enable all prisma debugging options, set DEBUG to prisma*:
+
+```
+export DEBUG="prisma*"
+```
+
+To enable all debugging options, set DEBUG to *:
+
+```
+export DEBUG="*"
+```
 
 ## Diagram
 - https://github.com/ts-graphviz/ts-graphviz

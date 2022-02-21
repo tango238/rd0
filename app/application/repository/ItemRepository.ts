@@ -9,4 +9,7 @@ export interface ItemRepository {
   findConnectionCandidates(pageId: string, itemId: string): Promise<Array<Item>>
 
   getById(itemId: string): Promise<Item>
+
+  addMutualConnection: (from: string, to: string) => void
+
 }

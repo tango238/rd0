@@ -16,7 +16,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   return controller.detail(pageId, itemId)
 }
 
-export default function ModelDetailView() {
+export default function View() {
   const data = useLoaderData<ItemDetailView>()
   return (
     <>

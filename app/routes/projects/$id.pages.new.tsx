@@ -23,7 +23,7 @@ export const action: ActionFunction = async ({ request }) => {
   return redirect(project_detail(projectId))
 }
 
-export default function NewPage() {
+export default function View() {
   const projectId = useLoaderData()
   return (
     <Container maxWidth="sm">

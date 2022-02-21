@@ -3,6 +3,7 @@ import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, Text
 import { container } from 'tsyringe'
 import { ItemController, ItemNewView } from '~/application/controller/ItemController'
 import invariant from 'tiny-invariant'
+import { page_detail } from '~/routes/URLs'
 
 const controller = container.resolve(ItemController)
 
@@ -18,7 +19,7 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(typeof pageId === "string")
 
   await controller.create(pageId, name, categoryId)
-  return redirect(`/pages/${pageId}`)
+  return redirect(page_detail(pageId))
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -28,7 +29,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   return await controller.new(pageId)
 }
 
-export default function NewModelView() {
+export default function View() {
   const data = useLoaderData<ItemNewView>()
   return (
     <Container maxWidth="sm">
