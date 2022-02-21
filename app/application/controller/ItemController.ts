@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe'
 import { ItemRepository } from '~/application/repository/ItemRepository'
-import { Category, Item, Page } from '~/infra/datasource/generated'
+import { Category, Connection, Item, Page } from '~/infra/datasource/generated'
 import { CategoryRepository } from '~/application/repository/CategoryRepository'
 import { PageRepository } from '~/application/repository/PageRepository'
 
@@ -18,6 +18,7 @@ export type ItemDetailView = {
   page: Page,
   item: Item
   category: Category
+  connectedItems: Array<Item>
 }
 
 @injectable()
@@ -55,8 +56,9 @@ export class ItemController {
     const page = await this.pageRepo.getById(pageId)
     const item = await this.itemRepo.getById(itemId)
     const category = await this.categoryRepo.getById(item.categoryId)
+    const connectedItems = await this.itemRepo.getConnectedItems(itemId)
 
-    return { page, item: item, category: category }
+    return { page, item, category, connectedItems }
   }
 
   // 相互

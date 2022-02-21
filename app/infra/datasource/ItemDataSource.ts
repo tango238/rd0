@@ -20,14 +20,14 @@ export class ItemDataSource implements ItemRepository {
 
   findConnectionCandidates(pageId: string, itemId: string): Promise<Array<Item>> {
     return db.$queryRaw<Array<Item>>`
-        SELECT 
-            "Item".* 
-        FROM "Item"
-            LEFT OUTER JOIN "Connection" 
-                ON "Item"."id" <> "Connection"."from" 
-        WHERE 
-            "Item".pageId = ${pageId} AND 
-            "Item"."id" <> ${itemId}
+        SELECT
+            "Item".*
+        FROM
+            "Item"
+        WHERE
+            "Item".pageId = ${pageId} AND
+            "Item"."id" <> ${itemId} AND
+            "Item"."id" NOT IN (SELECT "to" FROM Connection WHERE "from" = ${itemId})
     `
   }
 
@@ -44,6 +44,18 @@ export class ItemDataSource implements ItemRepository {
         db.connection.create({ data: { from: to, to: from } })
       ]
     )
+  }
+
+  getConnectedItems(itemId: string): Promise<Array<Item>> {
+    return db.$queryRaw<Array<Item>>`
+      SELECT
+        "Item".*
+      FROM "Item"
+        INNER JOIN "Connection"
+            ON "Item"."id" = "Connection"."from"
+      WHERE
+        "Item"."id" <> ${itemId}
+    `
   }
 
 }

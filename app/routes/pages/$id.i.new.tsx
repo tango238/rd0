@@ -38,7 +38,7 @@ export default function View() {
         <Form method="post">
           <TextField name="name" label="Name" variant="outlined" fullWidth sx={{ mt: 4 }}/>
           <FormControl variant="outlined" fullWidth sx={{ mt: 4 }}>
-            <InputLabel id="categoryLabel">Model Type</InputLabel>
+            <InputLabel id="categoryLabel">Category</InputLabel>
             <Select name="categoryId" labelId="categoryLabel">
               {data.categories.map(category => (
                 <MenuItem value={category.id}>{category.name}</MenuItem>

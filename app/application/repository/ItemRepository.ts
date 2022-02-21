@@ -12,4 +12,6 @@ export interface ItemRepository {
 
   addMutualConnection: (from: string, to: string) => void
 
+  getConnectedItems: (itemId: string) => Promise<Array<Item>>
+
 }
