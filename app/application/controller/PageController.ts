@@ -9,8 +9,7 @@ export type PageAllView = {
 }
 
 export type PageDetailView = {
-  pageId: string
-  page: Page | null
+  page: Page
   items: Array<Item>
 }
 
@@ -39,7 +38,7 @@ export class PageController {
     const items = await this.itemRepo.findByPageId(pageId)
 
     return {
-      pageId, page, items
+      page, items
     }
   }
 

@@ -22,41 +22,61 @@ export default function View() {
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
-        <h3>Detail</h3>
-        <table>
-          <tr>
-            <th align="left">Page ID</th>
-            <td>{data.page.id}</td>
-          </tr>
-          <tr>
-            <th align="left">Page Name</th>
-            <td>{data.page.name}</td>
-          </tr>
-          <tr>
-            <th align="left">Item ID</th>
-            <td>{data.item.id}</td>
-          </tr>
-          <tr>
-            <th align="left">Item Name</th>
-            <td>{data.item.name}</td>
-          </tr>
-          <tr>
-            <th align="left">Type</th>
-            <td>{data.category.name}</td>
-          </tr>
-        </table>
+        <section>
+          <h3>Item</h3>
+          <table>
+            <tr>
+              <th align="left">Item ID</th>
+              <td>{data.item.id}</td>
+            </tr>
+            <tr>
+              <th align="left">Item Name</th>
+              <td>{data.item.name}</td>
+            </tr>
+            <tr>
+              <th align="left">Category</th>
+              <td>{data.category.name}</td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>Parent Page</h3>
+          <table>
+            <tr>
+              <th align="left">Page ID</th>
+              <td>{data.page.id}</td>
+            </tr>
+            <tr>
+              <th align="left">Page Name</th>
+              <td>{data.page.name}</td>
+            </tr>
+          </table>
+        </section>
 
         <hr/>
 
-        <h3>Connection</h3>
-        <ul>
-          {data.connectedItems.map(item => (
-            <li>{item.name}</li>
-          ))}
-        </ul>
-        <p>
-          <Link to={item_connection_new(data.item.id)}>Add Connection</Link>
-        </p>
+        <section>
+          <h3>Connection</h3>
+          <ul>
+            {data.connectedItems.map(item => (
+              <li>{item.name}</li>
+            ))}
+          </ul>
+          <div>
+            <Link to={item_connection_new(data.item.id)}>Add Connection</Link>
+          </div>
+        </section>
+
+        <hr/>
+        <section>
+          <h3>Dot</h3>
+        </section>
+
+        <section>
+          <h3>Diagram</h3>
+        </section>
+
       </Box>
     </Container>
   )

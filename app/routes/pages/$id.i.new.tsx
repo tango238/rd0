@@ -34,7 +34,7 @@ export default function View() {
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
-        <h3>Create Item</h3>
+        <h3>Add Item</h3>
         <Form method="post">
           <TextField name="name" label="Name" variant="outlined" fullWidth sx={{ mt: 4 }}/>
           <FormControl variant="outlined" fullWidth sx={{ mt: 4 }}>

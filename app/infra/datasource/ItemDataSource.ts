@@ -50,11 +50,11 @@ export class ItemDataSource implements ItemRepository {
     return db.$queryRaw<Array<Item>>`
       SELECT
         "Item".*
-      FROM "Item"
-        INNER JOIN "Connection"
-            ON "Item"."id" = "Connection"."from"
-      WHERE
-        "Item"."id" <> ${itemId}
+      FROM "Connection"
+        INNER JOIN "Item"
+            ON "Item"."id" = "Connection"."to" AND "Connection"."from" = ${itemId}
+      ORDER BY 
+        "Connection"."createdAt" ASC
     `
   }
 
