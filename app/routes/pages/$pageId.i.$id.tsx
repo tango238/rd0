@@ -4,6 +4,8 @@ import { item_connection_new } from '~/routes/URLs'
 import { container } from 'tsyringe'
 import { ItemController, ItemDetailView } from '~/application/controller/ItemController'
 import { Box, Container } from '@mui/material'
+import { useRenderDiagram } from '~/utils/hooks'
+
 
 const controller = container.resolve(ItemController)
 
@@ -17,8 +19,10 @@ export const loader: LoaderFunction = async ({ params }) => {
   return controller.detail(pageId, itemId)
 }
 
+
 export default function View() {
   const data = useLoaderData<ItemDetailView>()
+  const diagram = useRenderDiagram(data.dot)
   return (
     <Container maxWidth="sm">
       <Box sx={{ my: 4 }}>
@@ -71,10 +75,12 @@ export default function View() {
         <hr/>
         <section>
           <h3>Dot</h3>
+          <pre>{data.dot}</pre>
         </section>
 
         <section>
           <h3>Diagram</h3>
+          {diagram}
         </section>
 
       </Box>

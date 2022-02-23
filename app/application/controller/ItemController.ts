@@ -1,8 +1,9 @@
 import { inject, injectable } from 'tsyringe'
 import { ItemRepository } from '~/application/repository/ItemRepository'
-import { Category, Connection, Item, Page } from '~/infra/datasource/generated'
+import { Category, Item, Page } from '~/infra/datasource/generated'
 import { CategoryRepository } from '~/application/repository/CategoryRepository'
 import { PageRepository } from '~/application/repository/PageRepository'
+import { digraph, toDot } from 'ts-graphviz'
 
 export type ItemConnectionsView = {
   item: Item
@@ -19,6 +20,7 @@ export type ItemDetailView = {
   item: Item
   category: Category
   connectedItems: Array<Item>
+  dot: string
 }
 
 @injectable()
@@ -58,7 +60,17 @@ export class ItemController {
     const category = await this.categoryRepo.getById(item.categoryId)
     const connectedItems = await this.itemRepo.getConnectedItems(itemId)
 
-    return { page, item, category, connectedItems }
+    // dot
+    const g = digraph('G')
+
+    const from = g.createNode(item.name)
+    connectedItems.map(it => {
+      const to = g.createNode(it.name)
+      g.createEdge([from, to], { arrowhead: 'none' })
+    })
+    const dot = toDot(g)
+
+    return { page, item, category, connectedItems, dot }
   }
 
   // 相互
