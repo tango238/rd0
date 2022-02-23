@@ -1,10 +1,12 @@
-import { Project } from '~/infra/datasource/generated'
+import { ProjectId } from '~/domain/model/project/Projectid'
+import { ProjectName } from '~/domain/model/project/ProjectName'
+import { Project } from '~/domain/model/project/Project'
 
 export interface ProjectRepository {
 
-  insert: (name:string) => void
+  insert: (name: ProjectName) => void
 
   findAll: () => Promise<Array<Project>>
 
-  getById: (projectId: string) => Promise<Project>
+  getById: (projectId: ProjectId) => Promise<Project>
 }

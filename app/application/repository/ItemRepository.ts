@@ -1,17 +1,21 @@
-import { Item } from '~/infra/datasource/generated'
+import { Item } from '~/domain/model/item/Item'
+import { ItemId } from '~/domain/model/item/ItemId'
+import { PageId } from '~/domain/model/page/PageId'
+import { ItemName } from '~/domain/model/item/ItemName'
+import { CategoryId } from '~/domain/model/category/CategoryId'
 
 export interface ItemRepository {
 
-  insert: (pageId: string, name: string, categoryId: string) => void
+  insert: (pageId: PageId, name: ItemName, categoryId: CategoryId) => void
 
-  findByPageId: (pageId: string) => Promise<Array<Item>>
+  findByPageId: (pageId: PageId) => Promise<Array<Item>>
 
-  findConnectionCandidates(pageId: string, itemId: string): Promise<Array<Item>>
+  findConnectionCandidates(pageId: PageId, itemId: ItemId): Promise<Array<Item>>
 
-  getById(itemId: string): Promise<Item>
+  getById(itemId: ItemId): Promise<Item>
 
-  addMutualConnection: (from: string, to: string) => void
+  addMutualConnection: (from: ItemId, to: ItemId) => void
 
-  getConnectedItems: (itemId: string) => Promise<Array<Item>>
+  getConnectedItems: (itemId: ItemId) => Promise<Array<Item>>
 
 }

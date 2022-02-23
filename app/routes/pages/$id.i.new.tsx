@@ -4,6 +4,9 @@ import { container } from 'tsyringe'
 import { ItemController, ItemNewView } from '~/application/controller/ItemController'
 import invariant from 'tiny-invariant'
 import { page_detail } from '~/routes/URLs'
+import { ItemName } from '~/domain/model/item/ItemName'
+import { PageId } from '~/domain/model/page/PageId'
+import { CategoryId } from '~/domain/model/category/CategoryId'
 
 const controller = container.resolve(ItemController)
 
@@ -12,21 +15,24 @@ export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData()
   const name = form.get("name")
   const categoryId = form.get("categoryId")
-  const pageId = form.get("pageId")
+  const pageIdValue = form.get("pageId")
 
   invariant(typeof name === "string")
   invariant(typeof categoryId === "string")
-  invariant(typeof pageId === "string")
+  invariant(typeof pageIdValue === "string")
 
-  await controller.create(pageId, name, categoryId)
-  return redirect(page_detail(pageId))
+  const pageId = PageId.of(pageIdValue)
+  await controller.create(
+    pageId, ItemName.of(name), CategoryId.of(categoryId)
+  )
+  return redirect(page_detail(pageIdValue))
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
   const pageId = params.id
   invariant(pageId)
 
-  return await controller.new(pageId)
+  return await controller.new(PageId.of(pageId))
 }
 
 export default function View() {

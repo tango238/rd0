@@ -1,22 +1,28 @@
 import { inject, injectable } from 'tsyringe'
 import { ItemRepository } from '~/application/repository/ItemRepository'
-import { Category, Item, Page } from '~/infra/datasource/generated'
 import { CategoryRepository } from '~/application/repository/CategoryRepository'
 import { PageRepository } from '~/application/repository/PageRepository'
 import { digraph, toDot } from 'ts-graphviz'
+import { Item, ItemJSON } from '~/domain/model/item/Item'
+import { ItemId } from '~/domain/model/item/ItemId'
+import { PageId } from '~/domain/model/page/PageId'
+import { ItemName } from '~/domain/model/item/ItemName'
+import { CategoryId } from '~/domain/model/category/CategoryId'
+import { Category, CategoryJSON } from '~/domain/model/category/Category'
+import { Page } from '~/domain/model/page/Page'
 
 export type ItemConnectionsView = {
-  item: Item
-  connectionCandidates: Array<Item>
+  item: ItemJSON
+  connectionCandidates: Array<ItemJSON>
 }
 
 export type ItemNewView = {
-  pageId: string
-  categories: Array<Category>
+  pageId: string,
+  categories: Array<CategoryJSON>
 }
 
 export type ItemDetailView = {
-  page: Page,
+  page: Page
   item: Item
   category: Category
   connectedItems: Array<Item>
@@ -33,28 +39,32 @@ export class ItemController {
   ) {
   }
 
-  async create(pageId: string, name: string, categoryId: string) {
+  async create(pageId: PageId, name: ItemName, categoryId: CategoryId) {
+    console.log(pageId)
     this.itemRepo.insert(pageId, name, categoryId)
   }
 
-  async findConnectionCandidates(itemId: string): Promise<ItemConnectionsView> {
+  async findConnectionCandidates(itemId: ItemId): Promise<ItemConnectionsView> {
     const item = await this.itemRepo.getById(itemId)
-    const pageId = item.pageId
-    const connectionCandidates = await this.itemRepo.findConnectionCandidates(pageId, itemId)
+    const connectionCandidates = await this.itemRepo.findConnectionCandidates(item.pageId, itemId)
 
     return {
-      item, connectionCandidates
+      item: item.toJSON(),
+      connectionCandidates: connectionCandidates.map(i => i.toJSON())
     }
   }
 
-  async new(pageId: string): Promise<ItemNewView> {
-    const page = await this.pageRepo.getById(pageId)
-    const categories = await this.categoryRepo.findAll(page.projectId)
+  async new(pageId: PageId): Promise<ItemNewView> {
+    const projectId = await this.pageRepo.getProjectIdById(pageId)
+    const categories = await this.categoryRepo.findAll(projectId)
 
-    return { pageId, categories: categories }
+    return {
+      pageId: pageId.value,
+      categories: categories.map(c => c.toJSON())
+    }
   }
 
-  async detail(pageId: string, itemId: string): Promise<ItemDetailView> {
+  async detail(pageId: PageId, itemId: ItemId): Promise<ItemDetailView> {
     const page = await this.pageRepo.getById(pageId)
     const item = await this.itemRepo.getById(itemId)
     const category = await this.categoryRepo.getById(item.categoryId)
@@ -63,9 +73,9 @@ export class ItemController {
     // dot
     const g = digraph('G')
 
-    const from = g.createNode(item.name)
+    const from = g.createNode(item.name.value)
     connectedItems.map(it => {
-      const to = g.createNode(it.name)
+      const to = g.createNode(it.name.value)
       g.createEdge([from, to], { arrowhead: 'none' })
     })
     const dot = toDot(g)
@@ -74,7 +84,7 @@ export class ItemController {
   }
 
   // 相互
-  async addMutualConnection(from: string, to: string) {
+  async addMutualConnection(from: ItemId, to: ItemId) {
     await this.itemRepo.addMutualConnection(from, to)
   }
 }

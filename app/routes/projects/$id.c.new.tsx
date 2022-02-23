@@ -1,9 +1,11 @@
 import { ActionFunction, Form, LoaderFunction, redirect, useLoaderData } from 'remix'
-import { Box, Button, Container, FormControl, TextField } from '@mui/material'
+import { Box, Button, Container, TextField } from '@mui/material'
 import invariant from 'tiny-invariant'
 import { project_detail } from '~/routes/URLs'
 import { container } from 'tsyringe'
 import { CategoryController } from '~/application/controller/CategoryController'
+import { ProjectId } from '~/domain/model/project/Projectid'
+import { CategoryName } from '~/domain/model/category/CategoryName'
 
 const controller = container.resolve(CategoryController)
 
@@ -14,13 +16,14 @@ export const loader: LoaderFunction = async ({ params }) => {
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData()
   const name = form.get("name")
-  const projectId = form.get("projectId")
+  const projectIdValue = form.get("projectId")
 
   invariant(typeof name === "string")
-  invariant(typeof projectId === "string")
+  invariant(typeof projectIdValue === "string")
 
-  await controller.create(projectId, name)
-  return redirect(project_detail(projectId))
+  const projectId = ProjectId.of(projectIdValue)
+  await controller.create(projectId, CategoryName.of(name))
+  return redirect(project_detail(projectIdValue))
 }
 
 export default function View() {

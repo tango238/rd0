@@ -5,10 +5,10 @@ import { container } from 'tsyringe'
 import { ItemController, ItemDetailView } from '~/application/controller/ItemController'
 import { Box, Container } from '@mui/material'
 import { useRenderDiagram } from '~/utils/hooks'
-
+import { PageId } from '~/domain/model/page/PageId'
+import { ItemId } from '~/domain/model/item/ItemId'
 
 const controller = container.resolve(ItemController)
-
 
 export const loader: LoaderFunction = async ({ params }) => {
   const pageId = params.pageId
@@ -16,9 +16,8 @@ export const loader: LoaderFunction = async ({ params }) => {
   invariant(typeof pageId === 'string')
   invariant(typeof itemId === 'string')
 
-  return controller.detail(pageId, itemId)
+  return controller.detail(PageId.of(pageId), ItemId.of(itemId))
 }
-
 
 export default function View() {
   const data = useLoaderData<ItemDetailView>()
@@ -31,11 +30,11 @@ export default function View() {
           <table>
             <tr>
               <th align="left">Item ID</th>
-              <td>{data.item.id}</td>
+              <td>{data.item.id.value}</td>
             </tr>
             <tr>
               <th align="left">Item Name</th>
-              <td>{data.item.name}</td>
+              <td>{data.item.name.value}</td>
             </tr>
             <tr>
               <th align="left">Category</th>

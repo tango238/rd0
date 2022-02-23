@@ -1,11 +1,14 @@
-import { Category } from '~/infra/datasource/generated'
+import { ProjectId } from '~/domain/model/project/Projectid'
+import { CategoryName } from '~/domain/model/category/CategoryName'
+import { CategoryId } from '~/domain/model/category/CategoryId'
+import { Category } from '~/domain/model/category/Category'
 
 export interface CategoryRepository {
 
-  insert: (projectId: string, name: string) => void
+  insert: (projectId: ProjectId, name: CategoryName) => void
 
-  findAll: (projectId: string) => Promise<Array<Category>>
+  findAll: (projectId: ProjectId) => Promise<Array<Category>>
 
-  getById: (categoryId: string) => Promise<Category>
+  getById: (categoryId: CategoryId) => Promise<Category>
 
 }

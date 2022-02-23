@@ -1,11 +1,16 @@
-import { Page } from '~/infra/datasource/generated'
+import { PageId } from '~/domain/model/page/PageId'
+import { Page } from '~/domain/model/page/Page'
+import { ProjectId } from '~/domain/model/project/Projectid'
+import { PageName } from '~/domain/model/page/PageName'
 
 export interface PageRepository {
 
-  insert: (projectId:string, name:string) => void
+  insert: (projectId: ProjectId, name: PageName) => void
 
-  findAll: (projectId: string) => Promise<Page[]>
+  findAll: (projectId: ProjectId) => Promise<Page[]>
 
-  getById: (pageId: string) => Promise<(Page)>
+  getById: (pageId: PageId) => Promise<Page>
+
+  getProjectIdById: (pageId: PageId) => Promise<ProjectId>
 
 }

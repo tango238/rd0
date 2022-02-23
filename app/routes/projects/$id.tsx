@@ -5,13 +5,14 @@ import invariant from 'tiny-invariant'
 import { category_detail, page_detail, project_category_new, project_page_new } from '~/routes/URLs'
 import { ProjectController, ProjectDetailView } from '~/application/controller/ProjectController'
 import { Box, Container } from '@mui/material'
+import { ProjectId } from '~/domain/model/project/Projectid'
 
 const controller = container.resolve(ProjectController)
 
 export const loader: LoaderFunction = async ({ params }) => {
   const projectId = params.id
   invariant(typeof projectId === 'string')
-  return await controller.detail(projectId)
+  return await controller.detail(ProjectId.of(projectId))
 }
 
 export default function View() {

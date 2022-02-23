@@ -4,7 +4,8 @@ import { ProjectController } from '~/application/controller/ProjectController'
 import { ActionFunction, Form, redirect } from 'remix'
 import Button from '@mui/material/Button'
 import invariant from 'tiny-invariant'
-import { Box, Container, FormControl, TextField } from '@mui/material'
+import { Box, Container, TextField } from '@mui/material'
+import { ProjectName } from '~/domain/model/project/ProjectName'
 
 const controller = container.resolve(ProjectController)
 
@@ -14,7 +15,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   invariant(typeof name === "string")
 
-  await controller.create(name)
+  await controller.create(ProjectName.of(name))
   return redirect(`/`)
 }
 

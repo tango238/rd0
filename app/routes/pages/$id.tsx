@@ -4,6 +4,7 @@ import { container } from 'tsyringe'
 import { PageController, PageDetailView } from '~/application/controller/PageController'
 import { page_item_detail, page_item_new } from '~/routes/URLs'
 import { Box, Container } from '@mui/material'
+import { PageId } from '~/domain/model/page/PageId'
 
 
 const controller = container.resolve(PageController)
@@ -12,7 +13,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   const pageId = params.id
   invariant(typeof pageId === 'string')
 
-  return await controller.detail(pageId)
+  return await controller.detail(PageId.of(pageId))
 }
 
 export default function View() {

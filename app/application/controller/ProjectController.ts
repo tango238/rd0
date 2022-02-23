@@ -1,17 +1,21 @@
 import { inject, injectable } from 'tsyringe'
 import { ProjectRepository } from '~/application/repository/ProjectRepository'
-import { Category, Page, Project } from '~/infra/datasource/generated'
 import { PageRepository } from '~/application/repository/PageRepository'
 import { CategoryRepository } from '~/application/repository/CategoryRepository'
+import { Project, ProjectJSON } from '~/domain/model/project/Project'
+import { Page, PageJSON } from '~/domain/model/page/Page'
+import { Category, CategoryJSON } from '~/domain/model/category/Category'
+import { ProjectName } from '~/domain/model/project/ProjectName'
+import { ProjectId } from '~/domain/model/project/Projectid'
 
 export type ProjectAllView = {
-  projects: Array<Project>
+  projects: Array<ProjectJSON>
 }
 
 export type ProjectDetailView = {
-  project: Project
-  pages: Array<Page>
-  categories: Array<Category>
+  project: ProjectJSON
+  pages: Array<PageJSON>
+  categories: Array<CategoryJSON>
 }
 
 @injectable()
@@ -25,23 +29,25 @@ export class ProjectController {
   }
 
   async all(): Promise<ProjectAllView> {
-    const projects = await this.projectRepo.findAll()
+    const projects  = await this.projectRepo.findAll()
     return {
-      projects
+      projects: projects.map(p => p.toJSON())
     }
   }
 
-  async create(name: string) {
-    await this.projectRepo.insert(name)
+  async create(projectName: ProjectName) {
+    await this.projectRepo.insert(projectName)
   }
 
-  async detail(projectId: string): Promise<ProjectDetailView> {
+  async detail(projectId: ProjectId): Promise<ProjectDetailView> {
     const project = await this.projectRepo.getById(projectId)
     const pages = await this.pageRepo.findAll(projectId)
     const categories = await this.categoryRepo.findAll(projectId)
 
     return {
-      project, pages, categories
+      project: project.toJSON(),
+      pages: pages.map(p => p.toJSON()),
+      categories: categories.map(c => c.toJSON())
     }
   }
 }

@@ -4,6 +4,7 @@ import { container } from 'tsyringe'
 import { ItemController, ItemConnectionsView } from '~/application/controller/ItemController'
 import invariant from 'tiny-invariant'
 import { page_item_detail } from '~/routes/URLs'
+import { ItemId } from '~/domain/model/item/ItemId'
 
 const controller = container.resolve(ItemController)
 
@@ -18,14 +19,14 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(typeof from === "string")
   invariant(typeof to === "string")
 
-  await controller.addMutualConnection(from, to)
+  await controller.addMutualConnection(ItemId.of(from), ItemId.of(to))
   return redirect(page_item_detail(pageId, from))
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
   const itemId = params.id
   invariant(typeof itemId === "string")
-  return await controller.findConnectionCandidates(itemId)
+  return await controller.findConnectionCandidates(ItemId.of(itemId))
 }
 
 export default function CreateConnectionView() {

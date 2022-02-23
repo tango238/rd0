@@ -1,9 +1,11 @@
-import { Box, Button, Container, FormControl, Input, InputLabel, TextField } from '@mui/material'
+import { Box, Button, Container, TextField } from '@mui/material'
 import { ActionFunction, Form, LoaderFunction, redirect, useLoaderData } from 'remix'
 import invariant from 'tiny-invariant'
 import { container } from 'tsyringe'
 import { PageController } from '~/application/controller/PageController'
 import { project_detail } from '~/routes/URLs'
+import { ProjectId } from '~/domain/model/project/Projectid'
+import { PageName } from '~/domain/model/page/PageName'
 
 const controller = container.resolve(PageController)
 
@@ -14,13 +16,14 @@ export const loader: LoaderFunction = async ({ params }) => {
 export const action: ActionFunction = async ({ request }) => {
   const form = await request.formData()
   const name = form.get("name")
-  const projectId = form.get("projectId")
+  const projectIdValue = form.get("projectId")
 
   invariant(typeof name === "string")
-  invariant(typeof projectId === "string")
+  invariant(typeof projectIdValue === "string")
 
-  await controller.create(projectId, name)
-  return redirect(project_detail(projectId))
+  const projectId = ProjectId.of(projectIdValue)
+  await controller.create(projectId, PageName.of(name))
+  return redirect(project_detail(projectIdValue))
 }
 
 export default function View() {

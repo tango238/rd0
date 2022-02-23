@@ -1,16 +1,20 @@
 import { inject, injectable } from 'tsyringe'
 import { PageRepository } from '~/application/repository/PageRepository'
-import { Item, Page } from '~/infra/datasource/generated'
 import { ItemRepository } from '~/application/repository/ItemRepository'
+import { ProjectId } from '~/domain/model/project/Projectid'
+import { Page, PageJSON } from '~/domain/model/page/Page'
+import { ItemJSON } from '~/domain/model/item/Item'
+import { PageName } from '~/domain/model/page/PageName'
+import { PageId } from '~/domain/model/page/PageId'
 
 export type PageAllView = {
-  projectId: string
+  projectId: ProjectId
   pages: Array<Page>
 }
 
 export type PageDetailView = {
-  page: Page
-  items: Array<Item>
+  page: PageJSON
+  items: Array<ItemJSON>
 }
 
 @injectable()
@@ -22,23 +26,26 @@ export class PageController {
   ) {
   }
 
-  async all(projectId: string): Promise<PageAllView> {
+  async all(projectId: ProjectId): Promise<PageAllView> {
     const pages = await this.pageRepo.findAll(projectId)
     return {
       projectId, pages
     }
   }
 
-  async create(projectId: string, name: string) {
-    this.pageRepo.insert(projectId, name)
+  async create(projectId: ProjectId, pageName: PageName) {
+    this.pageRepo.insert(projectId, pageName)
   }
 
-  async detail(pageId: string): Promise<PageDetailView> {
+  async detail(pageId: PageId): Promise<PageDetailView> {
     const page = await this.pageRepo.getById(pageId)
     const items = await this.itemRepo.findByPageId(pageId)
+    console.log(page)
+    console.log(items)
 
     return {
-      page, items
+      page: page.toJSON(),
+      items: items.map(i => i.toJSON())
     }
   }
 
