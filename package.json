@@ -20,7 +20,9 @@
     "reflect-metadata": "^0.1.13",
     "remix": "^1.2.1",
     "tiny-invariant": "^1.2.0",
-    "tsyringe": "^4.6.0"
+    "ts-graphviz": "^0.16.0",
+    "tsyringe": "^4.6.0",
+    "viz.js": "^2.1.2"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.2.1",

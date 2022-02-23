@@ -1,0 +1,58 @@
+declare module "viz.js" {
+  interface VizOption {
+    workerURL?: string;
+    worker?: ServiceWorker;
+    Module?: Function;
+    render?: Function;
+  }
+
+  interface Image {
+    path: string;
+    width: string;
+    height: string;
+  }
+
+  interface File {
+    path: string;
+    data: string;
+  }
+
+  interface RenderOption {
+    engine?: string;
+    format: "svg" |
+      "dot" |
+      "xdot" |
+      "plain" |
+      "plain-ext" |
+      "ps" |
+      "ps2" |
+      "json" |
+      "json0";
+    yInvert?: boolean;
+    images?: Image[];
+    files?: File[];
+    nop?: number;
+  }
+
+  interface RenderImageElementOption {
+    scale?: number;
+    mimeType?: string;
+    quality?: number;
+  }
+
+  export class Viz {
+    constructor(option: VizOption);
+
+    renderString(src: string, option?: RenderOption): Promise<string>;
+    renderSVGElement(src: string, option?: RenderOption): Promise<HTMLElement>;
+    renderImageElement(src: string, option?: RenderImageElementOption): Promise<string>;
+    renderJSONObject(src: string, option?: RenderImageElementOption): Promise<Object>;
+  }
+
+  export default Viz
+}
+
+declare module "viz.js/full.render.js" {
+  export function Module (): void;
+  export function render(): void;
+}
