@@ -2,7 +2,7 @@ import type { LoaderFunction } from 'remix'
 import { Link, useLoaderData } from 'remix'
 import { container } from 'tsyringe'
 import invariant from 'tiny-invariant'
-import { category_detail, page_detail, project_category_new, project_page_new } from '~/routes/URLs'
+import { component_type_detail, page_detail, project_component_type_new, project_page_new } from '~/routes/URLs'
 import { ProjectController, ProjectDetailView } from '~/application/controller/ProjectController'
 import { Box, Container } from '@mui/material'
 import { ProjectId } from '~/domain/model/project/Projectid'
@@ -52,15 +52,15 @@ export default function View() {
         <hr />
         <h3>Category</h3>
         <div>
-          <Link to={project_category_new(data.project.id)}>
+          <Link to={project_component_type_new(data.project.id)}>
             Create Category
           </Link>
         </div>
         <h3>Categories</h3>
         <ul>
-          {data.categories.map(type => (
+          {data.types.map(type => (
             <li key={type.id}>
-              <Link to={category_detail(type.id)}>{type.name}</Link>
+              <Link to={component_type_detail(type.id)}>{type.name}</Link>
             </li>
           ))}
         </ul>

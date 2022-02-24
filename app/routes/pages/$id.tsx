@@ -1,10 +1,10 @@
-import { Link, LoaderFunction, useLoaderData } from 'remix'
 import invariant from 'tiny-invariant'
 import { container } from 'tsyringe'
-import { PageController, PageDetailView } from '~/application/controller/PageController'
-import { page_item_detail, page_item_new } from '~/routes/URLs'
+import { Link, LoaderFunction, useLoaderData } from 'remix'
 import { Box, Container } from '@mui/material'
+import { PageController, PageDetailView } from '~/application/controller/PageController'
 import { PageId } from '~/domain/model/page/PageId'
+import { page_item_new } from '~/routes/URLs'
 
 
 const controller = container.resolve(PageController)
@@ -43,14 +43,6 @@ export default function View() {
           <Link to={page_item_new(data.page.id)}>Add Item</Link>
         </div>
 
-        <h3>Items</h3>
-        <ul>
-          {data.items.map(item => (
-            <li key={item.id}>
-              <Link to={page_item_detail(data.page.id, item.id)}>{item.name}</Link>
-            </li>
-          ))}
-        </ul>
       </Box>
     </Container>
   )

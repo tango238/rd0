@@ -3,11 +3,11 @@ import { Box, Button, Container, TextField } from '@mui/material'
 import invariant from 'tiny-invariant'
 import { project_detail } from '~/routes/URLs'
 import { container } from 'tsyringe'
-import { CategoryController } from '~/application/controller/CategoryController'
+import { ComponentTypeController } from '~/application/controller/ComponentTypeController'
 import { ProjectId } from '~/domain/model/project/Projectid'
-import { CategoryName } from '~/domain/model/category/CategoryName'
+import { ComponentTypeName } from '~/domain/model/type/ComponentTypeName'
 
-const controller = container.resolve(CategoryController)
+const controller = container.resolve(ComponentTypeController)
 
 export const loader: LoaderFunction = async ({ params }) => {
   return params.id
@@ -22,7 +22,7 @@ export const action: ActionFunction = async ({ request }) => {
   invariant(typeof projectIdValue === "string")
 
   const projectId = ProjectId.of(projectIdValue)
-  await controller.create(projectId, CategoryName.of(name))
+  await controller.create(projectId, ComponentTypeName.of(name))
   return redirect(project_detail(projectIdValue))
 }
 

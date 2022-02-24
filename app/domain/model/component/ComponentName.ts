@@ -1,12 +1,12 @@
-export class ItemId {
+export class ComponentName {
   private readonly _value: string
 
   private constructor(value: string) {
     this._value = value
   }
 
-  public static of(value: string): ItemId {
-    return new ItemId(value)
+  public static of(value: string): ComponentName {
+    return new ComponentName(value)
   }
 
   get value(): string {

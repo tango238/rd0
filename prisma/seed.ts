@@ -18,11 +18,11 @@ async function seed() {
     })
   )
   await Promise.all((
-    getCategories().map(category => {
-      return db.category.create({
+    getComponentTypes().map(type => {
+      return db.componentType.create({
         data: {
           projectId: project.id,
-          name: category.name
+          name: type.name
         }
       })
     })
@@ -45,7 +45,7 @@ function getPages() {
   ]
 }
 
-function getCategories() {
+function getComponentTypes() {
   return [
     { name: 'Actor' },
     { name: 'BUC' },
