@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -14,8 +14,8 @@ model Project {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  pages      Page[]
-  categories Category[]
+  pages          Page[]
+  componentTypes ComponentType[]
 }
 
 model Page {
@@ -26,56 +26,84 @@ model Page {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  project Project @relation(fields: [projectId], references: [id])
-  items   Item[]
+  project  Project    @relation(fields: [projectId], references: [id])
+  Instance Instance[]
 
   @@unique([projectId, level])
   @@unique([projectId, name])
 }
 
-model Category {
+model ComponentType {
   id        String   @id @default(uuid())
   projectId String
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  items   Item[]
-  project Project @relation(fields: [projectId], references: [id])
+  components Commponent[]
+  project    Project      @relation(fields: [projectId], references: [id])
 }
 
-model Item {
-  id         String   @id @default(uuid())
-  pageId     String
-  categoryId String
-  name       String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model Commponent {
+  id              String   @id @default(uuid())
+  componentTypeId String
+  name            String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  page         Page         @relation(fields: [pageId], references: [id])
-  category     Category     @relation(fields: [categoryId], references: [id])
-  connections  Connection[]
-  dependencies Dependency[]
+  componentType ComponentType @relation(fields: [componentTypeId], references: [id])
+  instances     Instance[]
+}
+
+model Instance {
+  id          String   @id @default(uuid())
+  pageId      String
+  componentId String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  page       Page       @relation(fields: [pageId], references: [id])
+  commponent Commponent @relation(fields: [componentId], references: [id])
+  relations  Relation[]
+
+  connectedTo Connection[]
+  childOf     Dependant[]
+}
+
+enum RelationType {
+  Connection
+  Dependency
+}
+
+model Relation {
+  id           String       @id @default(uuid())
+  relationType RelationType
+  instanceId   String
+  createdAt    DateTime     @default(now())
+
+  connections Connection[]
+  dependants  Dependant[]
+  instance    Instance     @relation(fields: [instanceId], references: [id])
 }
 
 model Connection {
-  id        String   @id @default(uuid())
-  from      String
-  to        String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  relationId String   @unique
+  id         String   @id @default(uuid())
+  toId       String
+  createdAt  DateTime @default(now())
 
-  item Item @relation(fields: [from], references: [id])
-  @@unique([from, to])
+  relation Relation @relation(fields: [relationId], references: [id])
+  to       Instance @relation(fields: [toId], references: [id])
 }
 
-model Dependency {
-  id        String   @id @default(uuid())
-  parent    String
-  child     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Dependant {
+  relationId String
+  id         String   @id @default(uuid())
+  childId    String
+  createdAt  DateTime @default(now())
 
-  item Item @relation(fields: [parent], references: [id])
-  @@unique([parent, child])
+  child    Instance @relation(fields: [childId], references: [id])
+  Relation Relation @relation(fields: [relationId], references: [id])
+
+  @@unique([relationId, childId])
 }

@@ -11,12 +11,12 @@ const Prisma = {}
 exports.Prisma = Prisma
 
 /**
- * Prisma Client JS version: 3.9.2
- * Query Engine version: bcc2ff906db47790ee902e7bbc76d7ffb1893009
+ * Prisma Client JS version: 3.10.0
+ * Query Engine version: 73e60b76d394f8d37d8ebd1f8918c79029f0db86
  */
 Prisma.prismaVersion = {
-  client: "3.9.2",
-  engine: "bcc2ff906db47790ee902e7bbc76d7ffb1893009"
+  client: "3.10.0",
+  engine: "73e60b76d394f8d37d8ebd1f8918c79029f0db86"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -92,7 +92,7 @@ exports.Prisma.PageScalarFieldEnum = makeEnum({
   updatedAt: 'updatedAt'
 });
 
-exports.Prisma.CategoryScalarFieldEnum = makeEnum({
+exports.Prisma.ComponentTypeScalarFieldEnum = makeEnum({
   id: 'id',
   projectId: 'projectId',
   name: 'name',
@@ -100,29 +100,41 @@ exports.Prisma.CategoryScalarFieldEnum = makeEnum({
   updatedAt: 'updatedAt'
 });
 
-exports.Prisma.ItemScalarFieldEnum = makeEnum({
+exports.Prisma.CommponentScalarFieldEnum = makeEnum({
   id: 'id',
-  pageId: 'pageId',
-  categoryId: 'categoryId',
+  componentTypeId: 'componentTypeId',
   name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 });
 
-exports.Prisma.ConnectionScalarFieldEnum = makeEnum({
+exports.Prisma.InstanceScalarFieldEnum = makeEnum({
   id: 'id',
-  from: 'from',
-  to: 'to',
+  pageId: 'pageId',
+  componentId: 'componentId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 });
 
-exports.Prisma.DependencyScalarFieldEnum = makeEnum({
+exports.Prisma.RelationScalarFieldEnum = makeEnum({
   id: 'id',
-  parent: 'parent',
-  child: 'child',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  relationType: 'relationType',
+  instanceId: 'instanceId',
+  createdAt: 'createdAt'
+});
+
+exports.Prisma.ConnectionScalarFieldEnum = makeEnum({
+  relationId: 'relationId',
+  id: 'id',
+  toId: 'toId',
+  createdAt: 'createdAt'
+});
+
+exports.Prisma.DependantScalarFieldEnum = makeEnum({
+  relationId: 'relationId',
+  id: 'id',
+  childId: 'childId',
+  createdAt: 'createdAt'
 });
 
 exports.Prisma.SortOrder = makeEnum({
@@ -130,14 +142,24 @@ exports.Prisma.SortOrder = makeEnum({
   desc: 'desc'
 });
 
+exports.Prisma.QueryMode = makeEnum({
+  default: 'default',
+  insensitive: 'insensitive'
+});
+exports.RelationType = makeEnum({
+  Connection: 'Connection',
+  Dependency: 'Dependency'
+});
 
 exports.Prisma.ModelName = makeEnum({
   Project: 'Project',
   Page: 'Page',
-  Category: 'Category',
-  Item: 'Item',
+  ComponentType: 'ComponentType',
+  Commponent: 'Commponent',
+  Instance: 'Instance',
+  Relation: 'Relation',
   Connection: 'Connection',
-  Dependency: 'Dependency'
+  Dependant: 'Dependant'
 });
 
 /**
