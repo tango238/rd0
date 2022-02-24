@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  db:
+    container_name: db
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_DB: devdb
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./prisma/init:/docker-entrypoint-initdb.d
+      - ./prisma/migrations:/tmp/migrations
+    restart: always

@@ -36,6 +36,13 @@ npx prisma format
 npx prisma db push
 ```
 
+### DB Connection
+
+Add .env
+```
+DATABASE_URL="postgresql://developer:password@localhost:5432/devdb?schema=public"
+```
+
 ## Debugging
 
 To enable all prisma debugging options, set DEBUG to prisma*:
