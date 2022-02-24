@@ -31,6 +31,10 @@ export default function View() {
             <th align="left">Name</th>
             <td>{data.page.name}</td>
           </tr>
+          <tr>
+            <th align="left">Level</th>
+            <td>{data.page.level}</td>
+          </tr>
         </table>
         <hr/>
 

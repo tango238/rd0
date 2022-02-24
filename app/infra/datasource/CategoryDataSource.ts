@@ -14,7 +14,7 @@ export class CategoryDataSource implements CategoryRepository {
   }
 
   async findAll(projectId: ProjectId): Promise<Array<Category>> {
-    const rows = await db.category.findMany({ where: { projectId: projectId.value } })
+    const rows = await db.category.findMany({ where: { projectId: projectId.value }, orderBy: [{ name: 'asc' }] })
     return rows.map(r => CategoryDataSource.toCategory(r))
   }
 
