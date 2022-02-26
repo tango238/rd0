@@ -14,6 +14,7 @@
     "@types/marked": "^4.0.2",
     "cross-env": "^7.0.3",
     "front-matter": "^4.0.2",
+    "immer": "^9.0.12",
     "marked": "^4.0.12",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -22,12 +23,14 @@
     "tiny-invariant": "^1.2.0",
     "ts-graphviz": "^0.16.0",
     "tsyringe": "^4.6.0",
+    "uuid": "^8.3.2",
     "viz.js": "^2.1.2"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.2.1",
     "@types/react": "^17.0.24",
     "@types/react-dom": "^17.0.9",
+    "@types/uuid": "^8.3.4",
     "esbuild-register": "^3.3.2",
     "prisma": "^3.10.0",
     "typescript": "^4.1.2"

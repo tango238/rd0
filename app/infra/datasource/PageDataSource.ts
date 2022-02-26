@@ -2,11 +2,11 @@ import { PageRepository } from '~/application/repository/PageRepository'
 import { db } from '~/utils/db.server'
 import { Page as PageRow } from '~/infra/datasource/generated'
 import invariant from 'tiny-invariant'
-import { ProjectId } from '~/domain/model/project/Projectid'
-import { PageName } from '~/domain/model/page/PageName'
-import { Page } from '~/domain/model/page/Page'
-import { PageLevel } from '~/domain/model/page/PageLevel'
-import { PageId } from '~/domain/model/page/PageId'
+import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
+import { PageName } from '~/domain/model/diagram/page/PageName'
+import { Page } from '~/domain/model/diagram/page/Page'
+import { PageLevel } from '~/domain/model/diagram/page/PageLevel'
+import { PageId } from '~/domain/model/diagram/page/PageId'
 
 
 export class PageDataSource implements PageRepository {
@@ -55,6 +55,7 @@ export class PageDataSource implements PageRepository {
   }
 
   private static toPage(row: PageRow): Page {
-    return new Page(PageId.of(row.id), PageLevel.of(row.level), PageName.of(row.name))
+    // FIXME: a list of instances is empty
+    return new Page(PageId.of(row.id), PageLevel.of(row.level), PageName.of(row.name), [])
   }
 }

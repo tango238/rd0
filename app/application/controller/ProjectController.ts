@@ -1,13 +1,13 @@
 import { inject, injectable } from 'tsyringe'
-import { ProjectRepository } from '~/application/repository/ProjectRepository'
-import { ProjectJSON } from '~/domain/model/project/Project'
-import { ProjectName } from '~/domain/model/project/ProjectName'
-import { ProjectId } from '~/domain/model/project/Projectid'
-import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
-import { PageRepository } from '~/application/repository/PageRepository'
-import { PageJSON } from '~/domain/model/page/Page'
-import { ComponentTypeJSON } from '~/domain/model/type/ComponentType'
 import { ComponentTypeRepo, PageRepo, ProjectRepo } from '~/injections'
+import { ProjectRepository } from '~/application/repository/ProjectRepository'
+import { PageRepository } from '~/application/repository/PageRepository'
+import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
+import { ProjectJSON } from '~/domain/model/diagram/project/Project'
+import { ProjectName } from '~/domain/model/diagram/project/ProjectName'
+import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
+import { PageJSON } from '~/domain/model/diagram/page/Page'
+import { ComponentTypeJSON } from '~/domain/model/diagram/type/ComponentType'
 
 export type ProjectAllView = {
   projects: Array<ProjectJSON>

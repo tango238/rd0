@@ -1,11 +1,11 @@
-import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
-import { db } from '~/utils/db.server'
-import { ComponentType as ComponentTypeRow } from '~/infra/datasource/generated'
 import invariant from 'tiny-invariant'
-import { ProjectId } from '~/domain/model/project/Projectid'
-import { ComponentType } from '~/domain/model/type/ComponentType'
-import { ComponentTypeId } from '~/domain/model/type/ComponentTypeId'
-import { ComponentTypeName } from '~/domain/model/type/ComponentTypeName'
+import { db } from '~/utils/db.server'
+import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
+import { ComponentType as ComponentTypeRow } from '~/infra/datasource/generated'
+import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
+import { ComponentType } from '~/domain/model/diagram/type/ComponentType'
+import { ComponentTypeId } from '~/domain/model/diagram/type/ComponentTypeId'
+import { ComponentTypeName } from '~/domain/model/diagram/type/ComponentTypeName'
 
 export class ComponentTypeDataSource implements ComponentTypeRepository {
 

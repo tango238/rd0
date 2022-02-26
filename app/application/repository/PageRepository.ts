@@ -1,7 +1,7 @@
-import { PageId } from '~/domain/model/page/PageId'
-import { Page } from '~/domain/model/page/Page'
-import { ProjectId } from '~/domain/model/project/Projectid'
-import { PageName } from '~/domain/model/page/PageName'
+import { PageId } from '~/domain/model/diagram/page/PageId'
+import { Page } from '~/domain/model/diagram/page/Page'
+import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
+import { PageName } from '~/domain/model/diagram/page/PageName'
 
 export interface PageRepository {
 

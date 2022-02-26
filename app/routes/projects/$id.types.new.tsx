@@ -4,8 +4,8 @@ import { container } from 'tsyringe'
 import { ActionFunction, Form, LoaderFunction, redirect, useLoaderData } from 'remix'
 import { Box, Button, Container, TextField } from '@mui/material'
 import { ComponentTypeController } from '~/application/controller/ComponentTypeController'
-import { ProjectId } from '~/domain/model/project/Projectid'
-import { ComponentTypeName } from '~/domain/model/type/ComponentTypeName'
+import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
+import { ComponentTypeName } from '~/domain/model/diagram/type/ComponentTypeName'
 import { project_detail } from '~/routes/URLs'
 
 const controller = container.resolve(ComponentTypeController)

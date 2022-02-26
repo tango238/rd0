@@ -5,7 +5,7 @@ import { ActionFunction, Form, redirect } from 'remix'
 import Button from '@mui/material/Button'
 import invariant from 'tiny-invariant'
 import { Box, Container, TextField } from '@mui/material'
-import { ProjectName } from '~/domain/model/project/ProjectName'
+import { ProjectName } from '~/domain/model/diagram/project/ProjectName'
 
 const controller = container.resolve(ProjectController)
 

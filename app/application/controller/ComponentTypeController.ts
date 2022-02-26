@@ -1,11 +1,11 @@
 import invariant from 'tiny-invariant'
 import { inject, injectable } from 'tsyringe'
-import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
-import { ProjectId } from '~/domain/model/project/Projectid'
-import { ComponentType } from '~/domain/model/type/ComponentType'
-import { ComponentTypeId } from '~/domain/model/type/ComponentTypeId'
-import { ComponentTypeName } from '~/domain/model/type/ComponentTypeName'
 import { ComponentTypeRepo } from '~/injections'
+import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
+import { ProjectId } from '~/domain/model/diagram/project/Projectid'
+import { ComponentType } from '~/domain/model/diagram/type/ComponentType'
+import { ComponentTypeId } from '~/domain/model/diagram/type/ComponentTypeId'
+import { ComponentTypeName } from '~/domain/model/diagram/type/ComponentTypeName'
 
 export type ComponentTypeDetailView = {
   componentType: ComponentType
