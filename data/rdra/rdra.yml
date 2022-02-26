@@ -1,0 +1,16 @@
+actor:
+  - { name: 会員 }
+  - { name: 図書館員 }
+
+externalSystem:
+  - { name: 書籍通販会社 }
+
+information:
+  - { name: 会員 }
+  - { name: 貸出予約 }
+  - { name: 貸出図書 }
+  - { name: 本 }
+  - { name: 蔵書 }
+  - { name: 書架 }
+  - { name: 書籍発注 }
+  - { name: 取置期限切れ }

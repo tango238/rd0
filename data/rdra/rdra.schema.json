@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/rdra.schema.json",
+  "title": "RDRA",
+  "description": "Relationship Driven Requirement Analysis",
+  "type": "object",
+  "properties": {
+    "actor": {
+      "description": "",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Actor"
+      }
+    },
+    "externalSystem": {
+      "description": "",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ExternalSystem"
+      }
+    },
+    "information": {
+      "description": "",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Information"
+      }
+    }
+  },
+  "required": [
+    "actor",
+    "information"
+  ],
+  "$defs": {
+    "Actor": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "ExternalSystem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "Information": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    }
+  }
+}
