@@ -5,6 +5,7 @@ import { ProjectId } from '~/domain/model/project/Projectid'
 import { ComponentType } from '~/domain/model/type/ComponentType'
 import { ComponentTypeId } from '~/domain/model/type/ComponentTypeId'
 import { ComponentTypeName } from '~/domain/model/type/ComponentTypeName'
+import { ComponentTypeRepo } from '~/injections'
 
 export type ComponentTypeDetailView = {
   componentType: ComponentType
@@ -14,16 +15,16 @@ export type ComponentTypeDetailView = {
 export class ComponentTypeController {
 
   constructor(
-    @inject('CategoryRepository') private categoryRepo: ComponentTypeRepository
+    @inject(ComponentTypeRepo) private componentTypeRepo: ComponentTypeRepository
   ) {
   }
 
   async create(projectId: ProjectId, name: ComponentTypeName) {
-    await this.categoryRepo.insert(projectId, name)
+    await this.componentTypeRepo.insert(projectId, name)
   }
 
   async detail(categoryId: ComponentTypeId): Promise<ComponentTypeDetailView> {
-    const componentType = await this.categoryRepo.getById(categoryId)
+    const componentType = await this.componentTypeRepo.getById(categoryId)
     invariant(componentType)
 
     return { componentType }

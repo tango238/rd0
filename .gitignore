@@ -8,3 +8,4 @@ node_modules
 /prisma/dev.db
 /.idea
 /app/infra/datasource/generated/libquery_engine-darwin-arm64.dylib.node
+/.ignore/

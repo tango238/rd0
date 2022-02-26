@@ -1,12 +1,13 @@
-import { ProjectRepository } from '~/application/repository/ProjectRepository'
+import invariant from 'tiny-invariant'
 import { db } from '~/utils/db.server'
 import { Project as ProjectRow } from '~/infra/datasource/generated'
-import invariant from 'tiny-invariant'
+import { ProjectRepository } from '~/application/repository/ProjectRepository'
 import { Project } from '~/domain/model/project/Project'
 import { ProjectId } from '~/domain/model/project/Projectid'
 import { ProjectName } from '~/domain/model/project/ProjectName'
 
 export class ProjectDataSource implements ProjectRepository {
+
   async insert(name: ProjectName) {
     await db.project.create({
       data: { name: name.value }
@@ -15,9 +16,7 @@ export class ProjectDataSource implements ProjectRepository {
 
   async findAll(): Promise<Array<Project>> {
     const rows = await db.project.findMany()
-    const result = rows.map(row => ProjectDataSource.toProject(row))
-    console.log(result)
-    return result
+    return rows.map(row => ProjectDataSource.toProject(row))
   }
 
   async getById(projectId: ProjectId): Promise<Project> {

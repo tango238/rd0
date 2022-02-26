@@ -1,10 +1,10 @@
 import { inject, injectable } from 'tsyringe'
 import { PageRepository } from '~/application/repository/PageRepository'
-import { ComponentRepository } from '~/application/repository/ComponentRepository'
 import { ProjectId } from '~/domain/model/project/Projectid'
 import { Page, PageJSON } from '~/domain/model/page/Page'
 import { PageName } from '~/domain/model/page/PageName'
 import { PageId } from '~/domain/model/page/PageId'
+import { PageRepo } from '~/injections'
 
 export type PageAllView = {
   projectId: ProjectId
@@ -19,8 +19,7 @@ export type PageDetailView = {
 export class PageController {
 
   constructor(
-    @inject('PageRepository') private pageRepo: PageRepository,
-    @inject('ItemRepository') private itemRepo: ComponentRepository
+    @inject(PageRepo) private pageRepo: PageRepository
   ) {
   }
 

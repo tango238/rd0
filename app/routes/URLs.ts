@@ -2,7 +2,7 @@
 export const project_new = () => `/projects/new`
 export const project_detail = (projectId: string) => `/projects/${projectId}`
 export const project_page_new = (projectId: string) => `/projects/${projectId}/pages/new`
-export const project_component_type_new = (projectId: string) => `/projects/${projectId}/type/new`
+export const project_component_type_new = (projectId: string) => `/projects/${projectId}/types/new`
 
 // Page
 export const page_detail = (pageId: string) => `/pages/${pageId}`

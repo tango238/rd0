@@ -1,9 +1,9 @@
-import type { LoaderFunction } from "remix"
-import { Link, useLoaderData } from "remix"
+import "reflect-metadata"
 import { container } from 'tsyringe'
+import { Link, LoaderFunction, useLoaderData } from "remix"
+import { Box, Container } from '@mui/material'
 import { ProjectAllView, ProjectController } from '~/application/controller/ProjectController'
 import { project_detail, project_new } from '~/routes/URLs'
-import { Box, Container } from '@mui/material'
 
 const controller = container.resolve(ProjectController)
 

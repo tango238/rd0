@@ -1,12 +1,13 @@
 import { inject, injectable } from 'tsyringe'
 import { ProjectRepository } from '~/application/repository/ProjectRepository'
-import { PageRepository } from '~/application/repository/PageRepository'
-import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
 import { ProjectJSON } from '~/domain/model/project/Project'
-import { PageJSON } from '~/domain/model/page/Page'
-import { ComponentTypeJSON } from '~/domain/model/type/ComponentType'
 import { ProjectName } from '~/domain/model/project/ProjectName'
 import { ProjectId } from '~/domain/model/project/Projectid'
+import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
+import { PageRepository } from '~/application/repository/PageRepository'
+import { PageJSON } from '~/domain/model/page/Page'
+import { ComponentTypeJSON } from '~/domain/model/type/ComponentType'
+import { ComponentTypeRepo, PageRepo, ProjectRepo } from '~/injections'
 
 export type ProjectAllView = {
   projects: Array<ProjectJSON>
@@ -22,9 +23,9 @@ export type ProjectDetailView = {
 export class ProjectController {
 
   constructor(
-    @inject('ProjectRepository') private projectRepo: ProjectRepository,
-    @inject('PageRepository') private pageRepo: PageRepository,
-    @inject('ComponentTypeRepository') private componentTypeRepo: ComponentTypeRepository
+    @inject(ProjectRepo) private projectRepo: ProjectRepository,
+    @inject(PageRepo) private pageRepo: PageRepository,
+    @inject(ComponentTypeRepo) private componentTypeRepo: ComponentTypeRepository
   ) {
   }
 
@@ -46,8 +47,8 @@ export class ProjectController {
 
     return {
       project: project.toJSON(),
-      pages: pages.map(p => p.toJSON()),
-      types: types.map(c => c.toJSON())
+      pages: pages.map(page => page.toJSON()),
+      types: types.map(type => type.toJSON())
     }
   }
 }

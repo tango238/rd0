@@ -1,11 +1,12 @@
-import { Box, Button, Container, TextField } from '@mui/material'
-import { ActionFunction, Form, LoaderFunction, redirect, useLoaderData } from 'remix'
+import 'reflect-metadata'
 import invariant from 'tiny-invariant'
 import { container } from 'tsyringe'
+import { ActionFunction, Form, LoaderFunction, redirect, useLoaderData } from 'remix'
+import { Box, Button, Container, TextField } from '@mui/material'
 import { PageController } from '~/application/controller/PageController'
-import { project_detail } from '~/routes/URLs'
 import { ProjectId } from '~/domain/model/project/Projectid'
 import { PageName } from '~/domain/model/page/PageName'
+import { project_detail } from '~/routes/URLs'
 
 const controller = container.resolve(PageController)
 

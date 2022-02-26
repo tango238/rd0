@@ -29,11 +29,18 @@ Now you'll need to pick a host to deploy it to.
 
 ## DB
 
-Initialize DB:
+###Initialize DB
 
 ```sh
 npx prisma format
 npx prisma db push
+```
+
+### Migration
+
+```sh
+npx prisma format
+npx prisma migrate dev
 ```
 
 ### DB Connection

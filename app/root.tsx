@@ -1,8 +1,10 @@
 import "reflect-metadata"
+import { registerToContainer } from '~/injections'
 import type { MetaFunction } from "remix"
 import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration } from "remix"
-import { registerToContainer } from '~/injections'
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+
+registerToContainer()
 
 const theme = createTheme({
   palette: {
@@ -18,7 +20,6 @@ const theme = createTheme({
   },
 })
 
-registerToContainer()
 
 export const meta: MetaFunction = () => {
   return { title: "Relation Diagram" }

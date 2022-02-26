@@ -1,11 +1,12 @@
+import 'reflect-metadata'
+import invariant from 'tiny-invariant'
+import { container } from 'tsyringe'
 import type { LoaderFunction } from 'remix'
 import { Link, useLoaderData } from 'remix'
-import { container } from 'tsyringe'
-import invariant from 'tiny-invariant'
-import { component_type_detail, page_detail, project_component_type_new, project_page_new } from '~/routes/URLs'
-import { ProjectController, ProjectDetailView } from '~/application/controller/ProjectController'
 import { Box, Container } from '@mui/material'
+import { ProjectController, ProjectDetailView } from '~/application/controller/ProjectController'
 import { ProjectId } from '~/domain/model/project/Projectid'
+import { component_type_detail, page_detail, project_component_type_new, project_page_new } from '~/routes/URLs'
 
 const controller = container.resolve(ProjectController)
 
@@ -50,13 +51,13 @@ export default function View() {
         </ul>
 
         <hr />
-        <h3>Category</h3>
+        <h3>Type</h3>
         <div>
           <Link to={project_component_type_new(data.project.id)}>
-            Create Category
+            Create Type
           </Link>
         </div>
-        <h3>Categories</h3>
+        <h3>Types</h3>
         <ul>
           {data.types.map(type => (
             <li key={type.id}>
