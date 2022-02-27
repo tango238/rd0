@@ -12,7 +12,14 @@
         "$ref": "#/$defs/Actor"
       }
     },
-    "externalSystem": {
+    "internal_system": {
+      "description": "",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/InternalSystem"
+      }
+    },
+    "external_system": {
       "description": "",
       "type": "array",
       "items": {
@@ -25,11 +32,32 @@
       "items": {
         "$ref": "#/$defs/Information"
       }
+    },
+    "state": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/State"
+      }
+    },
+    "business": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Business"
+      }
+    },
+    "usecase": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/UseCase"
+      }
     }
   },
   "required": [
     "actor",
-    "information"
+    "internal_system",
+    "information",
+    "state",
+    "business"
   ],
   "$defs": {
     "Actor": {
@@ -45,6 +73,17 @@
       "required": [
         "name"
       ]
+    },
+    "InternalSystem": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
     },
     "ExternalSystem": {
       "type": "object",
@@ -69,6 +108,189 @@
       },
       "required": [
         "name"
+      ]
+    },
+    "State": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StateValue"
+          }
+        }
+      },
+      "require": [
+        "name",
+        "value"
+      ]
+    },
+    "StateValue": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Business": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "buc": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BusinessUseCase"
+          }
+        }
+      },
+      "required": [
+        "buc"
+      ]
+    },
+    "BusinessUseCase": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "activity": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Activity"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "activity"
+      ]
+    },
+    "Activity": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "used_by": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "model": {
+                "$ref": "#/$defs/ActorOrSystem"
+              },
+              "value": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "model",
+              "value"
+            ]
+          }
+        },
+        "usecase": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "name",
+        "used_by"
+      ]
+    },
+    "UseCase": {
+      "type": "object",
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "view": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "information": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "condition": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "event": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "view",
+            "information"
+          ]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "timer": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "information": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "condition": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "event": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "name",
+            "timer",
+            "information"
+          ]
+        }
+      ]
+    },
+    "ActorOrSystem": {
+      "enum": [
+        "Actor",
+        "ExternalSystem",
+        "InternalSystem"
       ]
     }
   }

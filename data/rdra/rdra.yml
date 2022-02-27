@@ -1,16 +1,227 @@
 actor:
-  - { name: 会員 }
-  - { name: 図書館員 }
+  - name: 会員
+  - name: 図書館員
 
-externalSystem:
-  - { name: 書籍通販会社 }
+internal_system:
+  - name: 書籍管理システム
+
+external_system:
+  - name: 書籍通販会社
 
 information:
-  - { name: 会員 }
-  - { name: 貸出予約 }
-  - { name: 貸出図書 }
-  - { name: 本 }
-  - { name: 蔵書 }
-  - { name: 書架 }
-  - { name: 書籍発注 }
-  - { name: 取置期限切れ }
+  - name: 会員
+  - name: 貸出予約
+  - name: 貸出図書
+  - name: 本
+  - name: 蔵書
+  - name: 書架
+  - name: 書籍発注
+  - name: 取置期限切れ
+
+state:
+  - name: 蔵書の状態
+    value:
+      - name: 貸出中_期限内
+      - name: 貸出中_期限切れ
+      - name: 取置中
+      - name: 在庫中
+
+  - name: Web予約の状態
+    value:
+      - name: 未予約
+      - name: 予約中_未準備
+      - name: 予約中_準備完了
+
+business:
+  - name: 貸出・返却
+    buc:
+      - name: 貸出
+        activity:
+          - name: 書架から本を探す
+            used_by:
+              - model: Actor
+                value: 図書館員
+          - name: 蔵書を貸出す
+            used_by:
+              - model: Actor
+                value: 図書館員
+            usecase:
+              - 蔵書の貸出を登録する
+
+      - name: Web予約
+        activity:
+          - name: 貸出予約
+            used_by:
+              - model: Actor
+                value: 図書館員
+            usecase:
+              - 貸出本の予約・取消をする
+          - name: 予約図書準備
+            used_by:
+              - model: Actor
+                value: 図書館員
+            usecase:
+              - 予約図書一覧を出力する
+          - name: 予約図書を受け取る
+            used_by:
+              - model: Actor
+                value: 会員
+              - model: Actor
+                value: 図書館員
+            usecase:
+              - 取置図書を消し込む
+              - 蔵書の貸出を登録する
+
+      - name: 返却
+        activity:
+          - name: 貸出図書を返却する
+            used_by:
+              - model: Actor
+                value: 図書館員
+            usecase:
+              - 貸出図書の返却を登録する
+
+  - name: 会員管理
+    buc:
+      - name: 会員登録
+        activity:
+          - name: 会員新規登録
+            used_by:
+              - model: Actor
+                value: 会員
+            usecase:
+              - 会員IDを発行する
+
+          - name: 会員の確認
+            used_by:
+              - model: Actor
+                value: 図書会員
+            usecase:
+              - 会員カードの発行（再）する
+              - 会員を照会する
+
+      - name: 期限管理
+        activity:
+          - name: 貸出期限確認
+            used_by:
+              - model: InternalSystem
+                value: 書籍管理システム
+            usecase:
+              - 貸出期限を確認する
+              - 取置期限を確認する
+
+          - name: 取置図書の返却
+            used_by:
+              - model: Actor
+                value: 会員
+            usecase:
+              - 取置を解消する
+
+  - name: 蔵書管理
+    buc:
+      - name: 棚卸
+        activity:
+          - name: 棚卸を行う
+            used_by:
+              - model: Actor
+                value: 図書館員
+
+          - name: 書籍補充
+            used_by:
+              - model: ExternalSystem
+                value: 書籍通販会社
+            usecase:
+              - 書籍を発注する
+
+usecase:
+  - name: 蔵書の貸出を登録する
+    view:
+      - 貸出登録
+    information:
+      - 貸出図書
+      - 蔵書
+      - 貸出予約
+    condition:
+      - 貸出制限
+
+  - name: 貸出本の予約・取消をする
+    view:
+      - 蔵書検索
+      - 貸出予約
+    information:
+      - 蔵書
+      - 貸出予約
+
+  - name: 予約図書一覧を出力する
+    view:
+      - 貸出予約一覧
+    information:
+      - 貸出予約
+    condition:
+      - 貸出予約一覧出力条件
+
+  - name: 取置図書を消し込む
+    view:
+      - 予約消込
+    information:
+      - 貸出予約
+
+  - name: 貸出図書の返却を登録する
+    view:
+      - 返却登録
+    information:
+      - 貸出図書
+      - 蔵書
+      - 貸出予約
+
+  - name: 会員IDを発行する
+    view:
+      - 会員登録
+    information:
+      - 会員
+
+  - name: 会員カードの発行（再）する
+    view:
+      - 会員カード
+    information:
+      - 会員
+
+  - name: 会員を照会する
+    view:
+      - 会員検索
+    information:
+      - 会員
+
+  - name: 貸出期限を確認する
+    timer:
+      - 日次
+    information:
+      - 貸出図書
+    event:
+      - 貸出期限切れ通知メール
+    condition:
+      - 貸出期限
+
+  - name: 取置期限を確認する
+    timer:
+      - 日次
+    information:
+      - 貸出予約
+      - 取置期限切れ
+    condition:
+      - 取置期限
+
+  - name: 取置を解消する
+    view:
+      - 取置解消
+    information:
+      - 取置期限切れ
+
+  - name: 書籍を発注する
+    view:
+      - 書籍発注
+    information:
+      - 書籍発注
+      - 本
+    event:
+      - 書籍発注依頼
