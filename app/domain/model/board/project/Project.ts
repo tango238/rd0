@@ -1,5 +1,5 @@
-import { ProjectId } from '~/domain/model/diagram/project/Projectid'
-import { ProjectName } from '~/domain/model/diagram/project/ProjectName'
+import { ProjectId } from '~/domain/model/board/project/Projectid'
+import { ProjectName } from '~/domain/model/board/project/ProjectName'
 
 export interface ProjectJSON {
   id: string

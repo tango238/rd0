@@ -5,7 +5,7 @@ import type { LoaderFunction } from 'remix'
 import { Link, useLoaderData } from 'remix'
 import { Box, Container } from '@mui/material'
 import { ProjectController, ProjectDetailView } from '~/application/controller/ProjectController'
-import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
+import { ProjectId } from '~/domain/model/board/project/ProjectId'
 import { component_type_detail, page_detail, project_component_type_new, project_page_new } from '~/routes/URLs'
 
 const controller = container.resolve(ProjectController)

@@ -2,11 +2,11 @@ import { PageRepository } from '~/application/repository/PageRepository'
 import { db } from '~/utils/db.server'
 import { Page as PageRow } from '~/infra/datasource/generated'
 import invariant from 'tiny-invariant'
-import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
-import { PageName } from '~/domain/model/diagram/page/PageName'
-import { Page } from '~/domain/model/diagram/page/Page'
-import { PageLevel } from '~/domain/model/diagram/page/PageLevel'
-import { PageId } from '~/domain/model/diagram/page/PageId'
+import { ProjectId } from '~/domain/model/board/project/ProjectId'
+import { PageName } from '~/domain/model/board/page/PageName'
+import { Page } from '~/domain/model/board/page/Page'
+import { PageLevel } from '~/domain/model/board/page/PageLevel'
+import { PageId } from '~/domain/model/board/page/PageId'
 
 
 export class PageDataSource implements PageRepository {

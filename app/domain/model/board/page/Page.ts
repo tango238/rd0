@@ -1,8 +1,8 @@
 import produce, { Draft, immerable } from 'immer'
-import { PageId } from '~/domain/model/diagram/page/PageId'
-import { PageLevel } from '~/domain/model/diagram/page/PageLevel'
-import { PageName } from '~/domain/model/diagram/page/PageName'
-import { Instance, InstanceJSON } from '~/domain/model/diagram/instance/Instance'
+import { PageId } from '~/domain/model/board/page/PageId'
+import { PageLevel } from '~/domain/model/board/page/PageLevel'
+import { PageName } from '~/domain/model/board/page/PageName'
+import { Instance, InstanceJSON } from '~/domain/model/board/instance/Instance'
 
 export interface PageJSON {
   id: string

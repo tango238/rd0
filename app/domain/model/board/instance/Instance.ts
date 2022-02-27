@@ -1,4 +1,4 @@
-import { InstanceId } from '~/domain/model/diagram/instance/InstanceId'
+import { InstanceId } from '~/domain/model/board/instance/InstanceId'
 
 export interface InstanceJSON {
   id: string

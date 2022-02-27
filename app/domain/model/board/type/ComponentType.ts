@@ -1,5 +1,5 @@
-import { ComponentTypeId } from '~/domain/model/diagram/type/ComponentTypeId'
-import { ComponentTypeName } from '~/domain/model/diagram/type/ComponentTypeName'
+import { ComponentTypeId } from '~/domain/model/board/type/ComponentTypeId'
+import { ComponentTypeName } from '~/domain/model/board/type/ComponentTypeName'
 
 export interface ComponentTypeJSON {
   id: string

@@ -2,10 +2,10 @@ import invariant from 'tiny-invariant'
 import { db } from '~/utils/db.server'
 import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
 import { ComponentType as ComponentTypeRow } from '~/infra/datasource/generated'
-import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
-import { ComponentType } from '~/domain/model/diagram/type/ComponentType'
-import { ComponentTypeId } from '~/domain/model/diagram/type/ComponentTypeId'
-import { ComponentTypeName } from '~/domain/model/diagram/type/ComponentTypeName'
+import { ProjectId } from '~/domain/model/board/project/ProjectId'
+import { ComponentType } from '~/domain/model/board/type/ComponentType'
+import { ComponentTypeId } from '~/domain/model/board/type/ComponentTypeId'
+import { ComponentTypeName } from '~/domain/model/board/type/ComponentTypeName'
 
 export class ComponentTypeDataSource implements ComponentTypeRepository {
 

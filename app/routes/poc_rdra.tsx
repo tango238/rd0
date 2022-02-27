@@ -1,8 +1,8 @@
 import { Box, Container } from '@mui/material'
 import { LoaderFunction, useLoaderData } from 'remix'
-import { Page, PageJSON } from '~/domain/model/diagram/page/Page'
-import { Instance } from '~/domain/model/diagram/instance/Instance'
-import { InstanceId } from '~/domain/model/diagram/instance/InstanceId'
+import { Page, PageJSON } from '~/domain/model/board/page/Page'
+import { Instance } from '~/domain/model/board/instance/Instance'
+import { InstanceId } from '~/domain/model/board/instance/InstanceId'
 
 export const loader: LoaderFunction = async () => {
   // Pageの作成

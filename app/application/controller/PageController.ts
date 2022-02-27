@@ -1,10 +1,10 @@
 import { inject, injectable } from 'tsyringe'
 import { PageRepo } from '~/injections'
 import { PageRepository } from '~/application/repository/PageRepository'
-import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
-import { Page, PageJSON } from '~/domain/model/diagram/page/Page'
-import { PageId } from '~/domain/model/diagram/page/PageId'
-import { PageName } from '~/domain/model/diagram/page/PageName'
+import { ProjectId } from '~/domain/model/board/project/ProjectId'
+import { Page, PageJSON } from '~/domain/model/board/page/Page'
+import { PageId } from '~/domain/model/board/page/PageId'
+import { PageName } from '~/domain/model/board/page/PageName'
 
 export type PageAllView = {
   projectId: ProjectId

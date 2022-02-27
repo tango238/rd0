@@ -3,11 +3,11 @@ import { ComponentTypeRepo, PageRepo, ProjectRepo } from '~/injections'
 import { ProjectRepository } from '~/application/repository/ProjectRepository'
 import { PageRepository } from '~/application/repository/PageRepository'
 import { ComponentTypeRepository } from '~/application/repository/ComponentTypeRepository'
-import { ProjectJSON } from '~/domain/model/diagram/project/Project'
-import { ProjectName } from '~/domain/model/diagram/project/ProjectName'
-import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
-import { PageJSON } from '~/domain/model/diagram/page/Page'
-import { ComponentTypeJSON } from '~/domain/model/diagram/type/ComponentType'
+import { ProjectJSON } from '~/domain/model/board/project/Project'
+import { ProjectName } from '~/domain/model/board/project/ProjectName'
+import { ProjectId } from '~/domain/model/board/project/ProjectId'
+import { PageJSON } from '~/domain/model/board/page/Page'
+import { ComponentTypeJSON } from '~/domain/model/board/type/ComponentType'
 
 export type ProjectAllView = {
   projects: Array<ProjectJSON>

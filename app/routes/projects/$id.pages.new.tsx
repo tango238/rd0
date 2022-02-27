@@ -4,8 +4,8 @@ import { container } from 'tsyringe'
 import { ActionFunction, Form, LoaderFunction, redirect, useLoaderData } from 'remix'
 import { Box, Button, Container, TextField } from '@mui/material'
 import { PageController } from '~/application/controller/PageController'
-import { ProjectId } from '~/domain/model/diagram/project/ProjectId'
-import { PageName } from '~/domain/model/diagram/page/PageName'
+import { ProjectId } from '~/domain/model/board/project/ProjectId'
+import { PageName } from '~/domain/model/board/page/PageName'
 import { project_detail } from '~/routes/URLs'
 
 const controller = container.resolve(PageController)

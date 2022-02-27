@@ -1,6 +1,6 @@
-import { Project } from '~/domain/model/diagram/project/Project'
-import { ProjectId } from '~/domain/model/diagram/project/Projectid'
-import { ProjectName } from '~/domain/model/diagram/project/ProjectName'
+import { Project } from '~/domain/model/board/project/Project'
+import { ProjectId } from '~/domain/model/board/project/Projectid'
+import { ProjectName } from '~/domain/model/board/project/ProjectName'
 
 export interface ProjectRepository {
 
