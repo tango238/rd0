@@ -225,3 +225,39 @@ usecase:
       - 本
     event:
       - 書籍発注依頼
+
+variation:
+  - name: 本種別
+    value:
+      - 書籍
+      - 館内閲覧用書籍
+      - DVD
+      - CD
+
+  - name: 遅延日数
+    value:
+      - 遅延日数＜３日
+      - 遅延日数＜７日
+      - 遅延日数が７日以上
+
+  - name: 会員種別
+    value:
+      - 大人
+      - 子供
+
+condition:
+  - name: 貸出期限
+    description: 貸出日＋１４日
+
+  - name: 取置期限
+    description: 貸出準備完了日＋７日
+
+  - name: 貸出制限
+    description: 返却が遅延している場合の貸出制限
+    variation:
+      - 遅延日数
+      - 会員種別
+
+  - name: 貸出予約一覧出力条件
+    description: 貸出予約の内「在庫あり」の本を一覧に出す
+    state: 蔵書の状態
