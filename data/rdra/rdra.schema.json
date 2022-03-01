@@ -73,7 +73,7 @@
   ],
   "$defs": {
     "Actor": {
-      "type": "object",
+      "type": ["object", "string"],
       "properties": {
         "name": {
           "type": "string"
@@ -87,7 +87,7 @@
       ]
     },
     "InternalSystem": {
-      "type": "object",
+      "type": ["object", "string"],
       "properties": {
         "name": {
           "type": "string"
@@ -98,7 +98,7 @@
       }
     },
     "ExternalSystem": {
-      "type": "object",
+      "type": ["object", "string"],
       "properties": {
         "name": {
           "type": "string"

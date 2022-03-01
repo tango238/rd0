@@ -10,7 +10,7 @@ export class ExternalSystem {
     this._instances = instances
   }
 
-  public static build(records: { name: string, description?: string }[]): ExternalSystem {
+  public static resolve(records: { name: string, description?: string }[]): ExternalSystem {
     return new ExternalSystem(records.map(r => new ExternalSystemInstance(r.name, r.description)))
   }
 

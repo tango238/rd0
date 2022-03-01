@@ -1,20 +1,20 @@
 import invariant from 'tiny-invariant'
 
-export class Information {
+export class InternalSystem {
   private readonly _names: string[] = []
-  private readonly _instances: InformationInstance[] = []
+  private readonly _instances: ExternalSystemInstance[] = []
 
-  private constructor(instances: InformationInstance[]) {
+  private constructor(instances: ExternalSystemInstance[]) {
     invariant(this._names.length > 0, "AlreadyInitialized")
     this._names = instances.map(i => i.name)
     this._instances = instances
   }
 
-  public static resolve(records: { name: string, description?: string }[]): Information {
-    return new Information(records.map(r => new InformationInstance(r.name, r.description)))
+  public static resolve(records: { name: string, description?: string }[]): InternalSystem {
+    return new InternalSystem(records.map(r => new ExternalSystemInstance(r.name, r.description)))
   }
 
-  public add(instance: InformationInstance) {
+  public add(instance: ExternalSystemInstance) {
     invariant(this._names.find(k => k == instance.name), `NotUnique[${instance.name}]`)
     this._instances.push(instance)
   }
@@ -23,14 +23,14 @@ export class Information {
     return this._names
   }
 
-  get(name: string): InformationInstance {
+  get(name: string): ExternalSystemInstance {
     const result = this._instances.find(i => i.name == name)
     invariant(result, `NotFound[${name}]`)
     return result
   }
 }
 
-export class InformationInstance {
+export class ExternalSystemInstance {
   private readonly _name: string
   private readonly _description: string
 

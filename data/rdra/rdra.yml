@@ -1,12 +1,12 @@
 actor:
-  - name: 会員
-  - name: 図書館員
+  - 会員
+  - 図書館員
 
 internal_system:
-  - name: 書籍管理システム
+  - 書籍管理システム
 
 external_system:
-  - name: 書籍通販会社
+  - 書籍通販会社
 
 information:
   - name: 会員
@@ -21,16 +21,16 @@ information:
 state:
   - name: 蔵書の状態
     value:
-      - name: 貸出中_期限内
-      - name: 貸出中_期限切れ
-      - name: 取置中
-      - name: 在庫中
+      - 貸出中_期限内
+      - 貸出中_期限切れ
+      - 取置中
+      - 在庫中
 
   - name: Web予約の状態
     value:
-      - name: 未予約
-      - name: 予約中_未準備
-      - name: 予約中_準備完了
+      - 未予約
+      - 予約中_未準備
+      - 予約中_準備完了
 
 business:
   - name: 貸出・返却

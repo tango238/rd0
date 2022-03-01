@@ -10,8 +10,8 @@ export class Actor {
     this._instances = instances
   }
 
-  public static build(records: { name: string, description?: string }[]): Actor {
-    return new Actor(records.map(r => new ActorInstance(r.name, r.description)))
+  public static resolve(source: { name: string, description?: string }[]): Actor {
+    return new Actor(source.map(r => new ActorInstance(r.name, r.description)))
   }
 
   public add(instance: ActorInstance) {
