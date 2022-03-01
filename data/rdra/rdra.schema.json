@@ -60,7 +60,7 @@
     "usecase": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/UseCase"
+        "$ref": "#/$defs/Usecase"
       }
     }
   },
@@ -73,7 +73,10 @@
   ],
   "$defs": {
     "Actor": {
-      "type": ["object", "string"],
+      "type": [
+        "object",
+        "string"
+      ],
       "properties": {
         "name": {
           "type": "string"
@@ -82,12 +85,16 @@
           "type": "string"
         }
       },
+      "additionalProperties": false,
       "required": [
         "name"
       ]
     },
     "InternalSystem": {
-      "type": ["object", "string"],
+      "type": [
+        "object",
+        "string"
+      ],
       "properties": {
         "name": {
           "type": "string"
@@ -95,10 +102,17 @@
         "description": {
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ]
     },
     "ExternalSystem": {
-      "type": ["object", "string"],
+      "type": [
+        "object",
+        "string"
+      ],
       "properties": {
         "name": {
           "type": "string"
@@ -106,7 +120,11 @@
         "description": {
           "type": "string"
         }
-      }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name"
+      ]
     },
     "Information": {
       "type": "object",
@@ -116,8 +134,15 @@
         },
         "description": {
           "type": "string"
+        },
+        "related": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
+      "additionalProperties": false,
       "required": [
         "name"
       ]
@@ -125,7 +150,7 @@
     "State": {
       "type": "object",
       "properties": {
-        "name": {
+        "group": {
           "type": "string"
         },
         "value": {
@@ -135,8 +160,9 @@
           }
         }
       },
+      "additionalProperties": false,
       "require": [
-        "name",
+        "group",
         "value"
       ]
     },
@@ -145,8 +171,31 @@
       "properties": {
         "name": {
           "type": "string"
+        },
+        "usecase": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "next_state": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "name", "next_state"
+            ]
+          }
         }
-      }
+      },
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "usecase"
+      ]
     },
     "Variation": {
       "type": "object",
@@ -161,6 +210,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "name",
         "value"
@@ -170,7 +220,6 @@
       "type": "object",
       "anyOf": [
         {
-          "additionalProperties": false,
           "properties": {
             "name": {
               "type": "string"
@@ -178,10 +227,13 @@
             "description": {
               "type": "string"
             }
-          }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name"
+          ]
         },
         {
-          "additionalProperties": false,
           "properties": {
             "name": {
               "type": "string"
@@ -195,10 +247,13 @@
                 "type": "string"
               }
             }
-          }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name"
+          ]
         },
         {
-          "additionalProperties": false,
           "properties": {
             "name": {
               "type": "string"
@@ -209,7 +264,11 @@
             "state": {
               "type": "string"
             }
-          }
+          },
+          "additionalProperties": false,
+          "required": [
+            "name"
+          ]
         }
       ]
     },
@@ -226,6 +285,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "buc"
       ]
@@ -243,6 +303,7 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "name",
         "activity"
@@ -266,6 +327,7 @@
                 "type": "string"
               }
             },
+            "additionalProperties": false,
             "required": [
               "model",
               "value"
@@ -279,16 +341,16 @@
           }
         }
       },
+      "additionalProperties": false,
       "required": [
         "name",
         "used_by"
       ]
     },
-    "UseCase": {
+    "Usecase": {
       "type": "object",
       "oneOf": [
         {
-          "additionalProperties": false,
           "properties": {
             "name": {
               "type": "string"
@@ -318,6 +380,7 @@
               }
             }
           },
+          "additionalProperties": false,
           "required": [
             "name",
             "view",
@@ -325,7 +388,6 @@
           ]
         },
         {
-          "additionalProperties": false,
           "properties": {
             "name": {
               "type": "string"
@@ -355,6 +417,7 @@
               }
             }
           },
+          "additionalProperties": false,
           "required": [
             "name",
             "timer",
