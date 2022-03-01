@@ -186,7 +186,8 @@
             },
             "additionalProperties": false,
             "required": [
-              "name", "next_state"
+              "name",
+              "next_state"
             ]
           }
         }
@@ -318,20 +319,7 @@
         "used_by": {
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "model": {
-                "$ref": "#/$defs/ActorOrSystem"
-              },
-              "value": {
-                "type": "string"
-              }
-            },
-            "additionalProperties": false,
-            "required": [
-              "model",
-              "value"
-            ]
+            "type": "string"
           }
         },
         "usecase": {
@@ -424,13 +412,6 @@
             "information"
           ]
         }
-      ]
-    },
-    "ActorOrSystem": {
-      "enum": [
-        "Actor",
-        "ExternalSystem",
-        "InternalSystem"
       ]
     }
   }

@@ -87,12 +87,10 @@ business:
         activity:
           - name: 書架から本を探す
             used_by:
-              - model: Actor
-                value: 図書館員
+              - 図書館員
           - name: 蔵書を貸出す
             used_by:
-              - model: Actor
-                value: 図書館員
+              - 図書館員
             usecase:
               - 蔵書の貸出を登録する
 
@@ -100,22 +98,18 @@ business:
         activity:
           - name: 貸出予約
             used_by:
-              - model: Actor
-                value: 図書館員
+              - 図書館員
             usecase:
               - 貸出本の予約・取消をする
           - name: 予約図書準備
             used_by:
-              - model: Actor
-                value: 図書館員
+              - 図書館員
             usecase:
               - 予約図書一覧を出力する
           - name: 予約図書を受け取る
             used_by:
-              - model: Actor
-                value: 会員
-              - model: Actor
-                value: 図書館員
+              - 会員
+              - 図書館員
             usecase:
               - 取置図書を消し込む
               - 蔵書の貸出を登録する
@@ -124,8 +118,7 @@ business:
         activity:
           - name: 貸出図書を返却する
             used_by:
-              - model: Actor
-                value: 図書館員
+              - 図書館員
             usecase:
               - 貸出図書の返却を登録する
 
@@ -135,15 +128,13 @@ business:
         activity:
           - name: 会員新規登録
             used_by:
-              - model: Actor
-                value: 会員
+              - 会員
             usecase:
               - 会員IDを発行する
 
           - name: 会員の確認
             used_by:
-              - model: Actor
-                value: 図書会員
+              - 図書会員
             usecase:
               - 会員カードの発行（再）する
               - 会員を照会する
@@ -152,16 +143,14 @@ business:
         activity:
           - name: 貸出期限確認
             used_by:
-              - model: InternalSystem
-                value: 書籍管理システム
+              - 書籍管理システム
             usecase:
               - 貸出期限を確認する
               - 取置期限を確認する
 
           - name: 取置図書の返却
             used_by:
-              - model: Actor
-                value: 会員
+              - 会員
             usecase:
               - 取置を解消する
 
@@ -171,13 +160,11 @@ business:
         activity:
           - name: 棚卸を行う
             used_by:
-              - model: Actor
-                value: 図書館員
+              - 図書館員
 
           - name: 書籍補充
             used_by:
-              - model: ExternalSystem
-                value: 書籍通販会社
+              - 書籍通販会社
             usecase:
               - 書籍を発注する
 
