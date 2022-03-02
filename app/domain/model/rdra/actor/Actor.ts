@@ -1,5 +1,7 @@
+import '../array.extensions'
 import invariant from 'tiny-invariant'
 import { ErrorReport } from '~/domain/model/rdra/RDRA'
+import { JsonSchemaActor } from '~/domain/model/rdra/JsonSchema'
 
 export class Actor {
   private readonly _names: string[] = []
@@ -7,13 +9,18 @@ export class Actor {
   private readonly _errors: ErrorReport = []
 
   private constructor(instances: ActorInstance[]) {
-    invariant(this._names.length > 0, "AlreadyInitialized")
+    invariant(this._names.length == 0, "AlreadyInitialized")
     this._names = instances.map(i => i.name)
     this._instances = instances
   }
 
-  static resolve(source: { name: string, description?: string }[]): Actor {
-    return new Actor(source.map(r => new ActorInstance(r.name, r.description)))
+  static resolve(source: JsonSchemaActor[]): Actor {
+    const actor = new Actor(source.map(it => new ActorInstance(it.name, it.description)))
+    const counted = actor._names.countValues()
+    counted.forEach((value, key) => {
+      if (value > 1) actor._errors.push(`Actor[${key}] is duplicated`)
+    })
+    return actor
   }
 
   add(instance: ActorInstance) {
@@ -21,14 +28,14 @@ export class Actor {
     this._instances.push(instance)
   }
 
-  get names(): string[] {
-    return this._names
-  }
-
   get(name: string): ActorInstance {
     const result = this._instances.find(i => i.name == name)
     invariant(result, `NotFound[${name}]`)
     return result
+  }
+
+  get errors(): ErrorReport {
+    return this._errors
   }
 }
 

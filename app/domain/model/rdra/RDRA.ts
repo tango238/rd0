@@ -14,17 +14,17 @@ export type ErrorReport = string[]
 
 export class RDRA {
 
-  public static build(source: JsonSchema){
+  public static build(source: JsonSchema) {
 
     // --------------------------------------
     // アクター
-    const srcActor = source.actor.map(actor => typeof actor == "object" ? actor : { name: actor } )
+    const srcActor = source.actor.map(actor => typeof actor == "object" ? actor : { name: actor })
     const actor = Actor.resolve(srcActor)
 
-    const srcInternal = source.internalSystem.map(internal => typeof internal == "object" ? internal : { name: internal } )
+    const srcInternal = source.internalSystem.map(internal => typeof internal == "object" ? internal : { name: internal })
     const internalSystem = InternalSystem.resolve(srcInternal)
 
-    const srcExternal = source.externalSystem.map(external => typeof external == "object" ? external : { name: external } )
+    const srcExternal = source.externalSystem.map(external => typeof external == "object" ? external : { name: external })
     const externalSystem = ExternalSystem.resolve(srcExternal)
 
     // --------------------------------------
@@ -61,30 +61,47 @@ export class RDRA {
     // BUC -> アクター, UC複合
     const business = Business.resolve(source.business, actor, usecase)
 
-    const errorReporter = new ErrorReporter(
-      actor, internalSystem, externalSystem, information,
-      state, transition, variation, condition, business, usecase
-    )
+    const resolved = {
+      actor,
+      internalSystem,
+      externalSystem,
+      information,
+      state,
+      transition,
+      variation,
+      condition,
+      business,
+      usecase
+    }
+
+    const errorReporter = new ErrorReporter(resolved)
     if (errorReporter.hasError()) {
       errorReporter.report()
       return
     }
+
+    const charter = new RelationshipCharter(resolved)
+    charter.report()
   }
+}
+
+type ResolvedData = {
+  actor: Actor,
+  internalSystem: InternalSystem,
+  externalSystem: ExternalSystem,
+  information: Information,
+  state: State,
+  transition: StateTransition,
+  variation: Variation,
+  condition: Condition,
+  business: Business,
+  usecase: Usecase
 }
 
 class ErrorReporter {
 
   constructor(
-    actor: Actor,
-    internalSystem: InternalSystem,
-    externalSystem: ExternalSystem,
-    information: Information,
-    state: State,
-    transition: StateTransition,
-    variation: Variation,
-    condition: Condition,
-    business: Business,
-    usecase: Usecase
+    input: ResolvedData
   ) {
   }
 
@@ -92,5 +109,16 @@ class ErrorReporter {
     return false
   }
 
-  report() {}
+  report() {
+  }
+}
+
+class RelationshipCharter {
+  constructor(
+    input: ResolvedData
+  ) {
+  }
+
+  report() {
+  }
 }

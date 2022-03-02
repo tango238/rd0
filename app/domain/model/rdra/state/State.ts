@@ -1,29 +1,30 @@
+import '../array.extensions'
+import invariant from 'tiny-invariant'
 import { JsonSchemaState } from '~/domain/model/rdra/JsonSchema'
 import { ErrorReport } from '~/domain/model/rdra/RDRA'
-import invariant from 'tiny-invariant'
 
 export class State {
   private readonly _groups: string[] = []
-  private readonly _instances: StateGroup[] = []
+  private readonly _instances: StateGroupInstance[] = []
   private readonly _errors: ErrorReport = []
 
-
-  constructor(instances: StateGroup[]) {
-    invariant(this._groups.length > 0, "AlreadyInitialized")
+  constructor(instances: StateGroupInstance[]) {
+    invariant(this._groups.length == 0, `AlreadyInitialized`)
     this._groups = instances.map(i => i.name)
     this._instances = instances
   }
 
-  static resolve(state: JsonSchemaState[]) {
-    const instances = state.map(it => {
+  static resolve(source: JsonSchemaState[]) {
+    const instances = source.map(it => {
       const values = it.value.map(v => new StateValueWithoutUsecase(v.name))
-      return new StateGroup(it.group, values)
+      return new StateGroupInstance(it.group, values)
     })
-    return new State(instances)
-  }
-
-  get instances(): StateGroup[] {
-    return this._instances
+    const state = new State(instances)
+    const counted = state._groups.countValues()
+    counted.forEach((value, key) => {
+      if (value > 1) state._errors.push(`State[${key}] is duplicated`)
+    })
+    return state
   }
 
   get errors(): ErrorReport {
@@ -31,11 +32,11 @@ export class State {
   }
 }
 
-class StateGroup {
-  private readonly _name:string
+class StateGroupInstance {
+  private readonly _name: string
   private readonly _values: StateValueWithoutUsecase[]
 
-  constructor(name:string, values: StateValueWithoutUsecase[]) {
+  constructor(name: string, values: StateValueWithoutUsecase[]) {
     this._name = name
     this._values = values
   }

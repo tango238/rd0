@@ -29,6 +29,7 @@ export type JsonSchemaInternalSystem = {
 export type JsonSchemaInformation = {
   name: string
   description?: string
+  related?: string[]
 }
 
 export type JsonSchemaUsecase = {

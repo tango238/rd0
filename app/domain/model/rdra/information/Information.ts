@@ -1,5 +1,7 @@
+import '../array.extensions'
 import invariant from 'tiny-invariant'
 import { ErrorReport } from '~/domain/model/rdra/RDRA'
+import { JsonSchemaInformation } from '~/domain/model/rdra/JsonSchema'
 
 export class Information {
   private readonly _names: string[] = []
@@ -7,22 +9,35 @@ export class Information {
   private readonly _errors: ErrorReport = []
 
   private constructor(instances: InformationInstance[]) {
-    invariant(this._names.length > 0, "AlreadyInitialized")
+    invariant(this._names.length == 0, `AlreadyInitialized`)
     this._names = instances.map(i => i.name)
     this._instances = instances
   }
 
-  static resolve(records: { name: string, description?: string }[]): Information {
-    return new Information(records.map(r => new InformationInstance(r.name, r.description)))
+  static resolve(source: JsonSchemaInformation[]): Information {
+    const instances = source.map(it => {
+      const description = it.description ?? ''
+      const related = it.related ?? []
+      return new InformationInstance(it.name, description, related)
+    })
+    const information = new Information(instances)
+    const counted = information._names.countValues()
+    counted.forEach((value, key) => {
+      if (value > 1) information._errors.push(`Information[${key}] is duplicated`)
+    })
+    instances.map(instance => {
+      instance.related.map(it => {
+        if (!information._names.includes(it)) {
+          information._errors.push(`Information[${instance.name}]: ${it} in related is not found`)
+        }
+      })
+    })
+    return information
   }
 
   add(instance: InformationInstance) {
-    invariant(this._names.find(k => k == instance.name), `NotUnique[${instance.name}]`)
+    invariant(this._names.includes(instance.name), `NotUnique[${instance.name}]`)
     this._instances.push(instance)
-  }
-
-  get names(): string[] {
-    return this._names
   }
 
   get(name: string): InformationInstance {
@@ -30,15 +45,21 @@ export class Information {
     invariant(result, `NotFound[${name}]`)
     return result
   }
+
+  get errors(): ErrorReport {
+    return this._errors
+  }
 }
 
 export class InformationInstance {
   private readonly _name: string
   private readonly _description: string
+  private readonly _related: string[]
 
-  constructor(name: string, description: string = "") {
+  constructor(name: string, description: string, related: string[]) {
     this._name = name
     this._description = description
+    this._related = related
   }
 
   get name(): string {
@@ -47,5 +68,9 @@ export class InformationInstance {
 
   get description(): string {
     return this._description
+  }
+
+  get related(): string[] {
+    return this._related
   }
 }
