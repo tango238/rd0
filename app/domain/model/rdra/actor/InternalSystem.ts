@@ -1,8 +1,10 @@
 import invariant from 'tiny-invariant'
+import { ErrorReport } from '~/domain/model/rdra/RDRA'
 
 export class InternalSystem {
   private readonly _names: string[] = []
   private readonly _instances: ExternalSystemInstance[] = []
+  private readonly _errors: ErrorReport = []
 
   private constructor(instances: ExternalSystemInstance[]) {
     invariant(this._names.length > 0, "AlreadyInitialized")
@@ -10,11 +12,11 @@ export class InternalSystem {
     this._instances = instances
   }
 
-  public static resolve(records: { name: string, description?: string }[]): InternalSystem {
+  static resolve(records: { name: string, description?: string }[]): InternalSystem {
     return new InternalSystem(records.map(r => new ExternalSystemInstance(r.name, r.description)))
   }
 
-  public add(instance: ExternalSystemInstance) {
+  add(instance: ExternalSystemInstance) {
     invariant(this._names.find(k => k == instance.name), `NotUnique[${instance.name}]`)
     this._instances.push(instance)
   }

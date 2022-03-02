@@ -1,8 +1,10 @@
 import invariant from 'tiny-invariant'
+import { ErrorReport } from '~/domain/model/rdra/RDRA'
 
 export class Actor {
   private readonly _names: string[] = []
   private readonly _instances: ActorInstance[] = []
+  private readonly _errors: ErrorReport = []
 
   private constructor(instances: ActorInstance[]) {
     invariant(this._names.length > 0, "AlreadyInitialized")
@@ -10,11 +12,11 @@ export class Actor {
     this._instances = instances
   }
 
-  public static resolve(source: { name: string, description?: string }[]): Actor {
+  static resolve(source: { name: string, description?: string }[]): Actor {
     return new Actor(source.map(r => new ActorInstance(r.name, r.description)))
   }
 
-  public add(instance: ActorInstance) {
+  add(instance: ActorInstance) {
     invariant(this._names.find(k => k == instance.name), `NotUnique[${instance.name}]`)
     this._instances.push(instance)
   }
