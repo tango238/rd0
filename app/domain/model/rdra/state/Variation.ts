@@ -1,3 +1,4 @@
+import '../array.extensions'
 import { JsonSchemaVariation } from '~/domain/model/rdra/JsonSchema'
 import { ErrorReport } from '~/domain/model/rdra/RDRA'
 import invariant from 'tiny-invariant'
@@ -8,23 +9,57 @@ export class Variation {
   private readonly _errors: ErrorReport = []
 
   constructor(instances: VariationInstance[]) {
-    invariant(this._names.length > 0, "AlreadyInitialized")
+    invariant(this._names.length == 0, "AlreadyInitialized")
     this._names = instances.map(i => i.name)
     this._instances = instances
   }
 
-  static resolve(variation: JsonSchemaVariation[]) {
-    return new Variation(variation.map(v => new VariationInstance(v.name, v.value)))
+  static resolve(source: JsonSchemaVariation[]) {
+    let errors: ErrorReport = []
+    const variation =  new Variation(source.map(v => {
+      const instance = VariationInstance.resolved(v.name, v.value)
+      if (instance.errors.length > 0) {
+        errors.push(...instance.errors)
+      }
+      return instance
+    }))
+
+    const counted = variation._names.countValues()
+    counted.forEach((value, key) => {
+      if (value > 1) variation._errors.push(`Variation[${key}] is duplicated`)
+    })
+    if (errors.length > 0) {
+      variation._errors.push(...errors)
+    }
+    return variation
+  }
+
+  get names(): string[] {
+    return this._names
+  }
+
+  get errors(): ErrorReport {
+    return this._errors
   }
 }
 
 class VariationInstance {
   private readonly _name: string
   private readonly _value: string[] = []
+  private readonly _errors: ErrorReport = []
 
   constructor(name: string, value: string[]) {
     this._name = name
     this._value = value
+  }
+
+  static resolved(name: string, values: string[]) {
+    const instance = new VariationInstance(name, values)
+    const counted = values.countValues()
+    counted.forEach((value, key) => {
+      if (value > 1) instance._errors.push(`Value in Variation[${key}] is duplicated`)
+    })
+    return instance
   }
 
   get name(): string {
@@ -33,5 +68,9 @@ class VariationInstance {
 
   get value(): string[] {
     return this._value
+  }
+
+  get errors(): ErrorReport {
+    return this._errors
   }
 }

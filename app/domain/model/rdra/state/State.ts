@@ -27,6 +27,10 @@ export class State {
     return state
   }
 
+  get groups(): string[] {
+    return this._groups
+  }
+
   get errors(): ErrorReport {
     return this._errors
   }

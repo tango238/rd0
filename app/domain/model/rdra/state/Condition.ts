@@ -9,26 +9,49 @@ export class Condition {
   private readonly _instances: ConditionInstance[] = []
   private readonly _errors: ErrorReport = []
 
-
   constructor(instances: ConditionInstance[]) {
-    invariant(this._names.length > 0, "AlreadyInitialized")
+    invariant(this._names.length == 0, "AlreadyInitialized")
     this._names = instances.map(i => i.name)
     this._instances = instances
   }
 
   static resolve(source: JsonSchemaCondition[], state: State, variation: Variation) {
+    let errors: ErrorReport = []
     const conditions = source.map(it => {
+      if (it.variation && it.state) {
+        const instance = new SimpleCondition(it.name, it.description)
+        errors.push(`条件には状態とバリエーションを同時に指定できません。`)
+        return instance
+      }
       if (it.variation) {
-        return new ConditionOfVariation(it.name, it.variation, it.description)
+        const instance = ConditionOfVariation.resolve(variation, it.name, it.variation, it.description)
+        if (instance.errors.length > 0) {
+          errors.push(...instance.errors)
+        }
+        return instance
       }
-      else if (it.state) {
-        return new ConditionOfState(it.name, it.state, it.description)
+      if (it.state) {
+        const instance = ConditionOfState.resolve(state, it.name, it.state, it.description)
+        if (instance.errors.length > 0) {
+          errors.push(...instance.errors)
+        }
+        return instance
       }
-      else {
-        return new SimpleCondition(it.name, it.description)
-      }
+      return new SimpleCondition(it.name, it.description)
     })
-    return new Condition(conditions)
+    const condition = new Condition(conditions)
+    const counted = condition._names.countValues()
+    counted.forEach((value, key) => {
+      if (value > 1) condition._errors.push(`条件名[${key}]が重複しています。`)
+    })
+    if (errors.length > 0) {
+      condition.errors.push(...errors)
+    }
+    return condition
+  }
+
+  get errors(): ErrorReport {
+    return this._errors
   }
 }
 
@@ -39,10 +62,15 @@ interface ConditionInstance {
 class SimpleCondition implements ConditionInstance {
   private readonly _name: string
   private readonly _description?: string
+  private readonly _errors: ErrorReport = []
 
   constructor(name: string, description?: string) {
     this._name = name
     this._description = description
+  }
+
+  static resolved(name: string, description?: string) {
+    return new SimpleCondition(name, description)
   }
 
   get name(): string {
@@ -54,6 +82,7 @@ class ConditionOfVariation implements ConditionInstance {
   private readonly _name: string
   private readonly _variation: string[]
   private readonly _description?: string
+  private readonly _errors: ErrorReport = []
 
   constructor(name: string, variation: string[], description?: string) {
     this._name = name
@@ -61,8 +90,27 @@ class ConditionOfVariation implements ConditionInstance {
     this._description = description
   }
 
+  static resolve(variations: Variation, name: string, variation: string[], description?: string) {
+    const instance = new ConditionOfVariation(name, variation, description)
+    const counted = instance._variation.countValues()
+    counted.forEach((count, key) => {
+      if (count > 1) instance._errors.push(`条件に定義されているバリエーション[${key}]が重複しています。`)
+    })
+    for(const value of variation) {
+      if (!variations.names.includes(value)) {
+        instance._errors.push(`条件に定義されているバリエーション[${value}]がバリエーション一覧から見つかりませんでした。`)
+      }
+    }
+
+    return instance
+  }
+
   get name(): string {
     return this._name
+  }
+
+  get errors(): ErrorReport {
+    return this._errors
   }
 }
 
@@ -70,6 +118,7 @@ class ConditionOfState implements ConditionInstance {
   private readonly _name: string
   private readonly _description?: string
   private readonly _state?: string
+  private readonly _errors: ErrorReport = []
 
   constructor(name: string, state: string, description?: string) {
     this._name = name
@@ -77,7 +126,19 @@ class ConditionOfState implements ConditionInstance {
     this._state = state
   }
 
+  static resolve(states: State, name: string, state: string, description?: string) {
+    const instance = new ConditionOfState(name, state, description)
+    if (!states.groups.includes(state)) {
+      instance._errors.push(`条件に定義されている状態[${state}]が状態一覧から見つかりませんでした。`)
+    }
+    return instance
+  }
+
   get name(): string {
     return this._name
+  }
+
+  get errors(): ErrorReport {
+    return this._errors
   }
 }
