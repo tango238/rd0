@@ -31,6 +31,10 @@ export class State {
     return this._groups
   }
 
+  get instances(): StateGroupInstance[] {
+    return this._instances
+  }
+
   get errors(): ErrorReport {
     return this._errors
   }

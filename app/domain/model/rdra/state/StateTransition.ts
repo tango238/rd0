@@ -28,6 +28,14 @@ export class StateTransition {
   get names(): string[] {
     return this._names
   }
+
+  get instances(): StateGroup[] {
+    return this._instances
+  }
+
+  get errors(): ErrorReport {
+    return this._errors
+  }
 }
 
 class StateGroup {

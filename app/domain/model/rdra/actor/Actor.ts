@@ -37,6 +37,10 @@ export class Actor {
   get errors(): ErrorReport {
     return this._errors
   }
+
+  get instances(): ActorInstance[] {
+    return this._instances
+  }
 }
 
 export class ActorInstance {

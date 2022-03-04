@@ -54,16 +54,27 @@ export class Condition {
     return this._names
   }
 
+  get instances(): ConditionInstance[] {
+    return this._instances
+  }
+
   get errors(): ErrorReport {
     return this._errors
   }
+
+  load(name: string): ConditionInstance {
+    const found = this._instances.find(it => it.name == name)
+    invariant(found)
+    return found
+  }
 }
 
-interface ConditionInstance {
+export interface ConditionInstance {
   get name(): string
+  get type(): string
 }
 
-class SimpleCondition implements ConditionInstance {
+export class SimpleCondition implements ConditionInstance {
   private readonly _name: string
   private readonly _description?: string
   private readonly _errors: ErrorReport = []
@@ -80,9 +91,13 @@ class SimpleCondition implements ConditionInstance {
   get name(): string {
     return this._name
   }
+
+  get type(): string {
+    return "simple"
+  }
 }
 
-class ConditionOfVariation implements ConditionInstance {
+export class ConditionOfVariation implements ConditionInstance {
   private readonly _name: string
   private readonly _variation: string[]
   private readonly _description?: string
@@ -105,7 +120,6 @@ class ConditionOfVariation implements ConditionInstance {
         instance._errors.push(`条件に定義されているバリエーション[${value}]がバリエーション一覧から見つかりませんでした。`)
       }
     }
-
     return instance
   }
 
@@ -113,15 +127,23 @@ class ConditionOfVariation implements ConditionInstance {
     return this._name
   }
 
+  get type(): string {
+    return "variation"
+  }
+
   get errors(): ErrorReport {
     return this._errors
   }
+
+  get variation(): string[] {
+    return this._variation
+  }
 }
 
-class ConditionOfState implements ConditionInstance {
+export class ConditionOfState implements ConditionInstance {
   private readonly _name: string
   private readonly _description?: string
-  private readonly _state?: string
+  private readonly _state: string
   private readonly _errors: ErrorReport = []
 
   constructor(name: string, state: string, description?: string) {
@@ -142,7 +164,15 @@ class ConditionOfState implements ConditionInstance {
     return this._name
   }
 
+  get type(): string {
+    return "state"
+  }
+
   get errors(): ErrorReport {
     return this._errors
+  }
+
+  get state(): string {
+    return this._state
   }
 }

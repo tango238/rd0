@@ -31,6 +31,14 @@ export class Business {
     })
     return new Business(instances)
   }
+
+  get instances(): BusinessInstance[] {
+    return this._instances
+  }
+
+  get errors(): ErrorReport {
+    return this._errors
+  }
 }
 
 class BusinessInstance {

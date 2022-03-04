@@ -38,6 +38,10 @@ export class Variation {
     return this._names
   }
 
+  get instances(): VariationInstance[] {
+    return this._instances
+  }
+
   get errors(): ErrorReport {
     return this._errors
   }

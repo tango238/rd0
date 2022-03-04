@@ -1,9 +1,9 @@
 import '../array.extensions'
+import invariant from 'tiny-invariant'
 import { JsonSchemaUsecase } from '~/domain/model/rdra/JsonSchema'
 import { Condition } from '~/domain/model/rdra/state/Condition'
 import { ErrorReport } from '~/domain/model/rdra/RDRA'
 import { Information } from '~/domain/model/rdra/information/Information'
-import invariant from 'tiny-invariant'
 
 export class Usecase {
   private readonly _names: string[] = []
@@ -33,6 +33,10 @@ export class Usecase {
     })
     if (errors.length > 0) usecase._errors.push(...errors)
     return usecase
+  }
+
+  get instances(): UsecaseInstance[] {
+    return this._instances
   }
 
   get errors(): ErrorReport {

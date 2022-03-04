@@ -34,6 +34,10 @@ export class InternalSystem {
     return result
   }
 
+  get instances(): InternalSystemInstance[] {
+    return this._instances
+  }
+
   get errors(): ErrorReport {
     return this._errors
   }

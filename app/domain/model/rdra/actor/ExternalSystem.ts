@@ -33,6 +33,10 @@ export class ExternalSystem {
     return result
   }
 
+  get instances(): ExternalSystemInstance[] {
+    return this._instances
+  }
+
   get errors(): ErrorReport {
     return this._errors
   }
