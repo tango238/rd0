@@ -50,6 +50,10 @@ export class Condition {
     return condition
   }
 
+  get names(): string[] {
+    return this._names
+  }
+
   get errors(): ErrorReport {
     return this._errors
   }

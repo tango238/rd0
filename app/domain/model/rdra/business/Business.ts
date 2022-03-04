@@ -20,7 +20,6 @@ export class Business {
     actor: Actor,
     usecase: Usecase
   ) {
-
     const instances = source.map(it => {
       const buc = it.buc.map(b => {
         const activity = b.activity.map(a => {

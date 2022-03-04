@@ -20,6 +20,15 @@ test('resolve with error - name duplicates', () => {
   expect(resolved.errors.length).toBe(1)
 })
 
+test('resolve with error - related is the same as its own name', () => {
+  const source: JsonSchemaInformation[] = [
+    { name: 'info 1', related: ['info 1'] },
+    { name: 'info 2' }
+  ]
+  const resolved = Information.resolve(source)
+  expect(resolved.errors.length).toBe(1)
+})
+
 test('resolve with error - related to no registration name', () => {
   const source: JsonSchemaInformation[] = [
     { name: 'info 1', related: ['info 2', 'info 4'] },
