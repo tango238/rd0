@@ -34,12 +34,16 @@ export class Actor {
     return result
   }
 
-  get errors(): ErrorReport {
-    return this._errors
+  get names(): string[] {
+    return this._names
   }
 
   get instances(): ActorInstance[] {
     return this._instances
+  }
+
+  get errors(): ErrorReport {
+    return this._errors
   }
 }
 

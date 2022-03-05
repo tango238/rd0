@@ -1,8 +1,9 @@
+import '../array.extensions'
+import invariant from 'tiny-invariant'
 import { JsonSchemaBusiness } from '~/domain/model/rdra/JsonSchema'
 import { ErrorReport } from '~/domain/model/rdra/RDRA'
 import { Actor } from '~/domain/model/rdra/actor/Actor'
 import { Usecase } from '~/domain/model/rdra/usecase/Usecase'
-import invariant from 'tiny-invariant'
 
 export class Business {
   private readonly _names: string[] = []
@@ -10,7 +11,7 @@ export class Business {
   private readonly _errors: ErrorReport = []
 
   constructor(instances: BusinessInstance[]) {
-    invariant(this._names.length > 0, "AlreadyInitialized")
+    invariant(this._names.length == 0, "AlreadyInitialized")
     this._names = instances.map(i => i.name)
     this._instances = instances
   }
@@ -20,16 +21,46 @@ export class Business {
     actor: Actor,
     usecase: Usecase
   ) {
+    let errors: ErrorReport = []
     const instances = source.map(it => {
       const buc = it.buc.map(b => {
         const activity = b.activity.map(a => {
+          const usedByCounted = a.used_by.countValues()
+          usedByCounted.forEach((count, usedBy) => {
+            if (count > 1) errors.push(`アクティビティ[${a.name}]に指定されているアクター[${usedBy}]が重複しています。`)
+            if (!actor.names.includes(usedBy)) errors.push(`アクティビティ[${a.name}]に指定されているアクター[${usedBy}]が未登録です。`)
+          })
+          const usecaseCounted = a.usecase.countValues()
+          usecaseCounted.forEach((count, uc) => {
+            if (count > 1) errors.push(`アクティビティ[${a.name}]に指定されているユースケース[${uc}]が重複しています。`)
+            if (!usecase.names.includes(uc)) errors.push(`アクティビティ[${a.name}]に指定されているユースケース[${uc}]が未登録です。`)
+          })
           return new Activity(a.name, a.used_by, a.usecase)
+        })
+        const activityNames = activity.map(a => a.name)
+        const counted = activityNames.countValues()
+        counted.forEach((count, key) => {
+          if (count > 1) errors.push(`アクティビティ[${key}]が重複しています。`)
         })
         return new Buc(b.name, activity)
       })
+      const bucNames = buc.map(b => b.name)
+      const counted = bucNames.countValues()
+      counted.forEach((count, key) => {
+        if (count > 1) errors.push(`BUC[${key}]が重複しています`)
+      })
+
       return new BusinessInstance(it.name, buc)
     })
-    return new Business(instances)
+    const business = new Business(instances)
+
+    const counted = business._names.countValues()
+    counted.forEach((count, key) => {
+      if (count > 1) business._errors.push(`ビジネス[${key}]が重複しています。`)
+    })
+
+    if (errors.length > 0) business._errors.push(...errors)
+    return business
   }
 
   get instances(): BusinessInstance[] {
