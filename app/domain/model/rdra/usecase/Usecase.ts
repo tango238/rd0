@@ -43,6 +43,12 @@ export class Usecase {
     return this._instances
   }
 
+  load(name: string): UsecaseInstance {
+    const instance = this._instances.find(i => i.name == name)
+    invariant(instance)
+    return instance
+  }
+
   get errors(): ErrorReport {
     return this._errors
   }

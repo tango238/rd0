@@ -21,7 +21,7 @@ export class Business {
     actor: Actor,
     usecase: Usecase
   ) {
-    let errors: ErrorReport = []
+    const errors: ErrorReport = []
     const instances = source.map(it => {
       const buc = it.buc.map(b => {
         const activity = b.activity.map(a => {
@@ -58,9 +58,12 @@ export class Business {
     counted.forEach((count, key) => {
       if (count > 1) business._errors.push(`ビジネス[${key}]が重複しています。`)
     })
-
     if (errors.length > 0) business._errors.push(...errors)
     return business
+  }
+
+  get names(): string[] {
+    return this._names
   }
 
   get instances(): BusinessInstance[] {

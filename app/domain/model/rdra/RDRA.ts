@@ -80,6 +80,21 @@ export class RDRA {
       return
     }
 
+    // UC複合 -> アクター, 画面, 情報
+    // business.instances.map(business => {
+    //   business.buc.map(b => {
+    //     b.activity.map(act => {
+    //       const actors = act.used_by.join(',')
+    //       act.usecase.map(uc => {
+    //         const usecaseInstance = usecase.load(uc)
+    //         const info = usecaseInstance.information.join(',')
+    //         const views = usecaseInstance.view.join(',')
+    //         console.log(`"${uc}", "${actors}", "${views}", ${info}`)
+    //       })
+    //     })
+    //   })
+    // })
+
     const charter = new RelationshipCharter(resolved)
     charter.report()
   }
