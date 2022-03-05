@@ -35,6 +35,10 @@ export class Usecase {
     return usecase
   }
 
+  get names(): string[] {
+    return this._names
+  }
+
   get instances(): UsecaseInstance[] {
     return this._instances
   }

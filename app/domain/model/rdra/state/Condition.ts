@@ -62,10 +62,10 @@ export class Condition {
     return this._errors
   }
 
-  load(name: string): ConditionInstance {
+  load<T extends ConditionInstance>(name: string): T {
     const found = this._instances.find(it => it.name == name)
     invariant(found)
-    return found
+    return found as T
   }
 }
 

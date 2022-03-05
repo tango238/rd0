@@ -26,7 +26,7 @@ export class Variation {
 
     const counted = variation._names.countValues()
     counted.forEach((value, key) => {
-      if (value > 1) variation._errors.push(`Variation[${key}] is duplicated`)
+      if (value > 1) variation._errors.push(`バリエーション[${key}]が重複しています。`)
     })
     if (errors.length > 0) {
       variation._errors.push(...errors)

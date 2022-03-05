@@ -23,15 +23,15 @@ export class Information {
     const information = new Information(instances)
     const counted = information._names.countValues()
     counted.forEach((value, key) => {
-      if (value > 1) information._errors.push(`情報名[${key}]が重複しています。`)
+      if (value > 1) information._errors.push(`情報[${key}]が重複しています。`)
     })
     instances.map(instance => {
       if (instance.related.includes(instance.name)) {
-        information._errors.push(`情報名[${instance.name}]は同じ情報内の関連には登録できません。`)
+        information._errors.push(`情報[${instance.name}]は同じ情報内の関連には指定できません。`)
       }
       instance.related.map(it => {
         if (!information._names.includes(it)) {
-          information._errors.push(`情報名[${instance.name}]に定義されている関連[${it}]が未定義です。`)
+          information._errors.push(`情報[${instance.name}]に定義されている関連[${it}]が未定義です。`)
         }
       })
     })
